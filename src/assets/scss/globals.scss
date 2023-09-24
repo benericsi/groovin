@@ -43,3 +43,19 @@ a {
     text-decoration: none;
     color: $clr-white;
 }
+
+// Media Queries - Tablet
+@media only screen and (max-width: 768px) {
+    html {
+        font-size: 0.9rem;
+        line-height: 1.2rem;
+    }
+}
+
+// Media Queries - Mobile
+@media only screen and (max-width: 500px) {
+    html {
+        font-size: 0.75rem;
+        line-height: 1rem;
+    }
+}

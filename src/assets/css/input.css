@@ -67,6 +67,10 @@
 .input-wrapper .input-group .input-field.input-success {
   border: 2px solid #00A76F;
 }
+.input-wrapper .error-msg {
+  color: #FF1F32;
+  font-size: 0.75rem;
+}
 
 /* Change Autocomplete styles*/
 :-webkit-autofill,

@@ -27,7 +27,7 @@ const Input = (props) => {
           <label>{props.label}</label>
           {props.type === 'password' && <img src={isPasswordVisible ? showEye : hideEye} alt=" " onClick={handleTogglePasswordVisibility} />}
         </div>
-        {props.error && <span style={{color: '#FF1F32'}}>{props.error}</span>}
+        {props.error && <span className="error-msg">{props.error}</span>}
       </div>
     </>
   );
