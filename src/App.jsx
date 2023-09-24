@@ -4,9 +4,9 @@ import Authentication from './modules/auth/Authentication';
 
 const App = () => {
   return (
-    <div>
+    <>
       <Authentication />
-    </div>
+    </>
   );
 };
 

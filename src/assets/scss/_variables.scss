@@ -2,11 +2,22 @@
 $clr-black: #000000;
 $clr-white: #ffffff;
 
-$clr-grey-dark: #121212;
 
-$clr-main-light: #ee4540;
-$clr-main: #c72c41;
-$clr-main-dark: #801336;
+$clr-grey-100: #f8f8f8;
+$clr-grey-200: #ebebeb;
+$clr-grey-300: #d9d9d9;
+$clr-grey-400: #c4c4c4;
+$clr-grey-500: #a6a6a6;
+$clr-grey-600: #7e7e7e;
+$clr-grey-700: #5e5e5e;
+$clr-grey-800: #3f3f3f;
+$clr-grey-900: #121212;
+
+$clr-primary-lighter: #f9aebd;
+$clr-primary-light: #ee4540;
+$clr-primary: #c72c41;
+$clr-primary-dark: #801336;
+$clr-primary-darker: #510a32;
 
 $clr-green-lighter: #C8FAD6;
 $clr-green-light: #5BE49B;
@@ -35,3 +46,7 @@ $clr-yellow-darker: #7A4100;
 //FONTS
 $font-display: 'Staatliches', cursive;
 $font-content: 'Oswald', sans-serif;
+
+
+//ANIMATION
+$animation-cubic: cubic-bezier(0.25, 0.46, 0.45, 0.94);
