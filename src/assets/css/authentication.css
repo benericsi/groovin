@@ -10,7 +10,7 @@
   position: relative;
   background-color: #121212;
   padding: 2rem;
-  box-shadow: 7px 7px #000000;
+  box-shadow: 10px 10px #000000;
 }
 .auth-page .auth-container .tabs-wrapper {
   position: relative;
@@ -79,4 +79,22 @@
   align-items: center;
   justify-content: center;
   color: #ffffff;
+}
+.auth-page .auth-container .tabs-wrapper .tabs-content .tabs-content-item.active-content h1 {
+  margin: 1rem 0;
+}
+.auth-page .auth-container .tabs-wrapper .tabs-content .tabs-content-item.active-content form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+.auth-page .auth-container .tabs-wrapper .tabs-content .tabs-content-item.active-content form .field-wrapper {
+  display: flex;
+  flex-direction: row;
+  -moz-column-gap: 0.5rem;
+       column-gap: 0.5rem;
+}
+.auth-page .auth-container .tabs-wrapper .tabs-content .tabs-content-item.active-content form .field-wrapper .input-wrapper {
+  width: 100%;
 }/*# sourceMappingURL=authentication.css.map */
