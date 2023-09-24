@@ -1,0 +1,45 @@
+@import 'variables';
+
+.btn-main {
+    all: unset;
+    font-weight: bold;
+    box-shadow: 0;
+    transition: box-shadow 0.2s $animation-cubic;
+    font-size: 1em;
+    padding: 0.75em 1em;
+    margin: 0.5rem 0;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-align: center;
+    letter-spacing: 2px;
+
+    &:active {
+        opacity: 0.75;
+    }
+}
+
+.btn-light {
+    color: $clr-white;
+    border: 1px solid $clr-white;
+
+    &:hover,
+    &:focus &:active {
+        box-shadow: 7px 7px $clr-white;
+        background-color: $clr-white;
+        border: 1px solid $clr-grey-900;
+        color: $clr-grey-900;
+    }
+}
+
+.btn-dark {
+    color: $clr-grey-900;
+    border: 1px solid $clr-grey-900;
+
+    &:hover,
+    &:focus &:active {
+        box-shadow: 7px 7px $clr-grey-900;
+        background-color: $clr-grey-900;
+        border: 1px solid $clr-white;
+        color: $clr-white;
+    }
+}

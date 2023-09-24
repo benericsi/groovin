@@ -12,7 +12,7 @@
         position: relative;
         background-color: $clr-grey-900;
         padding: 2rem;
-        box-shadow: 7px 7px $clr-black;
+        box-shadow: 10px 10px $clr-black;
 
         .tabs-wrapper {
             position: relative;
@@ -93,6 +93,27 @@
                         align-items: center;
                         justify-content: center;
                         color: $clr-white;
+
+                        h1 {
+                            margin: 1rem 0;
+                        }
+
+                        form {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            width: 100%;
+
+                            .field-wrapper {
+                                display: flex;
+                                flex-direction: row;
+                                column-gap: 0.5rem;
+
+                                .input-wrapper {
+                                    width: 100%;
+                                }
+                            }
+                        }
                     }
                 }
             }
