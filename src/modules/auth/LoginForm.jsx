@@ -3,6 +3,7 @@ import Button from '../../common/Button';
 
 import {useEffect, useState} from 'react';
 import {useToast} from '../../hooks/useToast';
+import {useLoader} from '../../hooks/useLoader';
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 
@@ -11,6 +12,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
 
+  const {showLoader, hideLoader} = useLoader();
   const {addToast} = useToast();
 
   useEffect(() => {
@@ -30,7 +32,12 @@ const LoginForm = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    addToast('success', 'You have successfully logged in!');
+    showLoader();
+
+    setTimeout(() => {
+      hideLoader();
+      addToast('success', 'You have successfully logged in!');
+    }, 4000);
   };
 
   return (
