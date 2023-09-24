@@ -55,7 +55,7 @@ const LoginForm = () => {
           name="lgn-pass"
           error={errors.password}
         />
-        <Button type="submit" text="Log In" className="btn-light" />
+        <Button type="submit" text="Login" className="btn-light" />
       </form>
     </>
   );
