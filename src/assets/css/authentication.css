@@ -1,0 +1,82 @@
+.auth-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-image: linear-gradient(to right bottom, #ee4540, #510a32);
+}
+.auth-page .auth-container {
+  position: relative;
+  background-color: #121212;
+  padding: 2rem;
+  box-shadow: 7px 7px #000000;
+}
+.auth-page .auth-container .tabs-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 25vw;
+}
+.auth-page .auth-container .tabs-wrapper .tabs-header {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+.auth-page .auth-container .tabs-wrapper .tabs-header .tabs-header-item {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  width: 50%;
+}
+.auth-page .auth-container .tabs-wrapper .tabs-header .tabs-header-item::after {
+  content: "";
+  width: 100%;
+  height: 1px;
+  background-color: #5e5e5e;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transition: height 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.auth-page .auth-container .tabs-wrapper .tabs-header .tabs-header-item:hover h3 {
+  color: #ffffff;
+}
+.auth-page .auth-container .tabs-wrapper .tabs-header .tabs-header-item h3 {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 1rem;
+  color: #5e5e5e;
+  transition: color 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  margin: 0 1rem;
+}
+.auth-page .auth-container .tabs-wrapper .tabs-header .tabs-header-item.active-tab::after {
+  content: "";
+  width: 100%;
+  height: 4px;
+  background-color: #ebebeb;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.auth-page .auth-container .tabs-wrapper .tabs-header .tabs-header-item.active-tab h3 {
+  color: #ffffff;
+}
+.auth-page .auth-container .tabs-wrapper .tabs-content .tabs-content-item {
+  display: none;
+}
+.auth-page .auth-container .tabs-wrapper .tabs-content .tabs-content-item.active-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}/*# sourceMappingURL=authentication.css.map */
