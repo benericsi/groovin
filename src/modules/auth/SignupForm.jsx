@@ -2,7 +2,7 @@ import Input from '../../common/Input';
 import Button from '../../common/Button';
 
 import React, {useState, useEffect} from 'react';
-import {useAuth} from '../../setup/AuthProvider';
+import {useAuth} from '../../hooks/useAuth';
 
 const NAME_REGEX = /^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+([ -][A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+)*$/;
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
