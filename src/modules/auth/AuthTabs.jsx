@@ -16,10 +16,10 @@ const AuthTabs = () => {
       <div className="tabs-wrapper">
         <div className="tabs-header">
           <a href="#login" onClick={() => handleTabClick(1)} className={activeTab === 1 ? 'tabs-header-item active-tab' : 'tabs-header-item'}>
-            <h3>Log In</h3>
+            <h3>LogIn</h3>
           </a>
           <a href="#signup" onClick={() => handleTabClick(2)} className={activeTab === 2 ? 'tabs-header-item active-tab' : 'tabs-header-item'}>
-            <h3>Sign Up</h3>
+            <h3>SignUp</h3>
           </a>
         </div>
         <div className="tabs-content">

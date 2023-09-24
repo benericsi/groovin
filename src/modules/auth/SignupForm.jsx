@@ -2,10 +2,10 @@ import Input from '../../common/Input';
 import Button from '../../common/Button';
 
 import React, {useState, useEffect} from 'react';
+import {useAuth} from '../../setup/AuthProvider';
 
 const NAME_REGEX = /^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+([ -][A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+)*$/;
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-const USERNAME_REGEX = /^(?!.*\s{2})[a-z0-9_. ]+(?<!\s)$/i;
 const PHONE_REGEX = /((?:\+?3|0)6)(?:-|\()?(\d{1,2})(?:-|\))?(\d{3})-?(\d{3,4})/;
 
 const SignupForm = () => {
@@ -13,10 +13,11 @@ const SignupForm = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+
+  const {signup, currentUser} = useAuth();
 
   useEffect(() => {
     // Validate first name and last name
@@ -59,31 +60,6 @@ const SignupForm = () => {
       }));
     }
   }, [email]);
-
-  useEffect(() => {
-    // Validate username
-    if (username && !USERNAME_REGEX.test(username)) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        username: 'Wrong username format.',
-      }));
-    } else if (username && username.length < 4) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        username: 'Username must be at least 4 characters long.',
-      }));
-    } else if (username && username.length > 16) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        username: 'Username must be at most 16 characters long.',
-      }));
-    } else {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        username: '',
-      }));
-    }
-  }, [username]);
 
   useEffect(() => {
     // Validate password
@@ -152,11 +128,14 @@ const SignupForm = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+
+    signup(email, password);
   };
 
   return (
     <>
       <h1>First Time Here?</h1>
+      {currentUser && <p>Logged in as: {currentUser.email}</p>}
       <form onSubmit={handleFormSubmit}>
         <div className="field-wrapper">
           <Input
@@ -194,17 +173,6 @@ const SignupForm = () => {
           name="reg-email"
           error={errors.email}
         />
-        <Input
-          type="text"
-          value={username}
-          label="Username * "
-          onChange={(value) => {
-            setUsername(value);
-          }}
-          className="input-field"
-          name="reg-username"
-          error={errors.username}
-        />
         <div className="field-wrapper">
           <Input
             type="password"
@@ -240,7 +208,7 @@ const SignupForm = () => {
           name="reg-phone"
           error={errors.phoneNumber}
         />
-        <Button type="submit" text="Signup" className="btn-light" />
+        <Button type="submit" text="Sign up" className="btn-light" />
       </form>
     </>
   );

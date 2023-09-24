@@ -34,6 +34,7 @@
 }
 .input-wrapper .input-group .input-field {
   padding: 0.75rem;
+  padding-right: 2rem !important;
   outline: none;
   border: 2px solid #a6a6a6;
   font-size: 0.9rem;
