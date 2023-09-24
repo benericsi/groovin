@@ -20,6 +20,7 @@ const Toast = ({id, type, message, onClose}) => {
     return () => {
       clearTimeout(timerId);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, onClose]);
 
   var icon = null;
