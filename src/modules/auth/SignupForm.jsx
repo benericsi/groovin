@@ -3,6 +3,9 @@ import Button from '../../common/Button';
 
 import React, {useState, useEffect} from 'react';
 import {useAuth} from '../../hooks/useAuth';
+import {useToast} from '../../hooks/useToast';
+import {useLoader} from '../../hooks/useLoader';
+import {useNavigate} from 'react-router-dom';
 
 const NAME_REGEX = /^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+([ -][A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+)*$/;
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
@@ -17,7 +20,11 @@ const SignupForm = () => {
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
 
-  const {signup, currentUser} = useAuth();
+  const {signup} = useAuth();
+  const {addToast} = useToast();
+  const {showLoader, hideLoader} = useLoader();
+
+  const history = useNavigate();
 
   useEffect(() => {
     // Validate first name and last name
@@ -128,14 +135,57 @@ const SignupForm = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    showLoader();
+    //Validation
+    if (!lastName.trim() || !firstName.trim() || !email.trim() || !password.trim() || !passwordConfirmation.trim() || !phoneNumber.trim()) {
+      hideLoader();
+      addToast('error', 'Please fill out all the fields!');
+      return;
+    }
 
-    signup(email, password);
+    if (Object.values(errors).some((error) => error !== '')) {
+      hideLoader();
+      addToast('error', 'There is an error with at least one field!');
+      return;
+    }
+
+    if (password !== passwordConfirmation) {
+      hideLoader();
+      addToast('error', 'Passwords do not match!');
+      return;
+    }
+
+    signup(email, password)
+      .then(() => {
+        // Signup was successful
+        setEmail('');
+        setPassword('');
+        setPasswordConfirmation('');
+        setFirstName('');
+        setLastName('');
+        setPhoneNumber('');
+
+        hideLoader();
+        addToast('success', 'You have successfully signed up!');
+        history('/');
+      })
+      .catch((error) => {
+        hideLoader(); // Ensure loader is hidden even in case of an error
+        if (error.code === 'auth/email-already-in-use') {
+          addToast('error', 'The email address is already in use.');
+        } else if (error.code === 'auth/invalid-email') {
+          addToast('error', 'The email address is not valid.');
+        } else if (error.code === 'auth/operation-not-allowed') {
+          addToast('error', 'Email/password accounts are not enabled.');
+        } else if (error.code === 'auth/weak-password') {
+          addToast('error', 'The password is not strong enough.');
+        }
+      });
   };
 
   return (
     <>
       <h1>First Time Here?</h1>
-      {currentUser && <p>Logged in as: {currentUser.email}</p>}
       <form onSubmit={handleFormSubmit}>
         <div className="field-wrapper">
           <Input

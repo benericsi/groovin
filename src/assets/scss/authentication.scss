@@ -8,12 +8,52 @@
     height: 100vh;
     background-image: linear-gradient(to right bottom, $clr-primary-light, $clr-primary-darker);
 
+    .reset-form {
+        position: relative;
+        background-color: $clr-grey-900;
+        padding: 2rem;
+        min-width: 25vw;
+        box-shadow: 10px 10px $clr-black;
+        display: flex;
+        flex-direction: column;
+
+        h1 {
+            color: $clr-white;
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+
+            .field-wrapper {
+                display: flex;
+                flex-direction: row;
+                column-gap: 0.5rem;
+
+                .input-wrapper {
+                    width: 100%;
+                }
+            }
+        }
+
+        a {
+            margin-top: .5rem;
+            text-align: center;
+        }
+    }
+
     .auth-container {
         position: relative;
         background-color: $clr-grey-900;
         padding: 2rem;
         min-width: 25vw;
         box-shadow: 10px 10px $clr-black;
+        display: flex;
+        flex-direction: column;
 
         .tabs-wrapper {
             position: relative;
@@ -28,7 +68,6 @@
                 align-items: center;
                 justify-content: center;
                 cursor: pointer;
-
 
                 .tabs-header-item {
                     position: relative;
@@ -113,6 +152,10 @@
                                     width: 100%;
                                 }
                             }
+                        }
+
+                        a {
+                            margin-top: .5rem;
                         }
                     }
                 }

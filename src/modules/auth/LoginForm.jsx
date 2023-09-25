@@ -4,6 +4,9 @@ import Button from '../../common/Button';
 import {useEffect, useState} from 'react';
 import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';
+import {useAuth} from '../../hooks/useAuth';
+import {useNavigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 
@@ -13,7 +16,10 @@ const LoginForm = () => {
   const [errors, setErrors] = useState({});
 
   const {showLoader, hideLoader} = useLoader();
+  const {login} = useAuth();
   const {addToast} = useToast();
+
+  const history = useNavigate();
 
   useEffect(() => {
     // Validate email
@@ -34,10 +40,33 @@ const LoginForm = () => {
     e.preventDefault();
     showLoader();
 
-    setTimeout(() => {
+    // Validate password
+    if (!email.trim() || !password.trim()) {
       hideLoader();
-      addToast('success', 'You have successfully logged in!');
-    }, 4000);
+      addToast('error', 'Please fill out all the fields!');
+      return;
+    }
+
+    if (Object.values(errors).some((error) => error !== '')) {
+      hideLoader();
+      addToast('error', 'There is an error with at least one field!');
+      return;
+    }
+
+    login(email, password)
+      .then(() => {
+        // Login was successful
+        setEmail('');
+        setPassword('');
+
+        hideLoader();
+        addToast('success', 'You have successfully logged in!');
+        history('/');
+      })
+      .catch((error) => {
+        hideLoader();
+        addToast('error', error.message);
+      });
   };
 
   return (
@@ -68,6 +97,7 @@ const LoginForm = () => {
         />
         <Button type="submit" text="Log in" className="btn-light" />
       </form>
+      <Link to="/reset-pass">Forgot Password?</Link>
     </>
   );
 };
