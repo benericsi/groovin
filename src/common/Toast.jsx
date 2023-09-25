@@ -13,7 +13,7 @@ const Toast = ({id, type, message, onClose}) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       onClose(id);
-    }, 5000);
+    }, 4000);
 
     setTimerId(timer);
 

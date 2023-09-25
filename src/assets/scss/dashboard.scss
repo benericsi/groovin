@@ -1,0 +1,9 @@
+@import 'variables';
+
+.dashboard {
+    background-color: $clr-black;
+    color: $clr-white;
+    height: 100svh;
+    width: 100vw;
+    overflow: hidden;
+}

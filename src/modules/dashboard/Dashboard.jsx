@@ -1,5 +1,8 @@
+import '../../assets/css/dashboard.css';
+
 import Button from '../../common/Button';
 
+import React, {useEffect} from 'react';
 import {useAuth} from '../../hooks/useAuth';
 import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';
@@ -11,6 +14,10 @@ const Dashboard = () => {
   const {showLoader, hideLoader} = useLoader();
 
   const history = useNavigate();
+
+  useEffect(() => {
+    document.title = 'Dashboard | Groovin.';
+  }, []);
 
   const handleLogOut = (e) => {
     e.preventDefault();
@@ -31,9 +38,11 @@ const Dashboard = () => {
 
   return (
     <>
-      <h1>Dashboard</h1>
-      <Button text="Log out" className="btn-dark" onClick={handleLogOut} />
-      <p>{currentUser.email}</p>
+      <section className="dashboard">
+        <h1>Dashboard</h1>
+        <Button text="Log out" className="btn-light" onClick={handleLogOut} />
+        <p>{currentUser.email}</p>
+      </section>
     </>
   );
 };
