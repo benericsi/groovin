@@ -35,7 +35,7 @@
   left: 0;
   height: 2px;
   background-color: #ffffff;
-  animation: toast 5s linear;
+  animation: toast 4s linear;
 }
 @keyframes toast {
   0% {
