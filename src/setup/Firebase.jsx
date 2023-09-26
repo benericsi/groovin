@@ -3,14 +3,14 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 
 const app = firebase.initializeApp({
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-  databaseURL: process.env.FIREBASE_DATABASE_URL,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.FIREBASE_SENDER_ID,
-  appId: process.env.FIREBASE_APP_ID,
-  measurementId: process.env.FIREBASE_MEASUREMENT_ID,
+  apiKey: 'AIzaSyAXJ4Tjxtxt3jP2eSkonOEoA616MR_8tHw',
+  authDomain: 'groovin-1b5d9.firebaseapp.com',
+  databaseURL: 'https://groovin-1b5d9-default-rtdb.europe-west1.firebasedatabase.app',
+  projectId: 'groovin-1b5d9',
+  storageBucket: 'groovin-1b5d9.appspot.com',
+  messagingSenderId: '1047468399023',
+  appId: '1:1047468399023:web:74d48b4bdb1c5e0f0af75a',
+  measurementId: 'G-YLMHGHLM04',
 });
 
 export const auth = app.auth();

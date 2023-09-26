@@ -5,6 +5,8 @@
   justify-content: center;
   height: 100vh;
   background-image: linear-gradient(to right bottom, #ee4540, #510a32);
+  background-size: 400% 400%;
+  animation: bg-animation 30s ease infinite;
 }
 .auth-page .reset-form {
   position: relative;
@@ -136,6 +138,17 @@
   margin-top: 0.5rem;
 }
 
+@keyframes bg-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
 @media only screen and (max-width: 768px) {
   .tabs-header {
     margin-bottom: 0.5rem;

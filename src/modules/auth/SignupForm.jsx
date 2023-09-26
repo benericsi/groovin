@@ -7,6 +7,8 @@ import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';
 import {useNavigate} from 'react-router-dom';
 
+import {db} from '../../setup/Firebase';
+
 const NAME_REGEX = /^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+([ -][A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+)*$/;
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 const PHONE_REGEX = /((?:\+?3|0)6)(?:-|\()?(\d{1,2})(?:-|\))?(\d{3})-?(\d{3,4})/;
@@ -156,8 +158,19 @@ const SignupForm = () => {
     }
 
     signup(email, password)
-      .then((cred) => {
+      .then(async (cred) => {
         // Signup was successful
+
+        // Add user to the database
+        await db.collection('users').doc(email).set({
+          uid: cred.user.uid,
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          phoneNumber: phoneNumber,
+          photoURL: 'default',
+        });
+
         setEmail('');
         setPassword('');
         setPasswordConfirmation('');
