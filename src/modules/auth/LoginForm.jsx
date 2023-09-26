@@ -16,7 +16,7 @@ const LoginForm = () => {
   const [errors, setErrors] = useState({});
 
   const {showLoader, hideLoader} = useLoader();
-  const {login} = useAuth();
+  const {login, loginWithGoogle} = useAuth();
   const {addToast} = useToast();
 
   const history = useNavigate();
@@ -65,6 +65,32 @@ const LoginForm = () => {
       })
       .catch((error) => {
         hideLoader();
+        if (error.code === 'auth/user-not-found') {
+          addToast('error', 'There is no user with this e-mail.');
+        } else if (error.code === 'auth/wrong-password') {
+          addToast('error', 'Wrong password.');
+        } else if (error.code === 'auth/invalid-login-credentials') {
+          addToast('error', 'Invalid login credentials.');
+        } else {
+          addToast('error', error.message);
+        }
+      });
+  };
+
+  const handleLoginWithGoogle = (e) => {
+    e.preventDefault();
+    showLoader();
+
+    loginWithGoogle()
+      .then((cred) => {
+        console.log(cred);
+        // Signup was successful
+        hideLoader();
+        addToast('success', 'You have successfully signed up!');
+        history('/');
+      })
+      .catch((error) => {
+        hideLoader();
         addToast('error', error.message);
       });
   };
@@ -96,6 +122,7 @@ const LoginForm = () => {
           error={errors.password}
         />
         <Button type="submit" text="Log in" className="btn-light" />
+        <Button type="button" text="Log in with Google" className="btn-light" onClick={handleLoginWithGoogle} />
       </form>
       <Link to="/reset-pass">Forgot Password?</Link>
     </>
