@@ -156,7 +156,7 @@ const SignupForm = () => {
     }
 
     signup(email, password)
-      .then(() => {
+      .then((cred) => {
         // Signup was successful
         setEmail('');
         setPassword('');
@@ -179,6 +179,8 @@ const SignupForm = () => {
           addToast('error', 'Email/password accounts are not enabled.');
         } else if (error.code === 'auth/weak-password') {
           addToast('error', 'The password is not strong enough.');
+        } else {
+          addToast('error', error.message);
         }
       });
   };
