@@ -2,6 +2,8 @@ import '../../assets/css/dashboard.css';
 
 import Button from '../../common/Button';
 
+import Nav from '../navigation/Nav';
+
 import React, {useEffect} from 'react';
 import {useAuth} from '../../hooks/useAuth';
 import {useToast} from '../../hooks/useToast';
@@ -39,6 +41,7 @@ const Dashboard = () => {
   return (
     <>
       <section className="dashboard">
+        <Nav />
         <h1>Dashboard</h1>
         <Button text="Log out" className="btn-light" onClick={handleLogOut} />
         <p>{currentUser.email}</p>

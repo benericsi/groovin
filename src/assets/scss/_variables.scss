@@ -2,7 +2,6 @@
 $clr-black: #000000;
 $clr-white: #ffffff;
 
-
 $clr-grey-100: #f8f8f8;
 $clr-grey-200: #ebebeb;
 $clr-grey-300: #d9d9d9;
@@ -42,6 +41,12 @@ $clr-yellow-light: #FFD666;
 $clr-yellow: #FFAB00;
 $clr-yellow-dark: #B76E00;
 $clr-yellow-darker: #7A4100;
+
+//SIZES
+$min-left-nav-width: 10rem;
+$left-nav-width: 18.75rem;
+$max-left-nav-width: 25rem;
+$panel-gap: .5rem;
 
 //FONTS
 $font-display: 'Staatliches', cursive;
