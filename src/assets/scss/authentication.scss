@@ -7,6 +7,8 @@
     justify-content: center;
     height: 100vh;
     background-image: linear-gradient(to right bottom, $clr-primary-light, $clr-primary-darker);
+    background-size: 400% 400%;
+    animation: bg-animation 30s ease infinite;
 
     .reset-form {
         position: relative;
@@ -161,6 +163,21 @@
                 }
             }
         }
+    }
+}
+
+
+@keyframes bg-animation {
+    0% {
+        background-position: 0% 50%
+    }
+
+    50% {
+        background-position: 100% 50%
+    }
+
+    100% {
+        background-position: 0% 50%
     }
 }
 

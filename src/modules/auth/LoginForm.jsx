@@ -7,6 +7,7 @@ import {useLoader} from '../../hooks/useLoader';
 import {useAuth} from '../../hooks/useAuth';
 import {useNavigate} from 'react-router-dom';
 import {Link} from 'react-router-dom';
+import {db} from '../../setup/Firebase';
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 
@@ -56,6 +57,7 @@ const LoginForm = () => {
     login(email, password)
       .then(() => {
         // Login was successful
+
         setEmail('');
         setPassword('');
 
@@ -82,8 +84,15 @@ const LoginForm = () => {
     showLoader();
 
     loginWithGoogle()
-      .then((cred) => {
-        console.log(cred);
+      .then(async (cred) => {
+        console.log(cred.user);
+        await db.collection('users').doc(cred.user.email).update({
+          uid: cred.user.uid,
+          firstName: cred.additionalUserInfo.profile.given_name,
+          lastName: cred.additionalUserInfo.profile.family_name,
+          email: cred.user.email,
+          photoURL: cred.user.photoURL,
+        });
         // Signup was successful
         hideLoader();
         addToast('success', 'You have successfully signed up!');
