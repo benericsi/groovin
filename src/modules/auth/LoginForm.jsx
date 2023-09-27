@@ -95,7 +95,7 @@ const LoginForm = () => {
         });
         // Signup was successful
         hideLoader();
-        addToast('success', 'You have successfully signed up!');
+        addToast('success', 'You have successfully signed in!');
         history('/');
       })
       .catch((error) => {
