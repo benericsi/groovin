@@ -1,0 +1,88 @@
+@import 'variables';
+
+.profile-photo {
+    min-height: 14.5rem;
+    min-width: 14.5rem;
+    max-height: 14.5rem;
+    max-width: 14.5rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 2rem 0 rgba(0, 0, 0, 0.75);
+
+    &:hover {
+        .profile-photo-edit {
+            transform: translateX(0);
+        }
+    }
+
+    .profile-photo-edit {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        row-gap: 1rem;
+        align-items: center;
+        transform: translateX(100%);
+        cursor: pointer;
+
+        img {
+            height: 2rem;
+            width: 2rem;
+            object-fit: cover;
+            filter: invert(1);
+        }
+
+        span {
+            font-size: 1.2rem;
+            color: $clr-white;
+            font-weight: bold;
+        }
+    }
+
+    button {
+        all: unset;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+
+            &.default {
+                object-fit: none;
+                filter: invert(0);
+            }
+        }
+    }
+}
+
+.profile-info {
+    height: 14.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    h1 {
+        font-size: 6rem;
+        font-weight: bold;
+    }
+
+    span:first-child {
+        font-style: italic;
+        text-transform: uppercase;
+    }
+}

@@ -4,7 +4,6 @@ import Account from '../account/Account';
 
 import React from 'react';
 import {useParams} from 'react-router-dom';
-import CommonHeader from '../../common/CommonHeader';
 
 const Main = () => {
   const {page, uid} = useParams();

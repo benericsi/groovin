@@ -1,5 +1,8 @@
 import '../../assets/css/account.css';
 
+import editPen from '../../assets/icons/pen-solid.svg';
+import profile from '../../assets/icons/user-solid.svg';
+
 import {useEffect, useState} from 'react';
 import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';
@@ -36,8 +39,22 @@ const Account = ({uid}) => {
 
   return (
     <>
-      <CommonHeader></CommonHeader>
-      <h1>Account</h1>
+      <CommonHeader>
+        <div className="profile-photo">
+          <button>
+            <img src={userData.photoURL == 'default' ? profile : userData.photoURL} className={userData.photoURL == 'default' ? 'default' : ''} />
+          </button>
+          <div className="profile-photo-edit">
+            <img src={editPen} alt="" />
+            <span>Fénykép választása</span>
+          </div>
+        </div>
+        <div className="profile-info">
+          <span className="tpye">Profil </span>
+          <h1 className="name">{userData.firstName + ' ' + userData.lastName}</h1>
+          <span className="email">{userData.email} - 28 nyilvános műsorlista - 22 követő - 173 követés</span>
+        </div>
+      </CommonHeader>
     </>
   );
 };
