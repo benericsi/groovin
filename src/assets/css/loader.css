@@ -20,7 +20,7 @@
 .loader-container .loader::before {
   content: "";
   position: absolute;
-  background-color: #FF1F32;
+  background-image: linear-gradient(to right, #c72c41, #801336);
   top: 0;
   left: 0;
   width: 0%;

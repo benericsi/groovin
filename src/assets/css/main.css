@@ -4,4 +4,49 @@
   position: relative;
   overflow: hidden;
   border-radius: 0.5rem;
+}
+.main-container .main-header {
+  position: sticky;
+  background-image: linear-gradient(to right bottom, #ee4540, #510a32);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4rem;
+  padding: 1rem;
+  display: flex;
+  z-index: 10;
+  justify-content: space-between;
+}
+.main-container .main-header .header-interactions {
+  height: 100%;
+  display: flex;
+  gap: 0.5rem;
+}
+.main-container .main-header .header-interactions .header-interaction-item {
+  height: 100%;
+  width: 2rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.main-container .main-header .header-interactions .header-interaction-item:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  transform: scale(1.075);
+}
+.main-container .main-header .header-interactions .header-interaction-item:hover .header-interaction-img {
+  opacity: 1;
+}
+.main-container .main-header .header-interactions .header-interaction-item .header-interaction-img {
+  height: 1rem;
+  width: 1rem;
+  filter: invert(1);
+  opacity: 0.5;
+  transition: all 0.2s ease-in-out;
+}
+.main-container .main-header .header-interactions .header-interaction-item .header-interaction-img.active {
+  opacity: 1;
 }/*# sourceMappingURL=main.css.map */

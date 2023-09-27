@@ -22,8 +22,8 @@
         &::before {
             content: "";
             position: absolute;
-            background-color: $clr-red;
-            //background-image: linear-gradient(to right, $clr-primary, $clr-primary-dark);
+            //background-color: $clr-red;
+            background-image: linear-gradient(to right, $clr-primary, $clr-primary-dark);
             top: 0;
             left: 0;
             width: 0%;

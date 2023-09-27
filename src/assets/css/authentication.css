@@ -5,7 +5,7 @@
   justify-content: center;
   height: 100vh;
   background-image: linear-gradient(to right bottom, #ee4540, #510a32);
-  background-size: 400% 400%;
+  background-size: 200% 200%;
   animation: bg-animation 30s ease infinite;
 }
 .auth-page .reset-form {
