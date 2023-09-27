@@ -21,6 +21,10 @@ const App = () => {
           <ToastProvider>
             <AuthProvider>
               <Routes>
+                <Route exact path="/:page" element={<PrivateRoute />}>
+                  <Route exact path="/:page" element={<Dashboard />} />
+                  <Route path="/:page/:uid" element={<Dashboard />} />
+                </Route>
                 <Route exact path="/" element={<PrivateRoute />}>
                   <Route exact path="/" element={<Dashboard />} />
                 </Route>

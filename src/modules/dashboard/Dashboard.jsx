@@ -12,10 +12,10 @@ const Dashboard = () => {
 
   return (
     <>
-      <section className="dashboard">
+      <div className="dashboard">
         <Nav />
         <Main />
-      </section>
+      </div>
     </>
   );
 };

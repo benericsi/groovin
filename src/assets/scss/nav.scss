@@ -1,7 +1,7 @@
 @import 'variables';
 
 .nav-container {
-    height: 100%;
+    //height: calc(100% - 4.5rem); player
     background-color: $clr-black;
     position: relative;
     top: 0;
@@ -27,7 +27,6 @@
         width: 100%;
         height: fit-content;
         border-radius: $border-radius;
-        overflow: hidden;
 
         .nav-list {
             list-style-type: none;

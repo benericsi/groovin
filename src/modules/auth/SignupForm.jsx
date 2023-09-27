@@ -180,7 +180,7 @@ const SignupForm = () => {
 
         hideLoader();
         addToast('success', 'You have successfully signed up!');
-        history('/');
+        history('/home');
       })
       .catch((error) => {
         hideLoader(); // Ensure loader is hidden even in case of an error

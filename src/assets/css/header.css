@@ -1,0 +1,15 @@
+.common-header {
+  position: relative;
+  height: 30vh;
+  min-height: 21.25rem;
+  max-height: 25rem;
+  width: 100%;
+}
+.common-header::after {
+  content: "";
+  position: absolute;
+  height: calc(100% + 4rem);
+  width: 100%;
+  background-image: linear-gradient(to right bottom, #ee4540, #510a32);
+  top: -4rem;
+}/*# sourceMappingURL=header.css.map */

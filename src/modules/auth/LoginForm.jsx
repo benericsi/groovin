@@ -63,7 +63,7 @@ const LoginForm = () => {
 
         hideLoader();
         addToast('success', 'You have successfully logged in!');
-        history('/');
+        history('/home');
       })
       .catch((error) => {
         hideLoader();
@@ -85,7 +85,7 @@ const LoginForm = () => {
 
     loginWithGoogle()
       .then(async (cred) => {
-        console.log(cred.user);
+        //console.log(cred.user);
         await db.collection('users').doc(cred.user.email).update({
           uid: cred.user.uid,
           firstName: cred.additionalUserInfo.profile.given_name,
@@ -96,7 +96,7 @@ const LoginForm = () => {
         // Signup was successful
         hideLoader();
         addToast('success', 'You have successfully signed in!');
-        history('/');
+        history('/home');
       })
       .catch((error) => {
         hideLoader();

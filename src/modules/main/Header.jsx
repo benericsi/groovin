@@ -5,16 +5,41 @@ import notifiation from '../../assets/icons/bell-solid.svg';
 import profile from '../../assets/icons/user-solid.svg';
 import logOut from '../../assets/icons/arrow-right-from-bracket-solid.svg';
 
-import {useNavigate} from 'react-router-dom';
 import {useAuth} from '../../hooks/useAuth';
 import {useLoader} from '../../hooks/useLoader';
 import {useToast} from '../../hooks/useToast';
+
+import {NavLink} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
+import {useState, useEffect} from 'react';
+import {db} from '../../setup/Firebase';
 
 const Header = () => {
   const {currentUser, logout} = useAuth();
   const {showLoader, hideLoader} = useLoader();
   const {addToast} = useToast();
   const navigate = useNavigate();
+  const [profileImage, setProfileImage] = useState('default');
+
+  const accountLink = currentUser ? `/account/${currentUser.uid}` : '/auth#login';
+
+  useEffect(() => {
+    // Fetch the profile image data asynchronously
+    const fetchData = async () => {
+      try {
+        const querySnapshot = await db.collection('users').get();
+        querySnapshot.forEach((doc) => {
+          if (doc.data().email === currentUser.email) {
+            setProfileImage(doc.data().photoURL);
+          }
+        });
+      } catch (error) {
+        addToast('error', error.message);
+      }
+    };
+
+    fetchData();
+  }, [currentUser.email]);
 
   const handleLogOut = (e) => {
     e.preventDefault();
@@ -32,28 +57,36 @@ const Header = () => {
       });
   };
 
+  const goBack = () => {
+    navigate(-1);
+  };
+
+  const goForward = () => {
+    navigate(1);
+  };
+
   return (
     <header className="main-header">
       <div className="header-interactions">
-        <div className="header-interaction-item">
+        <div className="header-interaction-item" onClick={goBack}>
           <img src={back} alt="Notifications" className="header-interaction-img" />
         </div>
-        <div className="header-interaction-item">
+        <div className="header-interaction-item" onClick={goForward}>
           <img src={forward} alt="Messages" className="header-interaction-img" />
         </div>
       </div>
 
       <div className="header-interactions">
-        <div className="header-interaction-item" title="Notifications">
+        <NavLink to="/notifications" className="header-interaction-item" title="Notifications" activeClassName="active">
           <img src={notifiation} alt="Notifications" className="header-interaction-img" />
-        </div>
-        <div className="header-interaction-item" title="Messages">
+        </NavLink>
+        <NavLink to="/messages" className="header-interaction-item" title="Messages" activeClassName="active">
           <img src={message} alt="Messages" className="header-interaction-img" />
-        </div>
-        <div className="header-interaction-item" title="Profile">
-          <img src={profile} alt="Profile Pic" className="header-interaction-img" />
-        </div>
-        <div className="header-interaction-item" onClick={handleLogOut} title="Log Out">
+        </NavLink>
+        <NavLink to={accountLink} className="header-interaction-item" title="Profile" activeClassName="active">
+          <img src={profileImage == 'default' ? profile : profileImage} alt="prof" className={`header-interaction-img ${profileImage != 'default' ? 'has-img' : ''}`} />
+        </NavLink>
+        <div className="header-interaction-item " onClick={handleLogOut} title="Log Out">
           <img src={logOut} alt="Log Out" className="header-interaction-img" />
         </div>
       </div>
