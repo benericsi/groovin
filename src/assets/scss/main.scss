@@ -1,0 +1,9 @@
+@import 'variables';
+
+.main-container {
+    background-color: $clr-grey-900;
+    flex-grow: 1;
+    position: relative;
+    overflow: hidden;
+    border-radius: $border-radius;
+}

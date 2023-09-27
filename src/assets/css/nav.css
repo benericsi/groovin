@@ -4,6 +4,9 @@
   position: relative;
   top: 0;
   left: 0;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
 }
 .nav-container .resize-handle {
   position: absolute;
@@ -19,17 +22,17 @@
 .nav-container .nav-header {
   background-color: #121212;
   width: 100%;
-  height: auto;
-  margin-bottom: 0.5rem;
+  height: -moz-fit-content;
+  height: fit-content;
   border-radius: 0.5rem;
   overflow: hidden;
 }
-.nav-container .nav-header ul {
+.nav-container .nav-header .nav-list {
   list-style-type: none;
   width: 100%;
   padding: 0.5rem 0.75rem;
 }
-.nav-container .nav-header ul li {
+.nav-container .nav-header .nav-list .nav-list-item {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -37,10 +40,7 @@
   min-width: 3rem;
   min-height: 3rem;
 }
-.nav-container .nav-header ul li:last-child {
-  border-bottom: none;
-}
-.nav-container .nav-header ul li a {
+.nav-container .nav-header .nav-list .nav-list-item .nav-link {
   color: #ffffff;
   text-decoration: none;
   transition: all 0.2s ease-in-out;
@@ -51,18 +51,42 @@
   gap: 1.5rem;
   opacity: 0.4;
 }
-.nav-container .nav-header ul li a:hover, .nav-container .nav-header ul li a.active {
+.nav-container .nav-header .nav-list .nav-list-item .nav-link.a-brand {
+  opacity: 1;
+  cursor: default;
+}
+.nav-container .nav-header .nav-list .nav-list-item .nav-link.a-brand .nav-text {
+  font-family: "Staatliches", cursive;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+  font-weight: 600;
+  background-image: linear-gradient(to right bottom, #ee4540, #510a32);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+.nav-container .nav-header .nav-list .nav-list-item .nav-link.a-brand .nav-svg {
+  filter: invert(27%) sepia(52%) saturate(3317%) hue-rotate(333deg) brightness(80%) contrast(92%);
+}
+.nav-container .nav-header .nav-list .nav-list-item .nav-link:hover, .nav-container .nav-header .nav-list .nav-list-item .nav-link.active {
   opacity: 1;
 }
-.nav-container .nav-header ul li a span {
+.nav-container .nav-header .nav-list .nav-list-item .nav-link .nav-text {
   font-family: "Oswald", sans-serif;
   font-weight: 600;
   letter-spacing: 1px;
   font-size: 1rem;
   line-height: 1.6;
 }
-.nav-container .nav-header ul li a img {
+.nav-container .nav-header .nav-list .nav-list-item .nav-link .nav-svg {
   width: 1.5rem;
   height: 1.5rem;
   filter: invert(1);
+}
+.nav-container .nav-collection {
+  width: 100%;
+  flex-grow: 1;
+  overflow-y: auto;
+  border-radius: 0.5rem;
+  background-color: #121212;
 }/*# sourceMappingURL=nav.css.map */
