@@ -5,4 +5,7 @@
   width: 100vw;
   overflow: hidden;
   padding: 0.5rem;
+  display: flex;
+  -moz-column-gap: 0.5rem;
+       column-gap: 0.5rem;
 }/*# sourceMappingURL=dashboard.css.map */

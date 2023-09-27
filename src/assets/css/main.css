@@ -1,0 +1,7 @@
+.main-container {
+  background-color: #121212;
+  flex-grow: 1;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}/*# sourceMappingURL=main.css.map */

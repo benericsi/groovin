@@ -7,4 +7,6 @@
     width: 100vw;
     overflow: hidden;
     padding: $panel-gap ;
+    display: flex;
+    column-gap: .5rem;
 }

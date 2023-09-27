@@ -2,6 +2,7 @@ import '../../assets/css/nav.css';
 
 import React, {useState} from 'react';
 import NavHeader from './NavHeader';
+import Collection from './Collection';
 
 const MIN_WIDTH = 72;
 const JUMP_AT = 200;
@@ -47,6 +48,7 @@ const Nav = () => {
     <nav className={`nav-container ${isResizing ? ' resizing' : ''}`} style={{width: `${navbarWidth}px`}}>
       <div className="resize-handle" onMouseDown={handleMouseDown} onDoubleClick={resetNavbarWidth} />
       <NavHeader navbarWidth={navbarWidth} />
+      <Collection navbarWidth={navbarWidth} />
     </nav>
   );
 };

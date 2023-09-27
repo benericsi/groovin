@@ -7,23 +7,23 @@ const NavHeader = ({navbarWidth}) => {
 
   return (
     <header className="nav-header">
-      <ul>
-        <li>
-          <a href="">
-            <img src={logo} alt="Groovin." />
-            {!isWidthLessThan && <span>Groovin.</span>}
+      <ul className="nav-list">
+        <li className="nav-list-item">
+          <a href="" className="a-brand nav-link">
+            <img src={logo} alt="Groovin." className="nav-svg" />
+            {!isWidthLessThan && <span className="nav-text">Groovin.</span>}
           </a>
         </li>
-        <li>
-          <a href="">
-            <img src={home} alt="Home" />
-            {!isWidthLessThan && <span>Home</span>}
+        <li className="nav-list-item">
+          <a href="" className="nav-link">
+            <img src={home} alt="Home" className="nav-svg" />
+            {!isWidthLessThan && <span className="nav-text">Home</span>}
           </a>
         </li>
-        <li>
-          <a href="">
-            <img src={search} alt="Search" />
-            {!isWidthLessThan && <span>Search</span>}
+        <li className="nav-list-item">
+          <a href="" className="nav-link">
+            <img src={search} alt="Search" className="nav-svg" />
+            {!isWidthLessThan && <span className="nav-text">Search</span>}
           </a>
         </li>
       </ul>
