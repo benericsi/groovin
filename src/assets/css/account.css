@@ -1,1 +1,78 @@
-/*# sourceMappingURL=account.css.map */
+.profile-photo {
+  min-height: 14.5rem;
+  min-width: 14.5rem;
+  max-height: 14.5rem;
+  max-width: 14.5rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 0 2rem 0 rgba(0, 0, 0, 0.75);
+}
+.profile-photo:hover .profile-photo-edit {
+  transform: translateX(0);
+}
+.profile-photo .profile-photo-edit {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: 1rem;
+  align-items: center;
+  transform: translateX(100%);
+  cursor: pointer;
+}
+.profile-photo .profile-photo-edit img {
+  height: 2rem;
+  width: 2rem;
+  -o-object-fit: cover;
+     object-fit: cover;
+  filter: invert(1);
+}
+.profile-photo .profile-photo-edit span {
+  font-size: 1.2rem;
+  color: #ffffff;
+  font-weight: bold;
+}
+.profile-photo button {
+  all: unset;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.profile-photo button img {
+  height: 100%;
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.profile-photo button img.default {
+  -o-object-fit: none;
+     object-fit: none;
+  filter: invert(0);
+}
+
+.profile-info {
+  height: 14.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.profile-info h1 {
+  font-size: 6rem;
+  font-weight: bold;
+}
+.profile-info span:first-child {
+  font-style: italic;
+  text-transform: uppercase;
+}/*# sourceMappingURL=account.css.map */

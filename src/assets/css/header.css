@@ -1,9 +1,11 @@
 .common-header {
   position: relative;
-  height: 30vh;
-  min-height: 21.25rem;
-  max-height: 25rem;
   width: 100%;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  z-index: 1;
 }
 .common-header::after {
   content: "";
@@ -12,4 +14,6 @@
   width: 100%;
   background-image: linear-gradient(to right bottom, #ee4540, #510a32);
   top: -4rem;
+  left: 0;
+  z-index: -1;
 }/*# sourceMappingURL=header.css.map */

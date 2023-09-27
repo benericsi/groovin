@@ -42,13 +42,11 @@ a {
 
 @media only screen and (max-width: 768px) {
   html {
-    font-size: 0.9rem;
     line-height: 1.2rem;
   }
 }
 @media only screen and (max-width: 500px) {
   html {
-    font-size: 0.75rem;
     line-height: 1rem;
   }
 }/*# sourceMappingURL=globals.css.map */
