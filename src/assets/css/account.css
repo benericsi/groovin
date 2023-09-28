@@ -56,9 +56,9 @@
      object-fit: cover;
 }
 .profile-photo button img.default {
-  -o-object-fit: none;
-     object-fit: none;
-  filter: invert(0);
+  -o-object-fit: none !important;
+     object-fit: none !important;
+  filter: invert(1);
 }
 
 .profile-info {

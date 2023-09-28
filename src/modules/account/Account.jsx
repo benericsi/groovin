@@ -59,7 +59,7 @@ const Account = ({uid}) => {
         .collection('users')
         .doc(userData.email)
         .update({
-          photoURL: inputPhoto,
+          photoURL: inputPhoto == '' ? 'default' : inputPhoto,
           firstName: inputName.split(' ')[0],
           lastName: inputName.split(' ')[1],
         });

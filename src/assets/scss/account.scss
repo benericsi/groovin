@@ -62,8 +62,8 @@
             object-fit: cover;
 
             &.default {
-                object-fit: none;
-                filter: invert(0);
+                object-fit: none !important;
+                filter: invert(1);
             }
         }
     }
