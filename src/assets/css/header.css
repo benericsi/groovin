@@ -13,6 +13,8 @@
   height: calc(100% + 4rem);
   width: 100%;
   background-image: linear-gradient(to right bottom, #ee4540, #510a32);
+  background-size: 400% 400%;
+  animation: bg-animation 30s ease infinite;
   top: -4rem;
   left: 0;
   z-index: -1;
