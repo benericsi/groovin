@@ -19,6 +19,8 @@ const Main = () => {
         return <h1>Notifications</h1>;
       case 'messages':
         return <h1>Messages</h1>;
+      case 'friends':
+        return <h1>Friends</h1>;
       case 'account':
         return <Account uid={uid} />;
       default:
