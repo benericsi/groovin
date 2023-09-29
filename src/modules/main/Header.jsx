@@ -2,7 +2,6 @@ import back from '../../assets/icons/angle-left-solid.svg';
 import forward from '../../assets/icons/angle-right-solid.svg';
 import message from '../../assets/icons/envelope-solid.svg';
 import notifiation from '../../assets/icons/bell-solid.svg';
-import friends from '../../assets/icons/users-solid.svg';
 import profile from '../../assets/icons/user-solid.svg';
 import logOut from '../../assets/icons/arrow-right-from-bracket-solid.svg';
 
@@ -83,9 +82,6 @@ const Header = () => {
         </NavLink>
         <NavLink to="/messages" className="header-interaction-item" title="Messages" activeClassName="active">
           <img src={message} alt="Messages" className="header-interaction-img" />
-        </NavLink>
-        <NavLink to="/friends" className="header-interaction-item" title="Friends" activeClassName="active">
-          <img src={friends} alt="Friends" className="header-interaction-img" />
         </NavLink>
         <NavLink to={accountLink} className="header-interaction-item" title="Profile" activeClassName="active">
           <img src={profileImage == 'default' ? profile : profileImage} alt="prof" className={`header-interaction-img ${profileImage != 'default' ? 'has-img' : ''}`} />

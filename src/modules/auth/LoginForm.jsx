@@ -93,6 +93,7 @@ const LoginForm = () => {
             lastName: cred.additionalUserInfo.profile.family_name,
             email: cred.user.email,
             photoURL: cred.user.photoURL,
+            role: 'profile',
           });
         }
 
