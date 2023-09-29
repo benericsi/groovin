@@ -169,6 +169,7 @@ const SignupForm = () => {
           email: email,
           phoneNumber: phoneNumber,
           photoURL: 'default',
+          role: 'profile',
         });
 
         setEmail('');

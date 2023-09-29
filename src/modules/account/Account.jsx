@@ -7,13 +7,17 @@ import {useEffect, useState} from 'react';
 import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';
 import {db} from '../../setup/Firebase';
+import {Link} from 'react-router-dom';
 
 import CommonHeader from '../../common/CommonHeader';
 import PopUp from '../../common/PopUp';
 import Input from '../../common/Input';
 import Button from '../../common/Button';
+import {useAuth} from '../../hooks/useAuth';
 
 const Account = ({uid}) => {
+  const {currentUser} = useAuth();
+
   const {showLoader, hideLoader} = useLoader();
   const {addToast} = useToast();
 
@@ -22,6 +26,8 @@ const Account = ({uid}) => {
 
   const [inputPhoto, setInputPhoto] = useState();
   const [inputName, setInputName] = useState();
+
+  const isOwnProfile = currentUser.uid === uid;
 
   useEffect(() => {
     showLoader();
@@ -32,7 +38,6 @@ const Account = ({uid}) => {
         querySnapshot.forEach((doc) => {
           if (doc.data().uid === uid) {
             setUserData(doc.data());
-
             setInputPhoto(doc.data().photoURL);
             setInputName(doc.data().firstName + ' ' + doc.data().lastName);
             hideLoader();
@@ -45,7 +50,7 @@ const Account = ({uid}) => {
     };
 
     fetchUserData();
-  }, []);
+  }, [uid]);
 
   const togglePopUp = () => {
     setIsPopUpActive(!isPopUpActive);
@@ -76,41 +81,47 @@ const Account = ({uid}) => {
 
   return (
     <>
-      <PopUp isPopUpActive={isPopUpActive} onClose={togglePopUp}>
-        <Input
-          type="text"
-          value={inputName}
-          label="Full Name"
-          onChange={(value) => {
-            setInputName(value);
-          }}
-          className="input-field"
-        />
-        <Input
-          type="text"
-          value={inputPhoto}
-          label="Photo URL"
-          onChange={(value) => {
-            setInputPhoto(value);
-          }}
-          className="input-field"
-        />
-        <Button type="button" text="Save" className="btn-dark" onClick={handleModifyUser} />
-      </PopUp>
+      {isOwnProfile && (
+        <PopUp isPopUpActive={isPopUpActive} onClose={togglePopUp}>
+          <Input
+            type="text"
+            value={inputName}
+            label="Full Name"
+            onChange={(value) => {
+              setInputName(value);
+            }}
+            className="input-field"
+          />
+          <Input
+            type="text"
+            value={inputPhoto}
+            label="Photo URL"
+            onChange={(value) => {
+              setInputPhoto(value);
+            }}
+            className="input-field"
+          />
+          <Button type="button" text="Save" className="btn-dark" onClick={handleModifyUser} />
+        </PopUp>
+      )}
       <CommonHeader>
         <div className="profile-photo">
           <button>
             <img src={userData.photoURL == 'default' ? profile : userData.photoURL} className={userData.photoURL == 'default' ? 'default' : ''} />
           </button>
-          <div className="profile-photo-edit" onClick={togglePopUp}>
-            <img src={editPen} alt="" />
-            <span>Fénykép választása</span>
-          </div>
+          {isOwnProfile && (
+            <div className="profile-photo-edit" onClick={togglePopUp}>
+              <img src={editPen} alt="" />
+              <span>Fénykép választása</span>
+            </div>
+          )}
         </div>
         <div className="profile-info">
-          <span className="tpye">Profil </span>
+          <span className="role">{userData.role}</span>
           <h1 className="name">{userData.firstName + ' ' + userData.lastName}</h1>
-          <span className="email">{userData.email} - 28 nyilvános műsorlista - 22 követő - 173 követés</span>
+          <span className="email">
+            28 public playlist - <Link to={`/account/${uid}/followers`}>22 followers</Link> - <Link to={`/account/${uid}/following`}> 173 following</Link>
+          </span>
         </div>
       </CommonHeader>
     </>

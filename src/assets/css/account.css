@@ -9,7 +9,7 @@
   align-items: center;
   overflow: hidden;
   position: relative;
-  box-shadow: 0 0 2rem 0 rgba(0, 0, 0, 0.75);
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.5);
 }
 .profile-photo:hover .profile-photo-edit {
   transform: translateX(0);
@@ -34,6 +34,8 @@
   width: 2rem;
   -o-object-fit: cover;
      object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center;
   filter: invert(1);
 }
 .profile-photo .profile-photo-edit span {
@@ -55,7 +57,13 @@
   -o-object-fit: cover;
      object-fit: cover;
 }
-.profile-photo button img.default {
+.profile-photo button img img {
+  height: 100%;
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.profile-photo button img img.default {
   -o-object-fit: none !important;
      object-fit: none !important;
   filter: invert(1);
@@ -67,12 +75,38 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow: hidden;
 }
 .profile-info h1 {
   font-size: 6rem;
   font-weight: bold;
 }
-.profile-info span:first-child {
+.profile-info .role {
   font-style: italic;
   text-transform: uppercase;
+}
+.profile-info span a:hover {
+  text-decoration: underline;
+}
+
+.list-section {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 2rem 1.5rem;
+}
+.list-section h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+.list-section .list-container {
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  grid-template-rows: 1fr;
+  gap: 1.5rem;
 }/*# sourceMappingURL=account.css.map */
