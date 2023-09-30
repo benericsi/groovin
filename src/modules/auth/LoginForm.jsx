@@ -94,6 +94,14 @@ const LoginForm = () => {
             photoURL: cred.user.photoURL,
             role: 'profile',
           });
+
+          await db.collection('followers').doc(cred.user.uid).set({
+            followers: [],
+          });
+
+          await db.collection('follows').doc(cred.user.uid).set({
+            following: [],
+          });
         }
 
         // Signup was successful

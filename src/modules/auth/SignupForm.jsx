@@ -171,6 +171,14 @@ const SignupForm = () => {
           role: 'profile',
         });
 
+        await db.collection('followers').doc(cred.user.uid).set({
+          followers: [],
+        });
+
+        await db.collection('follows').doc(cred.user.uid).set({
+          following: [],
+        });
+
         setEmail('');
         setPassword('');
         setPasswordConfirmation('');
