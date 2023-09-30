@@ -60,6 +60,9 @@
   -o-object-position: center center;
      object-position: center center;
 }
+.profile-photo button img.default {
+  filter: invert(1);
+}
 
 .profile-info {
   height: 14.5rem;
