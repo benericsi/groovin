@@ -45,6 +45,10 @@
         a {
             margin-top: .5rem;
             text-align: center;
+
+            &:hover {
+                text-decoration: underline;
+            }
         }
     }
 

@@ -41,6 +41,9 @@
   margin-top: 0.5rem;
   text-align: center;
 }
+.auth-page .reset-form a:hover {
+  text-decoration: underline;
+}
 .auth-page .auth-container {
   position: relative;
   background-color: #121212;

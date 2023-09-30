@@ -1,5 +1,6 @@
 import '../../assets/css/main.css';
 import Header from './Header';
+import Notifications from '../notifications/Notifications';
 import Account from '../account/Account';
 import Followers from '../account/Followers';
 import Following from '../account/Following';
@@ -14,7 +15,7 @@ const Main = () => {
   const routeComponents = {
     home: <h1>Home</h1>,
     search: <h1>Search</h1>,
-    notifications: <h1>Notifications</h1>,
+    notifications: <Notifications />,
     messages: <h1>Messages</h1>,
     account: <Account uid={uid} />,
     followers: <Followers uid={uid} />,

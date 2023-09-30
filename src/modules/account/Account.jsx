@@ -156,6 +156,20 @@ const Account = ({uid}) => {
             following: firebase.firestore.FieldValue.arrayRemove(userToFollowId),
           });
 
+        //send notification
+        await db
+          .collection('notifications')
+          .doc(userToFollowId)
+          .collection('userNotifications')
+          .add({
+            type: 'follow',
+            message: `${currentUser.displayName} stopped following you.`,
+            sender: currentUserId,
+            photoURL: currentUser.photoURL,
+            name: currentUser.displayName,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          });
+
         setIsFollowed(false);
         hideLoader();
       } else {
@@ -171,6 +185,20 @@ const Account = ({uid}) => {
           .doc(currentUserId)
           .update({
             following: firebase.firestore.FieldValue.arrayUnion(userToFollowId),
+          });
+
+        //send notification
+        await db
+          .collection('notifications')
+          .doc(userToFollowId)
+          .collection('userNotifications')
+          .add({
+            type: 'follow',
+            message: `${currentUser.displayName} started following you.`,
+            sender: currentUserId,
+            photoURL: currentUser.photoURL,
+            name: currentUser.displayName,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           });
 
         setIsFollowed(true);
@@ -215,7 +243,7 @@ const Account = ({uid}) => {
           {isOwnProfile && (
             <div className="profile-photo-edit" onClick={togglePopUp}>
               <img src={editPen} alt="" />
-              <span>Fénykép választása</span>
+              <span>Change picture</span>
             </div>
           )}
         </div>
@@ -229,10 +257,9 @@ const Account = ({uid}) => {
       </CommonHeader>
       <CommonBody>
         {!isOwnProfile ? (
-          <div className="follow-btn-container">
-            <button className="btn-follow" onClick={handleFollow(currentUser.uid, uid, isFollowed)}>
-              {isFollowed ? 'Unfollow' : 'Follow'}
-            </button>
+          <div className="btn-user-action-container">
+            <Button type="button" text={isFollowed ? 'Unfollow' : 'Follow'} className="btn-light btn-user-action" onClick={handleFollow(currentUser.uid, uid, isFollowed)} />
+            <Button type="button" text="Message" className="btn-light btn-user-action" />
           </div>
         ) : null}
       </CommonBody>
