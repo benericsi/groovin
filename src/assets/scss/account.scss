@@ -56,23 +56,15 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        position: absolute;
 
         img {
             height: 100%;
             width: 100%;
             object-fit: cover;
-
-            img {
-                height: 100%;
-                width: 100%;
-                object-fit: cover;
-
-                &.default {
-                    object-fit: none !important;
-                    filter: invert(1);
-                }
-            }
+            object-position: center center;
         }
+
     }
 }
 

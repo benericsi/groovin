@@ -6,44 +6,41 @@ import {useLoader} from '../../hooks/useLoader';
 import {db} from '../../setup/Firebase';
 
 const Followers = ({uid}) => {
-  const {currentUser} = useAuth();
   const {showLoader, hideLoader} = useLoader();
   const {addToast} = useToast();
-
-  const [userData, setUserData] = useState({});
+  const [followers, setFollowers] = useState([]);
 
   useEffect(() => {
     showLoader();
 
-    const fetchUserData = async () => {
+    const fetchFollowerIds = async () => {
       try {
-        const querySnapshot = await db.collection('users').get();
-        querySnapshot.forEach((doc) => {
-          if (doc.data().uid === uid) {
-            setUserData(doc.data());
-            hideLoader();
-          }
-        });
+        const followerDoc = await db.collection('followers').doc(uid).get();
+
+        if (!followerDoc.exists) {
+          addToast('info', 'There are no followers yet.');
+          hideLoader();
+          return;
+        } else {
+          setFollowers(followerDoc.data().followers);
+          hideLoader();
+        }
       } catch (error) {
-        hideLoader();
         addToast('error', error.message);
+        hideLoader();
       }
     };
 
-    fetchUserData();
+    fetchFollowerIds();
   }, [uid]);
 
   return (
     <section className="list-section">
       <h1>Followers</h1>
       <div className="list-container">
-        <UserCard user={userData} />
-        <UserCard user={userData} />
-        <UserCard user={userData} />
-        <UserCard user={userData} />
-        <UserCard user={userData} />
-        <UserCard user={userData} />
-        <UserCard user={userData} />
+        {followers.map((follower) => (
+          <UserCard key={follower} user={follower} />
+        ))}
       </div>
     </section>
   );

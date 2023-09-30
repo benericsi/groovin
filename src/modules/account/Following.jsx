@@ -36,15 +36,7 @@ const Following = ({uid}) => {
   return (
     <section className="list-section">
       <h1>Following</h1>
-      <div className="list-container">
-        <UserCard user={userData} />
-        <UserCard user={userData} />
-        <UserCard user={userData} />
-        <UserCard user={userData} />
-        <UserCard user={userData} />
-        <UserCard user={userData} />
-        <UserCard user={userData} />
-      </div>
+      <div className="list-container"></div>
     </section>
   );
 };

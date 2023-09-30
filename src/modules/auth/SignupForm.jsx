@@ -162,8 +162,7 @@ const SignupForm = () => {
         // Signup was successful
 
         // Add user to the database
-        await db.collection('users').doc(email).set({
-          uid: cred.user.uid,
+        await db.collection('users').doc(cred.user.uid).set({
           firstName: firstName,
           lastName: lastName,
           email: email,

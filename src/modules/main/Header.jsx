@@ -84,7 +84,7 @@ const Header = () => {
           <img src={message} alt="Messages" className="header-interaction-img" />
         </NavLink>
         <NavLink to={accountLink} className="header-interaction-item" title="Profile" activeClassName="active">
-          <img src={profileImage == 'default' ? profile : profileImage} alt="prof" className={`header-interaction-img ${profileImage != 'default' ? 'has-img' : ''}`} />
+          <img src={profileImage === 'default' ? profile : profileImage} alt="prof" className={`header-interaction-img ${profileImage !== 'default' ? 'has-img' : ''}`} />
         </NavLink>
         <div className="header-interaction-item " onClick={handleLogOut} title="Log Out">
           <img src={logOut} alt="Log Out" className="header-interaction-img" />

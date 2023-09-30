@@ -34,12 +34,13 @@ const Account = ({uid}) => {
 
     const fetchUserData = async () => {
       try {
-        const querySnapshot = await db.collection('users').get();
+        const querySnapshot = await db.collection('users').get(uid);
         querySnapshot.forEach((doc) => {
-          if (doc.data().uid === uid) {
-            setUserData(doc.data());
-            setInputPhoto(doc.data().photoURL);
-            setInputName(doc.data().firstName + ' ' + doc.data().lastName);
+          if (doc.id === uid) {
+            const userData = doc.data();
+            setUserData(userData);
+            setInputPhoto(userData.photoURL);
+            setInputName(userData.firstName + ' ' + userData.lastName);
             hideLoader();
           }
         });
@@ -62,7 +63,7 @@ const Account = ({uid}) => {
     try {
       await db
         .collection('users')
-        .doc(userData.email)
+        .doc(uid)
         .update({
           photoURL: inputPhoto == '' ? 'default' : inputPhoto,
           firstName: inputName.split(' ')[0],
