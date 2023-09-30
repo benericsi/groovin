@@ -7,9 +7,12 @@ import {useEffect, useState} from 'react';
 import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';
 import {db} from '../../setup/Firebase';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
 import {Link} from 'react-router-dom';
 
 import CommonHeader from '../../common/CommonHeader';
+import CommonBody from '../../common/CommonBody';
 import PopUp from '../../common/PopUp';
 import Input from '../../common/Input';
 import Button from '../../common/Button';
@@ -22,13 +25,14 @@ const Account = ({uid}) => {
   const {addToast} = useToast();
 
   const [userData, setUserData] = useState({});
-  const [followeCount, setFolloweCount] = useState(0);
+  const [followerCount, setFollowerCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
   const [isPopUpActive, setIsPopUpActive] = useState(false);
 
   const [inputPhoto, setInputPhoto] = useState();
   const [inputName, setInputName] = useState();
 
+  const [isFollowed, setIsFollowed] = useState(false);
   const isOwnProfile = currentUser.uid === uid;
 
   useEffect(() => {
@@ -38,6 +42,9 @@ const Account = ({uid}) => {
       try {
         const querySnapshot = await db.collection('users').doc(uid).get();
         setUserData(querySnapshot.data());
+        setInputPhoto(querySnapshot.data().photoURL);
+        setInputName(querySnapshot.data().firstName + ' ' + querySnapshot.data().lastName);
+        hideLoader();
       } catch (error) {
         hideLoader();
         addToast('error', error.message);
@@ -53,7 +60,7 @@ const Account = ({uid}) => {
           hideLoader();
           return;
         }
-        setFolloweCount(querySnapshot.data().followers.length);
+        setFollowerCount(querySnapshot.data().followers.length);
         hideLoader();
       } catch (error) {
         hideLoader();
@@ -78,10 +85,30 @@ const Account = ({uid}) => {
       }
     };
 
+    const getIsFollowed = async () => {
+      showLoader();
+
+      try {
+        const querySnapshot = await db.collection('followers').doc(uid).get();
+        if (!querySnapshot.exists) {
+          hideLoader();
+          return;
+        }
+        const followers = querySnapshot.data().followers;
+        const isFollowed = followers.includes(currentUser.uid);
+        setIsFollowed(isFollowed);
+        hideLoader();
+      } catch (error) {
+        hideLoader();
+        addToast('error', error.message);
+      }
+    };
+
     fetchUserData();
     getFollowerCount();
     getFollowingCount();
-  }, [uid]);
+    getIsFollowed();
+  }, [uid, isFollowed]);
 
   const togglePopUp = () => {
     setIsPopUpActive(!isPopUpActive);
@@ -104,6 +131,51 @@ const Account = ({uid}) => {
       addToast('success', 'Credentials successfully saved!');
       togglePopUp();
       window.location.reload();
+    } catch (error) {
+      hideLoader();
+      addToast('error', error.message);
+    }
+  };
+
+  const handleFollow = (currentUserId, userToFollowId, isCurrentlyFollowed) => async () => {
+    showLoader();
+
+    try {
+      if (isCurrentlyFollowed) {
+        await db
+          .collection('followers')
+          .doc(userToFollowId)
+          .update({
+            followers: firebase.firestore.FieldValue.arrayRemove(currentUserId),
+          });
+
+        await db
+          .collection('follows')
+          .doc(currentUserId)
+          .update({
+            following: firebase.firestore.FieldValue.arrayRemove(userToFollowId),
+          });
+
+        setIsFollowed(false);
+        hideLoader();
+      } else {
+        await db
+          .collection('followers')
+          .doc(userToFollowId)
+          .update({
+            followers: firebase.firestore.FieldValue.arrayUnion(currentUserId),
+          });
+
+        await db
+          .collection('follows')
+          .doc(currentUserId)
+          .update({
+            following: firebase.firestore.FieldValue.arrayUnion(userToFollowId),
+          });
+
+        setIsFollowed(true);
+        hideLoader();
+      }
     } catch (error) {
       hideLoader();
       addToast('error', error.message);
@@ -151,10 +223,19 @@ const Account = ({uid}) => {
           <span className="role">{userData.role}</span>
           <h1 className="name">{userData.firstName + ' ' + userData.lastName}</h1>
           <span className="email">
-            28 public playlist - <Link to={`/account/${uid}/followers`}>{followeCount} followers</Link> - <Link to={`/account/${uid}/following`}> {followingCount} follows</Link>
+            28 public playlist - <Link to={`/account/${uid}/followers`}>{followerCount} followers</Link> - <Link to={`/account/${uid}/following`}> {followingCount} follows</Link>
           </span>
         </div>
       </CommonHeader>
+      <CommonBody>
+        {!isOwnProfile ? (
+          <div className="follow-btn-container">
+            <button className="btn-follow" onClick={handleFollow(currentUser.uid, uid, isFollowed)}>
+              {isFollowed ? 'Unfollow' : 'Follow'}
+            </button>
+          </div>
+        ) : null}
+      </CommonBody>
     </>
   );
 };
