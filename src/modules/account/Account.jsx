@@ -22,6 +22,8 @@ const Account = ({uid}) => {
   const {addToast} = useToast();
 
   const [userData, setUserData] = useState({});
+  const [followeCount, setFolloweCount] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0);
   const [isPopUpActive, setIsPopUpActive] = useState(false);
 
   const [inputPhoto, setInputPhoto] = useState();
@@ -30,20 +32,46 @@ const Account = ({uid}) => {
   const isOwnProfile = currentUser.uid === uid;
 
   useEffect(() => {
-    showLoader();
-
     const fetchUserData = async () => {
+      showLoader();
+
       try {
-        const querySnapshot = await db.collection('users').get(uid);
-        querySnapshot.forEach((doc) => {
-          if (doc.id === uid) {
-            const userData = doc.data();
-            setUserData(userData);
-            setInputPhoto(userData.photoURL);
-            setInputName(userData.firstName + ' ' + userData.lastName);
-            hideLoader();
-          }
-        });
+        const querySnapshot = await db.collection('users').doc(uid).get();
+        setUserData(querySnapshot.data());
+      } catch (error) {
+        hideLoader();
+        addToast('error', error.message);
+      }
+    };
+
+    const getFollowerCount = async () => {
+      showLoader();
+
+      try {
+        const querySnapshot = await db.collection('followers').doc(uid).get();
+        if (!querySnapshot.exists) {
+          hideLoader();
+          return;
+        }
+        setFolloweCount(querySnapshot.data().followers.length);
+        hideLoader();
+      } catch (error) {
+        hideLoader();
+        addToast('error', error.message);
+      }
+    };
+
+    const getFollowingCount = async () => {
+      showLoader();
+
+      try {
+        const querySnapshot = await db.collection('follows').doc(uid).get();
+        if (!querySnapshot.exists) {
+          hideLoader();
+          return;
+        }
+        setFollowingCount(querySnapshot.data().following.length);
+        hideLoader();
       } catch (error) {
         hideLoader();
         addToast('error', error.message);
@@ -51,6 +79,8 @@ const Account = ({uid}) => {
     };
 
     fetchUserData();
+    getFollowerCount();
+    getFollowingCount();
   }, [uid]);
 
   const togglePopUp = () => {
@@ -121,7 +151,7 @@ const Account = ({uid}) => {
           <span className="role">{userData.role}</span>
           <h1 className="name">{userData.firstName + ' ' + userData.lastName}</h1>
           <span className="email">
-            28 public playlist - <Link to={`/account/${uid}/followers`}>22 followers</Link> - <Link to={`/account/${uid}/following`}> 173 following</Link>
+            28 public playlist - <Link to={`/account/${uid}/followers`}>{followeCount} followers</Link> - <Link to={`/account/${uid}/following`}> {followingCount} follows</Link>
           </span>
         </div>
       </CommonHeader>

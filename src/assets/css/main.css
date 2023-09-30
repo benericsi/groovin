@@ -54,8 +54,10 @@
   height: 1.5rem;
   width: 1.5rem;
   border-radius: 50%;
-  background-size: cover;
-  background-position: center;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center;
 }
 .main-container .main-header .header-interactions .header-interaction-item.active {
   background-color: rgba(0, 0, 0, 0.8);

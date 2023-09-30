@@ -17,7 +17,7 @@ const UserCard = ({user}) => {
     const fetchUserData = async () => {
       try {
         if (user === '') {
-          addToast('info', 'There are no followers yet.');
+          addToast('info', 'There are no users yet.');
           hideLoader();
           return;
         }

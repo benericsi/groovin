@@ -1,5 +1,4 @@
 import UserCard from '../../common/UserCard';
-import {useAuth} from '../../hooks/useAuth';
 import {useEffect, useState} from 'react';
 import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';

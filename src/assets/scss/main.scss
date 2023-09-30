@@ -63,8 +63,8 @@
                     height: 1.5rem;
                     width: 1.5rem;
                     border-radius: 50%;
-                    background-size: cover;
-                    background-position: center;
+                    object-fit: cover;
+                    object-position: center center;
                 }
 
                 &.active {
