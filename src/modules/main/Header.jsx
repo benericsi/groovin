@@ -77,13 +77,13 @@ const Header = () => {
       </div>
 
       <div className="header-interactions">
-        <NavLink to="/notifications" className="header-interaction-item" title="Notifications" activeClassName="active">
+        <NavLink to="/notifications" className="header-interaction-item" title="Notifications">
           <img src={notifiation} alt="Notifications" className="header-interaction-img" />
         </NavLink>
-        <NavLink to="/messages" className="header-interaction-item" title="Messages" activeClassName="active">
+        <NavLink to="/messages" className="header-interaction-item" title="Messages">
           <img src={message} alt="Messages" className="header-interaction-img" />
         </NavLink>
-        <NavLink to={accountLink} className="header-interaction-item" title="Profile" activeClassName="active">
+        <NavLink to={accountLink} className="header-interaction-item" title="Profile">
           <img src={profileImage === 'default' ? profile : profileImage} alt="prof" className={`header-interaction-img ${profileImage !== 'default' ? 'has-img' : ''}`} />
         </NavLink>
         <div className="header-interaction-item " onClick={handleLogOut} title="Log Out">

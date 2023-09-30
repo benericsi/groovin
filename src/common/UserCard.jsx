@@ -6,6 +6,8 @@ import {useLoader} from '../hooks/useLoader';
 import {useToast} from '../hooks/useToast';
 import {useEffect, useState} from 'react';
 
+import profile from '../assets/icons/user-solid.svg';
+
 const UserCard = ({user}) => {
   const [userData, setUserData] = useState({});
   const {showLoader, hideLoader} = useLoader();
@@ -42,7 +44,7 @@ const UserCard = ({user}) => {
   return user === '' ? null : (
     <Link to={`/account/${user}`} className="user-card">
       <div className="user-card-photo">
-        <img src={userData.photoURL} alt="User" />
+        <img src={userData.photoURL == 'default' ? profile : userData.photoURL} className={userData.photoURL == 'default' ? 'default' : ''} />
       </div>
       <div className="user-card-name">{userData.firstName + ' ' + userData.lastName}</div>
       <span className="user-card-role">{userData.role}</span>
