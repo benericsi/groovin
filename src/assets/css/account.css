@@ -50,23 +50,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: absolute;
 }
 .profile-photo button img {
   height: 100%;
   width: 100%;
   -o-object-fit: cover;
      object-fit: cover;
-}
-.profile-photo button img img {
-  height: 100%;
-  width: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-}
-.profile-photo button img img.default {
-  -o-object-fit: none !important;
-     object-fit: none !important;
-  filter: invert(1);
+  -o-object-position: center center;
+     object-position: center center;
 }
 
 .profile-info {
