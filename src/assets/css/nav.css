@@ -59,8 +59,8 @@
   letter-spacing: 1px;
   font-weight: 600;
   background-image: linear-gradient(to right bottom, #ee4540, #510a32);
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
 }
 .nav-container .nav-header .nav-list .nav-list-item .nav-link.a-brand .nav-svg {
