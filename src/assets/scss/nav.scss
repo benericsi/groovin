@@ -62,8 +62,8 @@
                             letter-spacing: 1px;
                             font-weight: 600;
                             background-image: linear-gradient(to right bottom, $clr-primary-light, $clr-primary-darker);
-                            background-clip: text;
                             -webkit-background-clip: text;
+                            background-clip: text;
                             color: transparent;
                         }
 
