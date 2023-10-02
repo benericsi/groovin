@@ -36,11 +36,7 @@ const Following = ({uid}) => {
   return (
     <section className="list-section">
       <h1>Follows</h1>
-      <div className="list-container">
-        {follows.map((follow) => (
-          <UserCard key={follow} user={follow} />
-        ))}
-      </div>
+      <div className="list-container">{follows && follows.map((follow) => <UserCard key={follow} user={follow} />)}</div>
     </section>
   );
 };

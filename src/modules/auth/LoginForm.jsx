@@ -17,7 +17,7 @@ const LoginForm = () => {
   const [errors, setErrors] = useState({});
 
   const {showLoader, hideLoader} = useLoader();
-  const {login, loginWithGoogle} = useAuth();
+  const {currentUser, login, loginWithGoogle} = useAuth();
   const {addToast} = useToast();
 
   const history = useNavigate();
@@ -55,9 +55,7 @@ const LoginForm = () => {
     }
 
     login(email, password)
-      .then(() => {
-        // Login was successful
-
+      .then(async (cred) => {
         setEmail('');
         setPassword('');
 
@@ -85,7 +83,7 @@ const LoginForm = () => {
 
     loginWithGoogle()
       .then(async (cred) => {
-        //console.log(cred.user);
+        console.log(cred.user);
         if (cred.additionalUserInfo.isNewUser) {
           await db.collection('users').doc(cred.user.uid).set({
             firstName: cred.additionalUserInfo.profile.given_name,
