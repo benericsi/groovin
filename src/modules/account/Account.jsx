@@ -6,7 +6,7 @@ import profile from '../../assets/icons/user-solid.svg';
 import {useEffect, useState} from 'react';
 import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';
-import {db} from '../../setup/Firebase';
+import {db, storage} from '../../setup/Firebase';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import {Link} from 'react-router-dom';
@@ -29,7 +29,7 @@ const Account = ({uid}) => {
   const [followingCount, setFollowingCount] = useState(0);
   const [isPopUpActive, setIsPopUpActive] = useState(false);
 
-  const [inputPhoto, setInputPhoto] = useState();
+  const [inputPhoto, setInputPhoto] = useState(null);
   const [inputName, setInputName] = useState();
 
   const [isFollowed, setIsFollowed] = useState(false);
@@ -109,13 +109,20 @@ const Account = ({uid}) => {
     showLoader();
 
     try {
+      const storageRef = storage.ref();
+      const fileRef = storageRef.child(`profile-images/${uid}`);
+      await fileRef.put(inputPhoto);
+
+      // Get the image URL from Firebase Storage
+      const imageUrl = await fileRef.getDownloadURL();
+
       await db
         .collection('users')
         .doc(uid)
         .update({
-          photoURL: inputPhoto == '' ? 'default' : inputPhoto,
           firstName: inputName.split(' ')[0],
           lastName: inputName.split(' ')[1],
+          photoURL: inputPhoto ? imageUrl : 'default',
         });
 
       hideLoader();
@@ -214,15 +221,7 @@ const Account = ({uid}) => {
             }}
             className="input-field"
           />
-          <Input
-            type="text"
-            value={inputPhoto}
-            label="Photo URL"
-            onChange={(value) => {
-              setInputPhoto(value);
-            }}
-            className="input-field"
-          />
+          <input type="file" accept="image/*" onChange={(e) => setInputPhoto(e.target.files[0])} className="input-field" />
           <Button type="button" text="Save" className="btn-dark" onClick={handleModifyUser} />
         </PopUp>
       )}

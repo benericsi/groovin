@@ -23,7 +23,6 @@ const Notifications = () => {
         //notifactions collection currentuser.uid doc userNotifications collection
         const querySnapshot = await db.collection('notifications').doc(currentUser.uid).collection('userNotifications').orderBy('createdAt', 'asc').get();
         const sortedNotifications = querySnapshot.docs.map((snapshot) => snapshot.data());
-        console.log(setNotifications);
         setNotifications(sortedNotifications);
       } catch (error) {
         addToast('error', error.message);
@@ -38,7 +37,7 @@ const Notifications = () => {
   return (
     <CommonBody>
       <h1>Notifications</h1>
-      <div className="notification-container">{notifications && notifications.map((notification) => <Notification key={notification} notification={notification} />)}</div>
+      <div className="notification-container">{notifications && notifications.map((notification) => <Notification key={notification.createdAt} notification={notification} />)}</div>
     </CommonBody>
   );
 };
