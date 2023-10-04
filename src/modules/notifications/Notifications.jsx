@@ -16,17 +16,15 @@ const Notifications = () => {
   const {addToast} = useToast();
 
   useEffect(() => {
-    const fetchUserNotifications = async () => {
-      showLoader();
+    showLoader();
 
+    const fetchUserNotifications = async () => {
       try {
         //notifactions collection currentuser.uid doc userNotifications collection
-        const querySnapshot = await db.collection('notifications').doc(currentUser.uid).collection('userNotifications').get();
-        querySnapshot.forEach((snapshot) => {
-          console.log(snapshot.data());
-          // order by createdAt
-        });
-        hideLoader();
+        const querySnapshot = await db.collection('notifications').doc(currentUser.uid).collection('userNotifications').orderBy('createdAt', 'asc').get();
+        const sortedNotifications = querySnapshot.docs.map((snapshot) => snapshot.data());
+        console.log(setNotifications);
+        setNotifications(sortedNotifications);
       } catch (error) {
         addToast('error', error.message);
         hideLoader();
@@ -34,12 +32,13 @@ const Notifications = () => {
     };
 
     fetchUserNotifications();
+    hideLoader();
   }, []);
 
   return (
     <CommonBody>
       <h1>Notifications</h1>
-      <div className="notification-container"></div>
+      <div className="notification-container">{notifications && notifications.map((notification) => <Notification key={notification} notification={notification} />)}</div>
     </CommonBody>
   );
 };

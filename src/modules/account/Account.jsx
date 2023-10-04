@@ -36,15 +36,14 @@ const Account = ({uid}) => {
   const isOwnProfile = currentUser.uid === uid;
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      showLoader();
+    showLoader();
 
+    const fetchUserData = async () => {
       try {
         const querySnapshot = await db.collection('users').doc(uid).get();
         setUserData(querySnapshot.data());
         setInputPhoto(querySnapshot.data().photoURL);
         setInputName(querySnapshot.data().firstName + ' ' + querySnapshot.data().lastName);
-        hideLoader();
       } catch (error) {
         hideLoader();
         addToast('error', error.message);
@@ -52,8 +51,6 @@ const Account = ({uid}) => {
     };
 
     const getFollowerCount = async () => {
-      showLoader();
-
       try {
         const querySnapshot = await db.collection('followers').doc(uid).get();
         if (!querySnapshot.exists) {
@@ -61,7 +58,6 @@ const Account = ({uid}) => {
           return;
         }
         setFollowerCount(querySnapshot.data().followers.length);
-        hideLoader();
       } catch (error) {
         hideLoader();
         addToast('error', error.message);
@@ -69,8 +65,6 @@ const Account = ({uid}) => {
     };
 
     const getFollowingCount = async () => {
-      showLoader();
-
       try {
         const querySnapshot = await db.collection('follows').doc(uid).get();
         if (!querySnapshot.exists) {
@@ -78,7 +72,6 @@ const Account = ({uid}) => {
           return;
         }
         setFollowingCount(querySnapshot.data().following.length);
-        hideLoader();
       } catch (error) {
         hideLoader();
         addToast('error', error.message);
@@ -86,8 +79,6 @@ const Account = ({uid}) => {
     };
 
     const getIsFollowed = async () => {
-      showLoader();
-
       try {
         const querySnapshot = await db.collection('followers').doc(uid).get();
         if (!querySnapshot.exists) {
@@ -97,7 +88,6 @@ const Account = ({uid}) => {
         const followers = querySnapshot.data().followers;
         const isFollowed = followers.includes(currentUser.uid);
         setIsFollowed(isFollowed);
-        hideLoader();
       } catch (error) {
         hideLoader();
         addToast('error', error.message);
@@ -108,6 +98,7 @@ const Account = ({uid}) => {
     getFollowerCount();
     getFollowingCount();
     getIsFollowed();
+    hideLoader();
   }, [uid, isFollowed]);
 
   const togglePopUp = () => {
