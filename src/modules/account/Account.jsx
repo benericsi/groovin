@@ -6,7 +6,7 @@ import profile from '../../assets/icons/user-solid.svg';
 import {useEffect, useState} from 'react';
 import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';
-import {db} from '../../setup/Firebase';
+import {db, storage} from '../../setup/Firebase';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import {Link} from 'react-router-dom';
@@ -29,22 +29,21 @@ const Account = ({uid}) => {
   const [followingCount, setFollowingCount] = useState(0);
   const [isPopUpActive, setIsPopUpActive] = useState(false);
 
-  const [inputPhoto, setInputPhoto] = useState();
+  const [inputPhoto, setInputPhoto] = useState(null);
   const [inputName, setInputName] = useState();
 
   const [isFollowed, setIsFollowed] = useState(false);
   const isOwnProfile = currentUser.uid === uid;
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      showLoader();
+    showLoader();
 
+    const fetchUserData = async () => {
       try {
         const querySnapshot = await db.collection('users').doc(uid).get();
         setUserData(querySnapshot.data());
         setInputPhoto(querySnapshot.data().photoURL);
         setInputName(querySnapshot.data().firstName + ' ' + querySnapshot.data().lastName);
-        hideLoader();
       } catch (error) {
         hideLoader();
         addToast('error', error.message);
@@ -52,8 +51,6 @@ const Account = ({uid}) => {
     };
 
     const getFollowerCount = async () => {
-      showLoader();
-
       try {
         const querySnapshot = await db.collection('followers').doc(uid).get();
         if (!querySnapshot.exists) {
@@ -61,7 +58,6 @@ const Account = ({uid}) => {
           return;
         }
         setFollowerCount(querySnapshot.data().followers.length);
-        hideLoader();
       } catch (error) {
         hideLoader();
         addToast('error', error.message);
@@ -69,8 +65,6 @@ const Account = ({uid}) => {
     };
 
     const getFollowingCount = async () => {
-      showLoader();
-
       try {
         const querySnapshot = await db.collection('follows').doc(uid).get();
         if (!querySnapshot.exists) {
@@ -78,7 +72,6 @@ const Account = ({uid}) => {
           return;
         }
         setFollowingCount(querySnapshot.data().following.length);
-        hideLoader();
       } catch (error) {
         hideLoader();
         addToast('error', error.message);
@@ -86,8 +79,6 @@ const Account = ({uid}) => {
     };
 
     const getIsFollowed = async () => {
-      showLoader();
-
       try {
         const querySnapshot = await db.collection('followers').doc(uid).get();
         if (!querySnapshot.exists) {
@@ -97,7 +88,6 @@ const Account = ({uid}) => {
         const followers = querySnapshot.data().followers;
         const isFollowed = followers.includes(currentUser.uid);
         setIsFollowed(isFollowed);
-        hideLoader();
       } catch (error) {
         hideLoader();
         addToast('error', error.message);
@@ -108,6 +98,7 @@ const Account = ({uid}) => {
     getFollowerCount();
     getFollowingCount();
     getIsFollowed();
+    hideLoader();
   }, [uid, isFollowed]);
 
   const togglePopUp = () => {
@@ -118,13 +109,20 @@ const Account = ({uid}) => {
     showLoader();
 
     try {
+      const storageRef = storage.ref();
+      const fileRef = storageRef.child(`profile-images/${uid}`);
+      await fileRef.put(inputPhoto);
+
+      // Get the image URL from Firebase Storage
+      const imageUrl = await fileRef.getDownloadURL();
+
       await db
         .collection('users')
         .doc(uid)
         .update({
-          photoURL: inputPhoto == '' ? 'default' : inputPhoto,
           firstName: inputName.split(' ')[0],
           lastName: inputName.split(' ')[1],
+          photoURL: inputPhoto ? imageUrl : 'default',
         });
 
       hideLoader();
@@ -223,15 +221,7 @@ const Account = ({uid}) => {
             }}
             className="input-field"
           />
-          <Input
-            type="text"
-            value={inputPhoto}
-            label="Photo URL"
-            onChange={(value) => {
-              setInputPhoto(value);
-            }}
-            className="input-field"
-          />
+          <input type="file" accept="image/*" onChange={(e) => setInputPhoto(e.target.files[0])} className="input-field" />
           <Button type="button" text="Save" className="btn-dark" onClick={handleModifyUser} />
         </PopUp>
       )}

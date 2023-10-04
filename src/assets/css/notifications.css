@@ -11,6 +11,9 @@
   overflow: hidden;
   padding: 1rem 0.75rem;
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 .notification-container .notification-item:last-child::after {
   display: none;
@@ -45,4 +48,13 @@
 }
 .notification-container .notification-item .notification-remove:hover {
   background-color: #5e5e5e;
+}
+.notification-container .notification-item .notification-img {
+  height: 4rem;
+  width: 4rem;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center;
 }/*# sourceMappingURL=notifications.css.map */

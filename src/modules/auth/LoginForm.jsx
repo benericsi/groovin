@@ -17,7 +17,7 @@ const LoginForm = () => {
   const [errors, setErrors] = useState({});
 
   const {showLoader, hideLoader} = useLoader();
-  const {currentUser, login, loginWithGoogle} = useAuth();
+  const {login, loginWithGoogle} = useAuth();
   const {addToast} = useToast();
 
   const history = useNavigate();
