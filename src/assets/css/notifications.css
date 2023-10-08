@@ -13,7 +13,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 .notification-container .notification-item:last-child::after {
   display: none;
@@ -50,11 +50,24 @@
   background-color: #5e5e5e;
 }
 .notification-container .notification-item .notification-img {
-  height: 4rem;
-  width: 4rem;
+  height: 5em;
+  width: 5rem;
+  min-height: 5rem;
+  min-width: 5rem;
   border-radius: 50%;
   -o-object-fit: cover;
      object-fit: cover;
   -o-object-position: center center;
      object-position: center center;
+}
+.notification-container .notification-item .notification-text {
+  display: flex;
+  flex-direction: column;
+}
+.notification-container .notification-item .notification-text h3 {
+  text-transform: capitalize;
+  margin-bottom: 0.5rem;
+}
+.notification-container .notification-item .notification-text p:last-child {
+  color: #7e7e7e;
 }/*# sourceMappingURL=notifications.css.map */
