@@ -12,7 +12,29 @@ const Friends = ({uid}) => {
   useEffect(() => {
     showLoader();
 
-    hideLoader();
+    const fetchFriendList = async () => {
+      try {
+        const friendsDoc = await db.collection('friends').doc(uid).get();
+
+        if (!friendsDoc.exists) {
+          addToast('info', 'There are no friends yet.');
+          hideLoader();
+          return;
+        } else if (friendsDoc.data().friendList.length === 0) {
+          addToast('info', 'There are no friends yet.');
+          hideLoader();
+          return;
+        } else {
+          setFriends(friendsDoc.data().friendList);
+          hideLoader();
+        }
+      } catch (error) {
+        addToast('error', error.message);
+        hideLoader();
+      }
+    };
+
+    fetchFriendList();
   }, [uid]);
 
   return (

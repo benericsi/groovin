@@ -26,7 +26,7 @@ const Account = ({uid}) => {
   const {addToast} = useToast();
 
   const [userData, setUserData] = useState({});
-  const [followerCount, setFollowerCount] = useState(0);
+  const [friendCount, setFriendCount] = useState(0);
   const [isPopUpActive, setIsPopUpActive] = useState(false);
 
   const [inputPhoto, setInputPhoto] = useState(null);
@@ -50,15 +50,15 @@ const Account = ({uid}) => {
       }
     };
 
-    const getFollowerCount = async () => {
+    const getFriendCount = async () => {
       showLoader();
       try {
-        const querySnapshot = await db.collection('followers').doc(uid).get();
+        const querySnapshot = await db.collection('friends').doc(uid).get();
         if (!querySnapshot.exists) {
           hideLoader();
           return;
         }
-        setFollowerCount(querySnapshot.data().followers.length);
+        setFriendCount(querySnapshot.data().friendList.length);
         hideLoader();
       } catch (error) {
         hideLoader();
@@ -67,8 +67,8 @@ const Account = ({uid}) => {
     };
 
     fetchUserData();
-    getFollowerCount();
-  }, [uid]);
+    getFriendCount();
+  }, [uid, friendCount]);
 
   const togglePopUp = () => {
     setIsPopUpActive(!isPopUpActive);
@@ -108,6 +108,28 @@ const Account = ({uid}) => {
     setIsUserActionsActive(!isUserActionsActive);
   };
 
+  const sendFriendRequest = async () => {
+    showLoader();
+
+    try {
+      await db
+        .collection('friendRequests')
+        .doc(currentUser.uid + '_' + uid)
+        .set({
+          sender: currentUser.uid,
+          receiver: uid,
+          status: 'pending',
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+
+      hideLoader();
+      addToast('success', 'Friend request sent!');
+    } catch (error) {
+      hideLoader();
+      addToast('error', error.message);
+    }
+  };
+
   return (
     <>
       {isOwnProfile && (
@@ -143,7 +165,7 @@ const Account = ({uid}) => {
           <span className="email">
             28 public playlist -{' '}
             <Link to={`/account/${uid}/friends`}>
-              {followerCount} {followerCount > 1 ? 'friends' : 'friend'}
+              {friendCount} {friendCount > 1 ? 'friends' : 'friend'}
             </Link>
           </span>
         </div>
@@ -155,7 +177,7 @@ const Account = ({uid}) => {
             {isUserActionsActive ? (
               <ul className="user-actions-list">
                 <li className="user-actions-item">
-                  <button className="btn-user-action">
+                  <button className="btn-user-action" onClick={sendFriendRequest}>
                     <span>Add friend</span>
                   </button>
                 </li>
