@@ -2,8 +2,7 @@ import '../../assets/css/main.css';
 import Header from './Header';
 import Notifications from '../notifications/Notifications';
 import Account from '../account/Account';
-import Followers from '../account/Followers';
-import Following from '../account/Following';
+import Friends from '../account/Friends';
 
 import React from 'react';
 import {useParams} from 'react-router-dom';
@@ -18,8 +17,7 @@ const Main = () => {
     notifications: <Notifications />,
     messages: <h1>Messages</h1>,
     account: <Account uid={uid} />,
-    followers: <Followers uid={uid} />,
-    following: <Following uid={uid} />,
+    friends: <Friends uid={uid} />,
   };
 
   const selectedComponent = routeComponents[page] || <h1>Home</h1>;
