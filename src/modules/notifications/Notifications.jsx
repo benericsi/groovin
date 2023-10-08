@@ -21,7 +21,7 @@ const Notifications = () => {
     const fetchUserNotifications = async () => {
       try {
         //notifactions collection currentuser.uid doc userNotifications collection
-        const querySnapshot = await db.collection('notifications').doc(currentUser.uid).collection('userNotifications').orderBy('createdAt', 'asc').get();
+        const querySnapshot = await db.collection('notifications').doc(currentUser.uid).collection('notifications').orderBy('timestamp', 'asc').get();
         const sortedNotifications = querySnapshot.docs.map((snapshot) => snapshot.data());
         setNotifications(sortedNotifications);
       } catch (error) {
@@ -35,14 +35,17 @@ const Notifications = () => {
   }, []);
 
   const removeNotification = async (e) => {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
+
     return;
   };
 
   return (
     <CommonBody>
       <h1>Notifications</h1>
-      <div className="notification-container">{notifications && notifications.map((notification) => <Notification key={notification.createdAt} notification={notification} removeNotification={removeNotification} />)}</div>
+      <div className="notification-container">{notifications && notifications.map((notification) => <Notification key={notification.timestamp} notification={notification} removeNotification={removeNotification} />)}</div>
     </CommonBody>
   );
 };
