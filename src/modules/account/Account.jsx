@@ -33,6 +33,7 @@ const Account = ({uid}) => {
   const [inputName, setInputName] = useState();
 
   const [isUserActionsActive, setIsUserActionsActive] = useState(false);
+  const [friendStatus, setFriendStatus] = useState('Add friend');
   const isOwnProfile = currentUser.uid === uid;
 
   useEffect(() => {
@@ -66,9 +67,43 @@ const Account = ({uid}) => {
       }
     };
 
+    const getFriendStatus = async () => {
+      showLoader();
+
+      try {
+        const querySnapshot = await db
+          .collection('friendRequests')
+          .doc(currentUser.uid + '_' + uid)
+          .get();
+        if (!querySnapshot.exists) {
+          setFriendStatus('Add friend');
+          hideLoader();
+          return;
+        }
+
+        if (querySnapshot.data().status === 'pending') {
+          setFriendStatus('Cancel friend request');
+          hideLoader();
+          return;
+        }
+
+        if (querySnapshot.data().status === 'accepted') {
+          setFriendStatus('Friends');
+          hideLoader();
+          return;
+        }
+
+        hideLoader();
+      } catch (error) {
+        hideLoader();
+        addToast('error', error.message);
+      }
+    };
+
     fetchUserData();
     getFriendCount();
-  }, [uid, friendCount]);
+    getFriendStatus();
+  }, [uid, friendCount, friendStatus]);
 
   const togglePopUp = () => {
     setIsPopUpActive(!isPopUpActive);
@@ -108,9 +143,27 @@ const Account = ({uid}) => {
     setIsUserActionsActive(!isUserActionsActive);
   };
 
-  const sendFriendRequest = async () => {
+  const handleFriendAction = async () => {
     showLoader();
 
+    switch (friendStatus) {
+      case 'Add friend':
+        await sendFriendRequest();
+        break;
+      case 'Cancel friend request':
+        await cancelFriendRequest();
+        break;
+      case 'Friends':
+        //await removeFriend();
+        break;
+      default:
+        break;
+    }
+
+    hideLoader();
+  };
+
+  const sendFriendRequest = async () => {
     try {
       await db
         .collection('friendRequests')
@@ -121,11 +174,40 @@ const Account = ({uid}) => {
           status: 'pending',
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         });
+      setFriendStatus('Cancel friend request');
 
-      hideLoader();
+      //notify the receiver
+      await db.collection('notifications').doc(uid).collection('notifications').add({
+        sender: currentUser.uid,
+        receiver: uid,
+        type: 'New Friend Request',
+        message: 'sent you a friend request!',
+        senderName: currentUser.displayName,
+        senderPhoto: currentUser.photoURL,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
       addToast('success', 'Friend request sent!');
     } catch (error) {
-      hideLoader();
+      addToast('error', error.message);
+    }
+  };
+
+  const cancelFriendRequest = async () => {
+    try {
+      await db
+        .collection('friendRequests')
+        .doc(currentUser.uid + '_' + uid)
+        .delete();
+      setFriendStatus('Add friend');
+      addToast('success', 'Friend request cancelled!');
+
+      //remove notification
+      const querySnapshot = await db.collection('notifications').doc(uid).collection('notifications').where('sender', '==', currentUser.uid).where('receiver', '==', uid).where('type', '==', 'New Friend Request').get();
+      querySnapshot.forEach((doc) => {
+        doc.ref.delete();
+      });
+    } catch (error) {
       addToast('error', error.message);
     }
   };
@@ -177,8 +259,8 @@ const Account = ({uid}) => {
             {isUserActionsActive ? (
               <ul className="user-actions-list">
                 <li className="user-actions-item">
-                  <button className="btn-user-action" onClick={sendFriendRequest}>
-                    <span>Add friend</span>
+                  <button className="btn-user-action" onClick={handleFriendAction}>
+                    <span>{friendStatus}</span>
                   </button>
                 </li>
                 <li className="user-actions-item">

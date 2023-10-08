@@ -3,7 +3,7 @@ import profile from '../../assets/icons/user-solid.svg';
 
 const Notification = ({notification, removeNotification}) => {
   // Convert Firestore Timestamp to JavaScript Date
-  const createdAtDate = notification.createdAt.toDate();
+  const createdAtDate = notification.timestamp.toDate();
 
   // Format the date components
   const year = createdAtDate.getFullYear();
@@ -23,10 +23,10 @@ const Notification = ({notification, removeNotification}) => {
         <div className="notification-remove" onClick={removeNotification}>
           &times;
         </div>
-        <img className="notification-img" src={notification.photoURL === 'default' ? profile : notification.photoURL} alt=""></img>
+        <img className="notification-img" src={notification.senderPhoto === 'default' ? profile : notification.senderPhoto} alt=""></img>
         <div className="notification-text">
           <h3>{notification.type}</h3>
-          <p>{notification.message}</p>
+          <p>{notification.senderName + ' ' + notification.message}</p>
           <p>{formattedDate}</p>
         </div>
       </Link>
