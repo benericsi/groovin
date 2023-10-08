@@ -33,7 +33,7 @@ const Account = ({uid}) => {
   const [inputName, setInputName] = useState();
 
   const [isUserActionsActive, setIsUserActionsActive] = useState(false);
-  const [friendStatus, setFriendStatus] = useState('Add friend');
+  const [friendStatus, setFriendStatus] = useState();
   const isOwnProfile = currentUser.uid === uid;
 
   useEffect(() => {
@@ -71,10 +71,8 @@ const Account = ({uid}) => {
       showLoader();
 
       try {
-        const querySnapshot = await db
-          .collection('friendRequests')
-          .doc(currentUser.uid + '_' + uid)
-          .get();
+        const querySnapshot = await db.collection('friendRequests').doc(currentUser.uid).collection('friendRequests').doc(uid).get();
+
         if (!querySnapshot.exists) {
           setFriendStatus('Add friend');
           hideLoader();
@@ -88,7 +86,7 @@ const Account = ({uid}) => {
         }
 
         if (querySnapshot.data().status === 'accepted') {
-          setFriendStatus('Friends');
+          setFriendStatus('Remove friend');
           hideLoader();
           return;
         }
@@ -165,15 +163,12 @@ const Account = ({uid}) => {
 
   const sendFriendRequest = async () => {
     try {
-      await db
-        .collection('friendRequests')
-        .doc(currentUser.uid + '_' + uid)
-        .set({
-          sender: currentUser.uid,
-          receiver: uid,
-          status: 'pending',
-          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        });
+      await db.collection('friendRequests').doc(currentUser.uid).collection('friendRequests').doc(uid).set({
+        sender: currentUser.uid,
+        receiver: uid,
+        status: 'pending',
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
       setFriendStatus('Cancel friend request');
 
       //notify the receiver
@@ -195,10 +190,7 @@ const Account = ({uid}) => {
 
   const cancelFriendRequest = async () => {
     try {
-      await db
-        .collection('friendRequests')
-        .doc(currentUser.uid + '_' + uid)
-        .delete();
+      await db.collection('friendRequests').doc(currentUser.uid).collection('friendRequests').doc(uid).delete();
       setFriendStatus('Add friend');
       addToast('success', 'Friend request cancelled!');
 

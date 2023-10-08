@@ -49,6 +49,23 @@
 .notification-container .notification-item .notification-remove:hover {
   background-color: #5e5e5e;
 }
+.notification-container .notification-item .accept-or-decline {
+  position: absolute;
+  bottom: 1rem;
+  right: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.notification-container .notification-item .accept-or-decline span {
+  cursor: pointer;
+  opacity: 0.5;
+  transition: all 0.2s ease-in-out;
+  font-size: 1.2rem;
+}
+.notification-container .notification-item .accept-or-decline span:hover {
+  opacity: 1;
+}
 .notification-container .notification-item .notification-img {
   height: 5em;
   width: 5rem;

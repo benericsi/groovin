@@ -35,7 +35,10 @@ const Notifications = () => {
   }, []);
 
   const removeNotification = async (e) => {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
+
     return;
   };
 

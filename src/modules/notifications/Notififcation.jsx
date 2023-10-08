@@ -1,7 +1,15 @@
 import {Link} from 'react-router-dom';
 import profile from '../../assets/icons/user-solid.svg';
+import {db} from '../../setup/Firebase';
+import {useLoader} from '../../hooks/useLoader';
+import {useToast} from '../../hooks/useToast';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
 
 const Notification = ({notification, removeNotification}) => {
+  const {showLoader, hideLoader} = useLoader();
+  const {addToast} = useToast();
+
   // Convert Firestore Timestamp to JavaScript Date
   const createdAtDate = notification.timestamp.toDate();
 
@@ -17,12 +25,76 @@ const Notification = ({notification, removeNotification}) => {
   const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   const linkTo = '/account/' + notification.sender;
 
+  const acceptFriendRequest = async (e) => {
+    e.preventDefault();
+    return;
+  };
+
+  const declineFriendRequest = async (e) => {
+    e.preventDefault();
+    showLoader();
+
+    try {
+      // Remove the friend request from the user's friend requests
+      await db.collection('friendRequests').doc(notification.sender).collection('friendRequests').doc(notification.receiver).delete();
+
+      // Remove the friend request from the receiver's friend requests
+      await db.collection('friendRequests').doc(notification.receiver).collection('friendRequests').doc(notification.sender).delete();
+
+      // Remove the notification from the receiver's notifications collection
+      await db
+        .collection('notifications')
+        .doc(notification.receiver)
+        .collection('notifications')
+        .where('sender', '==', notification.sender)
+        .where('receiver', '==', notification.receiver)
+        .where('type', '==', 'New Friend Request')
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            doc.ref.delete();
+          });
+        });
+
+      // Get the reciever's data and send a notifaction to the sender
+      const receiverData = await db.collection('users').doc(notification.receiver).get();
+      const receiverName = receiverData.data().firstName + ' ' + receiverData.data().lastName;
+      const receiverPhoto = receiverData.data().photoURL;
+
+      await db.collection('notifications').doc(notification.sender).collection('notifications').add({
+        sender: notification.receiver,
+        receiver: notification.sender,
+        type: 'Friend Request Declined',
+        message: 'declined your friend request.',
+        senderName: receiverName,
+        senderPhoto: receiverPhoto,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
+      hideLoader();
+      addToast('success', 'Friend request declined.');
+    } catch (error) {
+      hideLoader();
+      addToast('error', error.message);
+    }
+
+    // render notifications in parent
+    //removeNotification(notification);
+  };
+
   return (
     <>
       <Link to={linkTo} className="notification-item">
-        <div className="notification-remove" onClick={removeNotification}>
-          &times;
-        </div>
+        {notification.type !== 'New Friend Request' ? (
+          <div className="notification-remove" onClick={removeNotification}>
+            &times;
+          </div>
+        ) : (
+          <div className="accept-or-decline">
+            <span onClick={acceptFriendRequest}>Accept</span>
+            <span onClick={declineFriendRequest}>Decline</span>
+          </div>
+        )}
         <img className="notification-img" src={notification.senderPhoto === 'default' ? profile : notification.senderPhoto} alt=""></img>
         <div className="notification-text">
           <h3>{notification.type}</h3>
