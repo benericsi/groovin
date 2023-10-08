@@ -34,10 +34,15 @@ const Notifications = () => {
     hideLoader();
   }, []);
 
+  const removeNotification = async (e) => {
+    e.preventDefault();
+    return;
+  };
+
   return (
     <CommonBody>
       <h1>Notifications</h1>
-      <div className="notification-container">{notifications && notifications.map((notification) => <Notification key={notification.createdAt} notification={notification} />)}</div>
+      <div className="notification-container">{notifications && notifications.map((notification) => <Notification key={notification.createdAt} notification={notification} removeNotification={removeNotification} />)}</div>
     </CommonBody>
   );
 };

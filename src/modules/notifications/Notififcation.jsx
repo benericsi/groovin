@@ -1,6 +1,7 @@
+import {Link} from 'react-router-dom';
 import profile from '../../assets/icons/user-solid.svg';
 
-const Notification = ({notification}) => {
+const Notification = ({notification, removeNotification}) => {
   // Convert Firestore Timestamp to JavaScript Date
   const createdAtDate = notification.createdAt.toDate();
 
@@ -14,15 +15,21 @@ const Notification = ({notification}) => {
 
   // Create the formatted date string
   const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  const linkTo = '/account/' + notification.sender;
 
   return (
     <>
-      <article className="notification-item">
-        <div className="notification-remove">&times;</div>
+      <Link to={linkTo} className="notification-item">
+        <div className="notification-remove" onClick={removeNotification}>
+          &times;
+        </div>
         <img className="notification-img" src={notification.photoURL === 'default' ? profile : notification.photoURL} alt=""></img>
-        <p>{notification.message}</p>
-        <p>{formattedDate}</p>
-      </article>
+        <div className="notification-text">
+          <h3>{notification.type}</h3>
+          <p>{notification.message}</p>
+          <p>{formattedDate}</p>
+        </div>
+      </Link>
     </>
   );
 };
