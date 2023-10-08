@@ -2,6 +2,7 @@ import '../../assets/css/account.css';
 
 import editPen from '../../assets/icons/pen-solid.svg';
 import profile from '../../assets/icons/user-solid.svg';
+import ellipsis from '../../assets/icons/ellipsis-solid.svg';
 
 import {useEffect, useState} from 'react';
 import {useToast} from '../../hooks/useToast';
@@ -26,13 +27,12 @@ const Account = ({uid}) => {
 
   const [userData, setUserData] = useState({});
   const [followerCount, setFollowerCount] = useState(0);
-  const [followingCount, setFollowingCount] = useState(0);
   const [isPopUpActive, setIsPopUpActive] = useState(false);
 
   const [inputPhoto, setInputPhoto] = useState(null);
   const [inputName, setInputName] = useState();
 
-  const [isFollowed, setIsFollowed] = useState(false);
+  const [isUserActionsActive, setIsUserActionsActive] = useState(false);
   const isOwnProfile = currentUser.uid === uid;
 
   useEffect(() => {
@@ -66,45 +66,9 @@ const Account = ({uid}) => {
       }
     };
 
-    const getFollowingCount = async () => {
-      showLoader();
-      try {
-        const querySnapshot = await db.collection('follows').doc(uid).get();
-        if (!querySnapshot.exists) {
-          hideLoader();
-          return;
-        }
-        setFollowingCount(querySnapshot.data().following.length);
-        hideLoader();
-      } catch (error) {
-        hideLoader();
-        addToast('error', error.message);
-      }
-    };
-
-    const getIsFollowed = async () => {
-      showLoader();
-      try {
-        const querySnapshot = await db.collection('followers').doc(uid).get();
-        if (!querySnapshot.exists) {
-          hideLoader();
-          return;
-        }
-        const followers = querySnapshot.data().followers;
-        const isFollowed = followers.includes(currentUser.uid);
-        setIsFollowed(isFollowed);
-        hideLoader();
-      } catch (error) {
-        hideLoader();
-        addToast('error', error.message);
-      }
-    };
-
     fetchUserData();
     getFollowerCount();
-    getFollowingCount();
-    getIsFollowed();
-  }, [uid, isFollowed]);
+  }, [uid]);
 
   const togglePopUp = () => {
     setIsPopUpActive(!isPopUpActive);
@@ -140,77 +104,8 @@ const Account = ({uid}) => {
     }
   };
 
-  const handleFollow = (currentUserId, userToFollowId, isCurrentlyFollowed) => async () => {
-    showLoader();
-
-    try {
-      if (isCurrentlyFollowed) {
-        await db
-          .collection('followers')
-          .doc(userToFollowId)
-          .update({
-            followers: firebase.firestore.FieldValue.arrayRemove(currentUserId),
-          });
-
-        await db
-          .collection('follows')
-          .doc(currentUserId)
-          .update({
-            following: firebase.firestore.FieldValue.arrayRemove(userToFollowId),
-          });
-
-        //send notification
-        await db
-          .collection('notifications')
-          .doc(userToFollowId)
-          .collection('userNotifications')
-          .add({
-            type: 'follow',
-            message: `${currentUser.displayName} stopped following you.`,
-            sender: currentUserId,
-            photoURL: currentUser.photoURL,
-            name: currentUser.displayName,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          });
-
-        setIsFollowed(false);
-        hideLoader();
-      } else {
-        await db
-          .collection('followers')
-          .doc(userToFollowId)
-          .update({
-            followers: firebase.firestore.FieldValue.arrayUnion(currentUserId),
-          });
-
-        await db
-          .collection('follows')
-          .doc(currentUserId)
-          .update({
-            following: firebase.firestore.FieldValue.arrayUnion(userToFollowId),
-          });
-
-        //send notification
-        await db
-          .collection('notifications')
-          .doc(userToFollowId)
-          .collection('userNotifications')
-          .add({
-            type: 'follow',
-            message: `${currentUser.displayName} started following you.`,
-            sender: currentUserId,
-            photoURL: currentUser.photoURL,
-            name: currentUser.displayName,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          });
-
-        setIsFollowed(true);
-        hideLoader();
-      }
-    } catch (error) {
-      hideLoader();
-      addToast('error', error.message);
-    }
+  const toggleUserActions = () => {
+    setIsUserActionsActive(!isUserActionsActive);
   };
 
   return (
@@ -246,15 +141,36 @@ const Account = ({uid}) => {
           <span className="role">{userData.role}</span>
           <h1 className="name">{userData.firstName + ' ' + userData.lastName}</h1>
           <span className="email">
-            28 public playlist - <Link to={`/account/${uid}/followers`}>{followerCount} followers</Link> - <Link to={`/account/${uid}/following`}> {followingCount} follows</Link>
+            28 public playlist -{' '}
+            <Link to={`/account/${uid}/friends`}>
+              {followerCount} {followerCount > 1 ? 'friends' : 'friend'}
+            </Link>
           </span>
         </div>
       </CommonHeader>
       <CommonBody>
         {!isOwnProfile ? (
           <div className="btn-user-action-container">
-            <Button type="button" text={isFollowed ? 'Unfollow' : 'Follow'} className="btn-light btn-user-action" onClick={handleFollow(currentUser.uid, uid, isFollowed)} />
-            <Button type="button" text="Message" className="btn-light btn-user-action" />
+            <img src={ellipsis} alt="" className="btn-user-action" onClick={toggleUserActions} />
+            {isUserActionsActive ? (
+              <ul className="user-actions-list">
+                <li className="user-actions-item">
+                  <button className="btn-user-action">
+                    <span>Add friend</span>
+                  </button>
+                </li>
+                <li className="user-actions-item">
+                  <button className="btn-user-action">
+                    <span>Send message</span>
+                  </button>
+                </li>
+                <li className="user-actions-item">
+                  <button className="btn-user-action">
+                    <span>Share</span>
+                  </button>
+                </li>
+              </ul>
+            ) : null}
           </div>
         ) : null}
       </CommonBody>
