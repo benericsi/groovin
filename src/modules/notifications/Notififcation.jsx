@@ -27,7 +27,74 @@ const Notification = ({notification}) => {
 
   const acceptFriendRequest = async (e) => {
     e.preventDefault();
-    return;
+    showLoader();
+
+    try {
+      // Set the friend request status to accepted
+      await db.collection('friendRequests').doc(notification.sender).collection('friendRequests').doc(notification.receiver).update({
+        status: 'accepted',
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
+      await db.collection('friendRequests').doc(notification.receiver).collection('friendRequests').doc(notification.sender).set({
+        sender: notification.receiver,
+        receiver: notification.sender,
+        status: 'accepted',
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
+      // Set the friends collection for both users with arrayUnion
+      await db
+        .collection('friends')
+        .doc(notification.sender)
+        .update({
+          friendList: firebase.firestore.FieldValue.arrayUnion(notification.receiver),
+        });
+
+      await db
+        .collection('friends')
+        .doc(notification.receiver)
+        .update({
+          friendList: firebase.firestore.FieldValue.arrayUnion(notification.sender),
+        });
+
+      // Remove the notification from the receiver's notifications collection
+      await db
+        .collection('notifications')
+        .doc(notification.receiver)
+        .collection('notifications')
+        .where('sender', '==', notification.sender)
+        .where('receiver', '==', notification.receiver)
+        .where('type', '==', 'New Friend Request')
+        .where('timestamp', '==', notification.timestamp)
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            doc.ref.delete();
+          });
+        });
+
+      // Get the reciever's data and send a notifaction to the sender
+      const receiverData = await db.collection('users').doc(notification.receiver).get();
+      const receiverName = receiverData.data().firstName + ' ' + receiverData.data().lastName;
+      const receiverPhoto = receiverData.data().photoURL;
+
+      await db.collection('notifications').doc(notification.sender).collection('notifications').add({
+        sender: notification.receiver,
+        receiver: notification.sender,
+        type: 'Friend Request Accepted',
+        message: 'accepted your friend request.',
+        senderName: receiverName,
+        senderPhoto: receiverPhoto,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
+      hideLoader();
+      addToast('success', 'Friend request accepted.');
+    } catch (error) {
+      hideLoader();
+      addToast('error', error.message);
+    }
   };
 
   const declineFriendRequest = async (e) => {
@@ -37,9 +104,6 @@ const Notification = ({notification}) => {
     try {
       // Remove the friend request from the user's friend requests
       await db.collection('friendRequests').doc(notification.sender).collection('friendRequests').doc(notification.receiver).delete();
-
-      // Remove the friend request from the receiver's friend requests
-      await db.collection('friendRequests').doc(notification.receiver).collection('friendRequests').doc(notification.sender).delete();
 
       // Remove the notification from the receiver's notifications collection
       await db
@@ -78,9 +142,6 @@ const Notification = ({notification}) => {
       hideLoader();
       addToast('error', error.message);
     }
-
-    // Re-render the notifications
-    //removeNotification();
   };
 
   const clearNotification = async (e) => {
