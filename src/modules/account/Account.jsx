@@ -1,5 +1,6 @@
 import '../../assets/css/account.css';
 
+import plus from '../../assets/icons/plus-solid.svg';
 import editPen from '../../assets/icons/pen-solid.svg';
 import profile from '../../assets/icons/user-solid.svg';
 import ellipsis from '../../assets/icons/ellipsis-solid.svg';
@@ -266,14 +267,16 @@ const Account = ({uid}) => {
             <img src={userData.photoURL == 'default' ? profile : userData.photoURL} className={userData.photoURL == 'default' ? 'default' : ''} />
           </button>
           {isOwnProfile && (
-            <div className="profile-photo-edit" onClick={togglePopUp}>
-              <img src={editPen} alt="" />
-              <span>Change picture</span>
+            <div className="story">
+              <img src={plus} alt="" />
+              <span>Add to story</span>
             </div>
           )}
         </div>
         <div className="profile-info">
-          <span className="role">{userData.role}</span>
+          <span className="role">
+            {userData.role} {isOwnProfile && <img src={editPen} alt="" onClick={togglePopUp} />}
+          </span>
           <h1 className="name">{userData.firstName + ' ' + userData.lastName}</h1>
           <span className="email">
             28 public playlist -{' '}
