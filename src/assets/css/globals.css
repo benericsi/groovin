@@ -52,13 +52,21 @@ a {
   color: #ffffff;
 }
 
+.no-data {
+  position: relative;
+  text-align: center;
+  align-items: center;
+  line-height: 1.4;
+  margin-top: 5rem;
+}
+
 @media only screen and (max-width: 768px) {
   html {
-    line-height: 1.2rem;
+    line-height: 1.2;
   }
 }
 @media only screen and (max-width: 500px) {
   html {
-    line-height: 1rem;
+    line-height: 1;
   }
 }/*# sourceMappingURL=globals.css.map */

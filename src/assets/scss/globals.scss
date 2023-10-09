@@ -58,16 +58,24 @@ a {
     color: $clr-white;
 }
 
+.no-data {
+    position: relative;
+    text-align: center;
+    align-items: center;
+    line-height: 1.4;
+    margin-top: 5rem;
+}
+
 // Media Queries - Tablet
 @media only screen and (max-width: 768px) {
     html {
-        line-height: 1.2rem;
+        line-height: 1.2;
     }
 }
 
 // Media Queries - Mobile
 @media only screen and (max-width: 500px) {
     html {
-        line-height: 1rem;
+        line-height: 1;
     }
 }

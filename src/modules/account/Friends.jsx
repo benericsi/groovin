@@ -16,18 +16,8 @@ const Friends = ({uid}) => {
       try {
         const friendsDoc = await db.collection('friends').doc(uid).get();
 
-        if (!friendsDoc.exists) {
-          addToast('info', 'There are no friends yet.');
-          hideLoader();
-          return;
-        } else if (friendsDoc.data().friendList.length === 0) {
-          addToast('info', 'There are no friends yet.');
-          hideLoader();
-          return;
-        } else {
-          setFriends(friendsDoc.data().friendList);
-          hideLoader();
-        }
+        setFriends(friendsDoc.data().friendList);
+        hideLoader();
       } catch (error) {
         addToast('error', error.message);
         hideLoader();
@@ -40,6 +30,7 @@ const Friends = ({uid}) => {
   return (
     <section className="list-section">
       <h1>Friends</h1>
+      {friends.length === 0 && <h2 className="no-data">There are no friends yet.</h2>}
       <div className="list-container">{friends && friends.map((friend) => <UserCard key={friend} user={friend} />)}</div>
     </section>
   );

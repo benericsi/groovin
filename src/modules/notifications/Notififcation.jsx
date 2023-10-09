@@ -6,7 +6,7 @@ import {useToast} from '../../hooks/useToast';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 
-const Notification = ({notification, removeNotification}) => {
+const Notification = ({notification}) => {
   const {showLoader, hideLoader} = useLoader();
   const {addToast} = useToast();
 
@@ -49,6 +49,7 @@ const Notification = ({notification, removeNotification}) => {
         .where('sender', '==', notification.sender)
         .where('receiver', '==', notification.receiver)
         .where('type', '==', 'New Friend Request')
+        .where('timestamp', '==', notification.timestamp)
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
@@ -78,15 +79,44 @@ const Notification = ({notification, removeNotification}) => {
       addToast('error', error.message);
     }
 
-    // render notifications in parent
-    //removeNotification(notification);
+    // Re-render the notifications
+    //removeNotification();
+  };
+
+  const clearNotification = async (e) => {
+    e.preventDefault();
+    showLoader();
+
+    try {
+      // Remove the notification from the receiver's notifications collection
+      await db
+        .collection('notifications')
+        .doc(notification.receiver)
+        .collection('notifications')
+        .where('sender', '==', notification.sender)
+        .where('receiver', '==', notification.receiver)
+        .where('type', '==', notification.type)
+        .where('timestamp', '==', notification.timestamp)
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            doc.ref.delete();
+          });
+        });
+
+      hideLoader();
+      addToast('success', 'Notification removed.');
+    } catch (error) {
+      hideLoader();
+      addToast('error', error.message);
+    }
   };
 
   return (
     <>
       <Link to={linkTo} className="notification-item">
         {notification.type !== 'New Friend Request' ? (
-          <div className="notification-remove" onClick={removeNotification}>
+          <div className="notification-remove" onClick={clearNotification}>
             &times;
           </div>
         ) : (
