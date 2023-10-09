@@ -35,87 +35,108 @@ const Account = ({uid}) => {
 
   const [isUserActionsActive, setIsUserActionsActive] = useState(false);
   const [friendStatus, setFriendStatus] = useState();
+  const [accepotOrDecline, setAccepotOrDecline] = useState(false);
   const isOwnProfile = currentUser.uid === uid;
 
   useEffect(() => {
     const fetchUserData = async () => {
-      showLoader();
       try {
+        showLoader();
         const querySnapshot = await db.collection('users').doc(uid).get();
         setUserData(querySnapshot.data());
-        setInputPhoto(querySnapshot.data().photoURL);
         setInputName(querySnapshot.data().firstName + ' ' + querySnapshot.data().lastName);
-        hideLoader();
       } catch (error) {
-        hideLoader();
         addToast('error', error.message);
+      } finally {
+        hideLoader();
       }
     };
 
     const getFriendCount = async () => {
-      showLoader();
       try {
+        showLoader();
         const querySnapshot = await db.collection('friends').doc(uid).get();
         if (!querySnapshot.exists) {
-          hideLoader();
           return;
         }
         setFriendCount(querySnapshot.data().friendList.length);
-        hideLoader();
       } catch (error) {
-        hideLoader();
         addToast('error', error.message);
+      } finally {
+        hideLoader();
       }
     };
 
     const getFriendStatus = async () => {
-      showLoader();
-
       try {
-        const querySnapshot = await db.collection('friendRequests').doc(currentUser.uid).collection('friendRequests').doc(uid).get();
+        showLoader();
+        const querySnapshot = await db.collection('friendRequests').doc(uid).collection('friendRequests').doc(currentUser.uid).get();
+        const querySnapshot2 = await db.collection('friendRequests').doc(currentUser.uid).collection('friendRequests').doc(uid).get();
+
+        if (querySnapshot2.exists && querySnapshot2.data().status === 'pending') {
+          setAccepotOrDecline(true);
+          setFriendStatus('');
+          return;
+        }
 
         if (!querySnapshot.exists) {
           setFriendStatus('Add friend');
-          hideLoader();
           return;
         }
 
         if (querySnapshot.data().status === 'pending') {
           setFriendStatus('Cancel friend request');
-          hideLoader();
           return;
         }
 
         if (querySnapshot.data().status === 'accepted') {
           setFriendStatus('Remove friend');
-          hideLoader();
           return;
         }
-
-        hideLoader();
       } catch (error) {
-        hideLoader();
         addToast('error', error.message);
+      } finally {
+        hideLoader();
       }
     };
 
     fetchUserData();
     getFriendCount();
     getFriendStatus();
-  }, [uid, friendCount, friendStatus]);
+  }, [uid, friendCount, friendStatus, accepotOrDecline]);
 
   const togglePopUp = () => {
     setIsPopUpActive(!isPopUpActive);
   };
 
   const handleModifyUser = async () => {
-    showLoader();
-
     try {
+      showLoader();
       const storageRef = storage.ref();
       const fileRef = storageRef.child(`profile-images/${uid}`);
-      await fileRef.put(inputPhoto);
+      // Prevent user from changing their name to an empty string
+      if (inputName === '') {
+        addToast('error', 'Name cannot be empty!');
+        return;
+      }
 
+      if (!inputPhoto) {
+        // Prevent user from changing photo
+        await db
+          .collection('users')
+          .doc(uid)
+          .update({
+            firstName: inputName.split(' ')[0],
+            lastName: inputName.split(' ')[1],
+          });
+
+        addToast('success', 'Credentials successfully saved!');
+        togglePopUp();
+        window.location.reload();
+        return;
+      }
+
+      await fileRef.put(inputPhoto);
       // Get the image URL from Firebase Storage
       const imageUrl = await fileRef.getDownloadURL();
 
@@ -128,13 +149,13 @@ const Account = ({uid}) => {
           photoURL: inputPhoto ? imageUrl : 'default',
         });
 
-      hideLoader();
       addToast('success', 'Credentials successfully saved!');
       togglePopUp();
       window.location.reload();
     } catch (error) {
-      hideLoader();
       addToast('error', error.message);
+    } finally {
+      hideLoader();
     }
   };
 
@@ -164,7 +185,7 @@ const Account = ({uid}) => {
 
   const sendFriendRequest = async () => {
     try {
-      await db.collection('friendRequests').doc(currentUser.uid).collection('friendRequests').doc(uid).set({
+      await db.collection('friendRequests').doc(uid).collection('friendRequests').doc(currentUser.uid).set({
         sender: currentUser.uid,
         receiver: uid,
         status: 'pending',
@@ -191,7 +212,7 @@ const Account = ({uid}) => {
 
   const cancelFriendRequest = async () => {
     try {
-      await db.collection('friendRequests').doc(currentUser.uid).collection('friendRequests').doc(uid).delete();
+      await db.collection('friendRequests').doc(uid).collection('friendRequests').doc(currentUser.uid).delete();
       setFriendStatus('Add friend');
       addToast('success', 'Friend request cancelled!');
 
@@ -223,8 +244,8 @@ const Account = ({uid}) => {
         });
 
       // Remove friend request from both users
-      await db.collection('friendRequests').doc(currentUser.uid).collection('friendRequests').doc(uid).delete();
       await db.collection('friendRequests').doc(uid).collection('friendRequests').doc(currentUser.uid).delete();
+      await db.collection('friendRequests').doc(currentUser.uid).collection('friendRequests').doc(uid).delete();
 
       // Notify the deleted friend
       await db.collection('notifications').doc(uid).collection('notifications').add({
@@ -241,6 +262,119 @@ const Account = ({uid}) => {
       addToast('success', 'Friend removed!');
     } catch (error) {
       addToast('error', error.message);
+    }
+  };
+
+  const acceptFriendRequest = async (e) => {
+    e.preventDefault();
+
+    try {
+      showLoader();
+      // Set the friend request status to accepted
+      await db.collection('friendRequests').doc(currentUser.uid).collection('friendRequests').doc(uid).update({
+        status: 'accepted',
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
+      await db.collection('friendRequests').doc(uid).collection('friendRequests').doc(currentUser.uid).set({
+        sender: uid,
+        receiver: currentUser.uid,
+        status: 'accepted',
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
+      // Set the friends collection for both users with arrayUnion
+      await db
+        .collection('friends')
+        .doc(currentUser.uid)
+        .update({
+          friendList: firebase.firestore.FieldValue.arrayUnion(uid),
+        });
+
+      await db
+        .collection('friends')
+        .doc(uid)
+        .update({
+          friendList: firebase.firestore.FieldValue.arrayUnion(currentUser.uid),
+        });
+
+      // Remove the notification from the current user's notifications collection
+      await db
+        .collection('notifications')
+        .doc(currentUser.uid)
+        .collection('notifications')
+        .where('sender', '==', uid)
+        .where('receiver', '==', currentUser.uid)
+        .where('type', '==', 'New Friend Request')
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            doc.ref.delete();
+          });
+        });
+
+      await db.collection('notifications').doc(uid).collection('notifications').add({
+        sender: currentUser.uid,
+        receiver: uid,
+        type: 'Friend Request Accepted',
+        message: 'accepted your friend request.',
+        senderName: currentUser.displayName,
+        senderPhoto: currentUser.photoURL,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
+      setFriendStatus('Remove friend');
+      setAccepotOrDecline(false);
+
+      addToast('success', 'Friend request accepted.');
+    } catch (error) {
+      addToast('error', error.message);
+    } finally {
+      hideLoader();
+    }
+  };
+
+  const declineFriendRequest = async (e) => {
+    e.preventDefault();
+
+    try {
+      showLoader();
+      await db.collection('friendRequests').doc(currentUser.uid).collection('friendRequests').doc(uid).delete();
+
+      // Remove the notification from the receiver's notifications collection
+      await db
+        .collection('notifications')
+        .doc(currentUser.uid)
+        .collection('notifications')
+        .where('sender', '==', uid)
+        .where('receiver', '==', currentUser.uid)
+        .where('type', '==', 'New Friend Request')
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            doc.ref.delete();
+          });
+        });
+
+      // Send a notification to the sender
+      await db.collection('notifications').doc(uid).collection('notifications').add({
+        sender: currentUser.uid,
+        receiver: uid,
+        type: 'Friend Request Declined',
+        message: 'declined your friend request.',
+        senderName: currentUser.displayName,
+        senderPhoto: currentUser.photoURL,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
+      setFriendStatus('Add friend');
+      setAccepotOrDecline(false);
+
+      addToast('success', 'Friend request declined.');
+    } catch (error) {
+      addToast('error', error.message);
+    } finally {
+      hideLoader();
     }
   };
 
@@ -292,11 +426,26 @@ const Account = ({uid}) => {
             <img src={ellipsis} alt="" className="btn-user-action" onClick={toggleUserActions} />
             {isUserActionsActive ? (
               <ul className="user-actions-list">
-                <li className="user-actions-item">
-                  <button className="btn-user-action" onClick={handleFriendAction}>
-                    <span>{friendStatus}</span>
-                  </button>
-                </li>
+                {friendStatus !== '' ? (
+                  <li className="user-actions-item">
+                    <button className="btn-user-action" onClick={handleFriendAction}>
+                      <span>{friendStatus}</span>
+                    </button>
+                  </li>
+                ) : (
+                  <>
+                    <li className="user-actions-item">
+                      <button className="btn-user-action" onClick={acceptFriendRequest}>
+                        <span>Accept friend request</span>
+                      </button>
+                    </li>
+                    <li className="user-actions-item">
+                      <button className="btn-user-action" onClick={declineFriendRequest}>
+                        <span>Decline friend request</span>
+                      </button>
+                    </li>
+                  </>
+                )}
                 <li className="user-actions-item">
                   <button className="btn-user-action">
                     <span>Send message</span>
