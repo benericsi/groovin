@@ -32,20 +32,13 @@ const Notifications = () => {
 
     fetchUserNotifications();
     hideLoader();
-  }, []);
-
-  const removeNotification = async (e) => {
-    if (e) {
-      e.preventDefault();
-    }
-
-    return;
-  };
+  }, [notifications]);
 
   return (
     <CommonBody>
       <h1>Notifications</h1>
-      <div className="notification-container">{notifications && notifications.map((notification) => <Notification key={notification.timestamp} notification={notification} removeNotification={removeNotification} />)}</div>
+      {notifications.length === 0 && <h2 className="no-data">You have no notifications.</h2>}
+      <div className="notification-container">{notifications && notifications.map((notification) => <Notification key={notification.timestamp} notification={notification} />)}</div>
     </CommonBody>
   );
 };
