@@ -35,7 +35,7 @@ const Account = ({uid}) => {
 
   const [isUserActionsActive, setIsUserActionsActive] = useState(false);
   const [friendStatus, setFriendStatus] = useState();
-  const [accepotOrDecline, setAccepotOrDecline] = useState(false);
+  const [acceptOrDecline, setAcceptOrDecline] = useState(false);
   const isOwnProfile = currentUser.uid === uid;
 
   useEffect(() => {
@@ -74,7 +74,7 @@ const Account = ({uid}) => {
         const querySnapshot2 = await db.collection('friendRequests').doc(currentUser.uid).collection('friendRequests').doc(uid).get();
 
         if (querySnapshot2.exists && querySnapshot2.data().status === 'pending') {
-          setAccepotOrDecline(true);
+          setAcceptOrDecline(true);
           setFriendStatus('');
           return;
         }
@@ -103,7 +103,7 @@ const Account = ({uid}) => {
     fetchUserData();
     getFriendCount();
     getFriendStatus();
-  }, [uid, friendCount, friendStatus, accepotOrDecline]);
+  }, [uid, friendCount, friendStatus]);
 
   const togglePopUp = () => {
     setIsPopUpActive(!isPopUpActive);
@@ -185,6 +185,15 @@ const Account = ({uid}) => {
 
   const sendFriendRequest = async () => {
     try {
+      // Check if the user has already sent you a friend request
+      const querySnapshot = await db.collection('friendRequests').doc(currentUser.uid).collection('friendRequests').doc(uid).get();
+      if (querySnapshot.exists && querySnapshot.data().status === 'pending') {
+        addToast('error', 'This user already sent you a friend request!');
+        setFriendStatus('');
+        setAcceptOrDecline(true);
+        return;
+      }
+
       await db.collection('friendRequests').doc(uid).collection('friendRequests').doc(currentUser.uid).set({
         sender: currentUser.uid,
         receiver: uid,
@@ -212,13 +221,29 @@ const Account = ({uid}) => {
 
   const cancelFriendRequest = async () => {
     try {
+      // Check if there is no friend request pending
+      const querySnapshot = await db.collection('friendRequests').doc(currentUser.uid).collection('friendRequests').doc(uid).get();
+      if (!querySnapshot.exists) {
+        addToast('error', 'There is no friend request pending!');
+        setFriendStatus('Add friend');
+        return;
+      }
+
+      // Check if the friend request is accepted
+      const querySnapshot1 = await db.collection('friendRequests').doc(uid).collection('friendRequests').doc(currentUser.uid).get();
+      if (querySnapshot1.data().status === 'accepted') {
+        addToast('error', 'You cannot cancel a friend request that has been accepted!');
+        setFriendStatus('Remove friend');
+        return;
+      }
+
       await db.collection('friendRequests').doc(uid).collection('friendRequests').doc(currentUser.uid).delete();
       setFriendStatus('Add friend');
       addToast('success', 'Friend request cancelled!');
 
       //remove notification
-      const querySnapshot = await db.collection('notifications').doc(uid).collection('notifications').where('sender', '==', currentUser.uid).where('receiver', '==', uid).where('type', '==', 'New Friend Request').get();
-      querySnapshot.forEach((doc) => {
+      const querySnapshot2 = await db.collection('notifications').doc(uid).collection('notifications').where('sender', '==', currentUser.uid).where('receiver', '==', uid).where('type', '==', 'New Friend Request').get();
+      querySnapshot2.forEach((doc) => {
         doc.ref.delete();
       });
     } catch (error) {
@@ -228,6 +253,14 @@ const Account = ({uid}) => {
 
   const removeFriend = async () => {
     try {
+      // Check if the user already removed you from their friend list
+      const querySnapshot1 = await db.collection('friends').doc(uid).get();
+      if (!querySnapshot1.data().friendList.includes(currentUser.uid)) {
+        addToast('error', 'This user has already removed you from their friend list!');
+        setFriendStatus('Add friend');
+        return;
+      }
+
       // Remove the friend request from both users
       await db
         .collection('friends')
@@ -270,6 +303,15 @@ const Account = ({uid}) => {
 
     try {
       showLoader();
+      // Check if there's no friend request pending
+      const querySnapshot1 = await db.collection('friendRequests').doc(currentUser.uid).collection('friendRequests').doc(uid).get();
+      if (!querySnapshot1.exists) {
+        addToast('error', 'There is no friend request pending!');
+        setFriendStatus('Add friend');
+        setAcceptOrDecline(false);
+        return;
+      }
+
       // Set the friend request status to accepted
       await db.collection('friendRequests').doc(currentUser.uid).collection('friendRequests').doc(uid).update({
         status: 'accepted',
@@ -324,7 +366,7 @@ const Account = ({uid}) => {
       });
 
       setFriendStatus('Remove friend');
-      setAccepotOrDecline(false);
+      setAcceptOrDecline(false);
 
       addToast('success', 'Friend request accepted.');
     } catch (error) {
@@ -339,6 +381,16 @@ const Account = ({uid}) => {
 
     try {
       showLoader();
+
+      // Check if there's no friend request pending
+      const querySnapshot1 = await db.collection('friendRequests').doc(currentUser.uid).collection('friendRequests').doc(uid).get();
+      if (!querySnapshot1.exists) {
+        addToast('error', 'There is no friend request pending!');
+        setFriendStatus('Add friend');
+        setAcceptOrDecline(false);
+        return;
+      }
+
       await db.collection('friendRequests').doc(currentUser.uid).collection('friendRequests').doc(uid).delete();
 
       // Remove the notification from the receiver's notifications collection
@@ -368,7 +420,7 @@ const Account = ({uid}) => {
       });
 
       setFriendStatus('Add friend');
-      setAccepotOrDecline(false);
+      setAcceptOrDecline(false);
 
       addToast('success', 'Friend request declined.');
     } catch (error) {

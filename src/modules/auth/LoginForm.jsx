@@ -83,7 +83,6 @@ const LoginForm = () => {
 
     loginWithGoogle()
       .then(async (cred) => {
-        console.log(cred.user);
         if (cred.additionalUserInfo.isNewUser) {
           await db.collection('users').doc(cred.user.uid).set({
             firstName: cred.additionalUserInfo.profile.given_name,
@@ -99,13 +98,14 @@ const LoginForm = () => {
         }
 
         // Signup was successful
-        hideLoader();
         addToast('success', 'You have successfully signed in!');
         history('/home');
       })
       .catch((error) => {
-        hideLoader();
         addToast('error', error.message);
+      })
+      .finally(() => {
+        hideLoader();
       });
   };
 

@@ -14,26 +14,23 @@ const UserCard = ({user}) => {
   const {addToast} = useToast();
 
   useEffect(() => {
-    showLoader();
-
     const fetchUserData = async () => {
+      showLoader();
       try {
         if (user === '') {
           addToast('info', 'There are no users yet.');
-          hideLoader();
           return;
         }
         const userDoc = await db.collection('users').doc(user).get();
 
         if (!userDoc.exists) {
-          hideLoader();
           return;
         } else {
           setUserData(userDoc.data());
-          hideLoader();
         }
       } catch (error) {
         addToast('error', error.message);
+      } finally {
         hideLoader();
       }
     };

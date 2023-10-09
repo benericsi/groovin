@@ -27,6 +27,7 @@ const Header = () => {
     // Fetch the profile image data asynchronously
     const fetchData = async () => {
       try {
+        showLoader();
         const querySnapshot = await db.collection('users').get();
         querySnapshot.forEach((doc) => {
           if (doc.data().email === currentUser.email) {
@@ -35,6 +36,8 @@ const Header = () => {
         });
       } catch (error) {
         addToast('error', error.message);
+      } finally {
+        hideLoader();
       }
     };
 
