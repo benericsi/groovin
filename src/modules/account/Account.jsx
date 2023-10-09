@@ -151,8 +151,8 @@ const Account = ({uid}) => {
       case 'Cancel friend request':
         await cancelFriendRequest();
         break;
-      case 'Friends':
-        //await removeFriend();
+      case 'Remove friend':
+        await removeFriend();
         break;
       default:
         break;
@@ -199,6 +199,45 @@ const Account = ({uid}) => {
       querySnapshot.forEach((doc) => {
         doc.ref.delete();
       });
+    } catch (error) {
+      addToast('error', error.message);
+    }
+  };
+
+  const removeFriend = async () => {
+    try {
+      // Remove the friend request from both users
+      await db
+        .collection('friends')
+        .doc(currentUser.uid)
+        .update({
+          friendList: firebase.firestore.FieldValue.arrayRemove(uid),
+        });
+
+      await db
+        .collection('friends')
+        .doc(uid)
+        .update({
+          friendList: firebase.firestore.FieldValue.arrayRemove(currentUser.uid),
+        });
+
+      // Remove friend request from both users
+      await db.collection('friendRequests').doc(currentUser.uid).collection('friendRequests').doc(uid).delete();
+      await db.collection('friendRequests').doc(uid).collection('friendRequests').doc(currentUser.uid).delete();
+
+      // Notify the deleted friend
+      await db.collection('notifications').doc(uid).collection('notifications').add({
+        sender: currentUser.uid,
+        receiver: uid,
+        type: 'Friend Removed',
+        message: 'removed you from their friend list.',
+        senderName: currentUser.displayName,
+        senderPhoto: currentUser.photoURL,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
+      setFriendStatus('Add friend');
+      addToast('success', 'Friend removed!');
     } catch (error) {
       addToast('error', error.message);
     }
