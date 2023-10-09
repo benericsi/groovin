@@ -31,14 +31,14 @@ const Notification = ({notification}) => {
 
     try {
       // Set the friend request status to accepted
-      await db.collection('friendRequests').doc(notification.sender).collection('friendRequests').doc(notification.receiver).update({
+      await db.collection('friendRequests').doc(notification.receiver).collection('friendRequests').doc(notification.sender).update({
         status: 'accepted',
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       });
 
-      await db.collection('friendRequests').doc(notification.receiver).collection('friendRequests').doc(notification.sender).set({
-        sender: notification.receiver,
-        receiver: notification.sender,
+      await db.collection('friendRequests').doc(notification.sender).collection('friendRequests').doc(notification.receiver).set({
+        sender: notification.sender,
+        receiver: notification.receiver,
         status: 'accepted',
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       });
@@ -103,7 +103,7 @@ const Notification = ({notification}) => {
 
     try {
       // Remove the friend request from the user's friend requests
-      await db.collection('friendRequests').doc(notification.sender).collection('friendRequests').doc(notification.receiver).delete();
+      await db.collection('friendRequests').doc(notification.receiver).collection('friendRequests').doc(notification.sender).delete();
 
       // Remove the notification from the receiver's notifications collection
       await db
