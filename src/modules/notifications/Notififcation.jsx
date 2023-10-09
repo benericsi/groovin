@@ -27,9 +27,10 @@ const Notification = ({notification}) => {
 
   const acceptFriendRequest = async (e) => {
     e.preventDefault();
-    showLoader();
 
     try {
+      showLoader();
+
       // Set the friend request status to accepted
       await db.collection('friendRequests').doc(notification.receiver).collection('friendRequests').doc(notification.sender).update({
         status: 'accepted',
@@ -89,19 +90,20 @@ const Notification = ({notification}) => {
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       });
 
-      hideLoader();
       addToast('success', 'Friend request accepted.');
     } catch (error) {
-      hideLoader();
       addToast('error', error.message);
+    } finally {
+      hideLoader();
     }
   };
 
   const declineFriendRequest = async (e) => {
     e.preventDefault();
-    showLoader();
 
     try {
+      showLoader();
+
       // Remove the friend request from the user's friend requests
       await db.collection('friendRequests').doc(notification.receiver).collection('friendRequests').doc(notification.sender).delete();
 
@@ -136,19 +138,19 @@ const Notification = ({notification}) => {
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       });
 
-      hideLoader();
       addToast('success', 'Friend request declined.');
     } catch (error) {
-      hideLoader();
       addToast('error', error.message);
+    } finally {
+      hideLoader();
     }
   };
 
   const clearNotification = async (e) => {
     e.preventDefault();
-    showLoader();
 
     try {
+      showLoader();
       // Remove the notification from the receiver's notifications collection
       await db
         .collection('notifications')
@@ -165,11 +167,11 @@ const Notification = ({notification}) => {
           });
         });
 
-      hideLoader();
       addToast('success', 'Notification removed.');
     } catch (error) {
-      hideLoader();
       addToast('error', error.message);
+    } finally {
+      hideLoader();
     }
   };
 

@@ -18,19 +18,17 @@ const Dashboard = () => {
     document.title = 'Dashboard | Groovin.';
 
     const fetchUserData = async () => {
-      showLoader();
-
       try {
+        showLoader();
         const querySnapshot = await db.collection('users').doc(currentUser.uid).get();
         currentUser.updateProfile({
           displayName: querySnapshot.data().firstName + ' ' + querySnapshot.data().lastName,
           photoURL: querySnapshot.data().photoURL,
         });
-
-        hideLoader();
       } catch (error) {
-        hideLoader();
         addToast('error', error.message);
+      } finally {
+        hideLoader();
       }
     };
 
