@@ -154,6 +154,7 @@
 .btn-user-action-container .user-actions-list .user-actions-item {
   width: 100%;
   cursor: pointer;
+  height: 2.5rem;
 }
 .btn-user-action-container .user-actions-list .user-actions-item:hover {
   background-color: rgba(255, 255, 255, 0.1);
@@ -167,4 +168,6 @@
   color: rgba(255, 255, 255, 0.9);
   font-size: auto;
   border-radius: 2px;
+  display: flex;
+  align-items: center;
 }/*# sourceMappingURL=account.css.map */
