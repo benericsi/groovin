@@ -4,13 +4,13 @@ import CommonBody from '../../common/CommonBody';
 import UserList from './UserList';
 import ChatRoom from './ChatRoom';
 
-const Messages = () => {
+const Messages = ({uid}) => {
   return (
     <CommonBody>
       <h1>Messages</h1>
       <div className="messages-container">
         <UserList />
-        <ChatRoom />
+        <ChatRoom uid={uid} />
       </div>
     </CommonBody>
   );

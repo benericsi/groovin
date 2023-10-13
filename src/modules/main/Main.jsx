@@ -16,7 +16,7 @@ const Main = () => {
     home: <h1>Home</h1>,
     search: <h1>Search</h1>,
     notifications: <Notifications />,
-    messages: <Messages />,
+    messages: <Messages uid={uid} />,
     account: <Account uid={uid} />,
     friends: <Friends uid={uid} />,
   };
