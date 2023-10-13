@@ -30,7 +30,7 @@ const Header = () => {
         showLoader();
         const querySnapshot = await db.collection('users').get();
         querySnapshot.forEach((doc) => {
-          if (doc.data().email === currentUser.email) {
+          if (doc.data().uid === currentUser.uid) {
             setProfileImage(doc.data().photoURL);
           }
         });
@@ -42,7 +42,7 @@ const Header = () => {
     };
 
     fetchData();
-  }, [currentUser.email]);
+  }, [currentUser.uid]);
 
   const handleLogOut = (e) => {
     e.preventDefault();

@@ -163,6 +163,7 @@ const SignupForm = () => {
 
         // Add user to the database
         await db.collection('users').doc(cred.user.uid).set({
+          uid: cred.user.uid,
           firstName: firstName,
           lastName: lastName,
           email: email,

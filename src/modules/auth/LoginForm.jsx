@@ -85,6 +85,7 @@ const LoginForm = () => {
       .then(async (cred) => {
         if (cred.additionalUserInfo.isNewUser) {
           await db.collection('users').doc(cred.user.uid).set({
+            uid: cred.user.uid,
             firstName: cred.additionalUserInfo.profile.given_name,
             lastName: cred.additionalUserInfo.profile.family_name,
             email: cred.user.email,
