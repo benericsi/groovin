@@ -3,13 +3,17 @@
   gap: 1.5rem;
   height: 100%;
 }
-.messages-container .users-list {
+.messages-container .users-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.messages-container .users-list-container .users-list {
   position: relative;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
 }
-.messages-container .users-list .users-list-item {
+.messages-container .users-list-container .users-list .users-list-item {
   border-radius: 0.5rem;
   background-color: transparent;
   cursor: pointer;
@@ -21,10 +25,10 @@
   align-items: center;
   gap: 1rem;
 }
-.messages-container .users-list .users-list-item:first-child::after {
+.messages-container .users-list-container .users-list .users-list-item:first-child::after {
   display: none;
 }
-.messages-container .users-list .users-list-item::after {
+.messages-container .users-list-container .users-list .users-list-item::after {
   content: "";
   position: absolute;
   top: 0;
@@ -33,13 +37,13 @@
   height: 1px;
   background-color: rgba(63, 63, 63, 0.5);
 }
-.messages-container .users-list .users-list-item:hover {
+.messages-container .users-list-container .users-list .users-list-item:hover {
   background-color: rgba(63, 63, 63, 0.25);
 }
-.messages-container .users-list .users-list-item:hover::after {
+.messages-container .users-list-container .users-list .users-list-item:hover::after {
   display: none;
 }
-.messages-container .users-list .users-list-item img {
+.messages-container .users-list-container .users-list .users-list-item img {
   height: 3rem;
   width: 3rem;
   min-height: 3rem;
@@ -53,7 +57,10 @@
 .messages-container .chat-room {
   height: 80vh;
   flex-grow: 1;
-  background-color: rebeccapurple;
+  border-radius: 0.5rem;
+  background-color: rgba(63, 63, 63, 0.25);
   position: sticky;
   top: 10.5rem;
+  padding: 1rem;
+  border: 1px solid rgba(63, 63, 63, 0.5);
 }/*# sourceMappingURL=messages.css.map */

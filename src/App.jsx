@@ -25,7 +25,6 @@ const App = () => {
                   <Route path="/:page" element={<Dashboard />} />
                   <Route path="/:page/:uid" element={<Dashboard />}>
                     <Route path="/:page/:uid/:page" element={<Dashboard />} />
-                    <Route path="/:page/:uid/:page" element={<Dashboard />} />
                   </Route>
                 </Route>
                 <Route exact path="/" element={<PrivateRoute />}>
