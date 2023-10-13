@@ -499,9 +499,9 @@ const Account = ({uid}) => {
                   </>
                 )}
                 <li className="user-actions-item">
-                  <button className="btn-user-action">
+                  <Link to={`/messages/${uid}`} className="btn-user-action">
                     <span>Send message</span>
-                  </button>
+                  </Link>
                 </li>
                 <li className="user-actions-item">
                   <button className="btn-user-action">

@@ -1,4 +1,4 @@
-import {Link} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 import {useAuth} from '../../hooks/useAuth';
 import {useEffect, useState} from 'react';
 import {useLoader} from '../../hooks/useLoader';
@@ -58,10 +58,10 @@ const UserList = () => {
           <ul className="users-list">
             {friends &&
               friends.map((friend) => (
-                <Link to={`/messages/${friend.uid}`} className="users-list-item" key={friend.uid}>
+                <NavLink to={`/messages/${friend.uid}`} className="users-list-item" key={friend.uid}>
                   <img src={friend.photoURL} alt={friend.firstName} />
                   <h4>{friend.lastName + ' ' + friend.firstName}</h4>
-                </Link>
+                </NavLink>
               ))}
           </ul>
         </>
@@ -74,10 +74,10 @@ const UserList = () => {
           <ul className="users-list">
             {otherUsers &&
               otherUsers.map((user) => (
-                <Link to={`/messages/${user.uid}`} className="users-list-item" key={user.uid}>
+                <NavLink to={`/messages/${user.uid}`} className="users-list-item" key={user.uid}>
                   <img src={user.photoURL} alt={user.firstName} />
                   <h4>{user.lastName + ' ' + user.firstName}</h4>
-                </Link>
+                </NavLink>
               ))}
           </ul>
         </>

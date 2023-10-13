@@ -173,6 +173,7 @@
         .user-actions-item {
             width: 100%;
             cursor: pointer;
+            height: 2.5rem;
 
             &:hover {
                 background-color: rgba($color: $clr-white, $alpha: .1);
@@ -187,6 +188,8 @@
                 color: rgba($color: $clr-white, $alpha: .9);
                 font-size: auto;
                 border-radius: 2px;
+                display: flex;
+                align-items: center;
             }
         }
     }
