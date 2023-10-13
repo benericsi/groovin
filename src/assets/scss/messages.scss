@@ -1,0 +1,71 @@
+@import 'variables';
+
+.messages-container {
+    display: flex;
+    gap: 1.5rem;
+    height: 100%;
+
+
+    .users-list {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        //max-width: 20rem;
+
+        .users-list-item {
+            border-radius: $border-radius;
+            background-color: transparent;
+            cursor: pointer;
+            height: 5rem;
+            overflow: hidden;
+            padding: 1rem .75rem;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+
+            &:first-child {
+                &::after {
+                    display: none;
+                }
+            }
+
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 1px;
+                background-color: rgba($color: $clr-grey-800, $alpha: .5);
+            }
+
+            &:hover {
+                background-color: rgba($color: $clr-grey-800, $alpha: .25);
+
+                &::after {
+                    display: none;
+                }
+            }
+
+            img {
+                height: 3rem;
+                width: 3rem;
+                min-height: 3rem;
+                min-width: 3rem;
+                border-radius: 50%;
+                object-fit: cover;
+                object-position: center center;
+            }
+        }
+    }
+
+    .chat-room {
+        height: 80vh;
+        flex-grow: 1;
+        background-color: rebeccapurple;
+        position: sticky;
+        top: 10.5rem;
+    }
+}
