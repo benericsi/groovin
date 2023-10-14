@@ -15,6 +15,8 @@
   "browserslist": [
     "defaults",
     "not ie 11",
-    "not ios_saf <= 12.5"
+    "not ios_saf <= 12.5",
+    "not and_ff <= 115",
+    "not firefox <= 116"
   ]
 }

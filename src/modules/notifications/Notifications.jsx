@@ -21,7 +21,7 @@ const Notifications = () => {
     const fetchUserNotifications = async () => {
       try {
         //notifactions collection currentuser.uid doc userNotifications collection
-        const querySnapshot = await db.collection('notifications').doc(currentUser.uid).collection('notifications').orderBy('timestamp', 'asc').get();
+        const querySnapshot = await db.collection('notifications').doc(currentUser.uid).collection('notifications').orderBy('timestamp', 'asc').limit(20).get();
         const sortedNotifications = querySnapshot.docs.map((snapshot) => snapshot.data());
         setNotifications(sortedNotifications);
       } catch (error) {

@@ -459,18 +459,20 @@ const Account = ({uid}) => {
             </div>
           )}
         </div>
-        <div className="profile-info">
-          <span className="role">
-            {userData.role} {isOwnProfile && <img src={editPen} alt="" onClick={togglePopUp} />}
-          </span>
-          <h1 className="name">{userData.firstName + ' ' + userData.lastName}</h1>
-          <span className="email">
-            28 public playlist -{' '}
-            <Link to={`/account/${uid}/friends`}>
-              {friendCount} {friendCount > 1 ? 'friends' : 'friend'}
-            </Link>
-          </span>
-        </div>
+        {userData.firstName !== undefined && (
+          <div className="profile-info">
+            <span className="role">
+              {userData.role} {isOwnProfile && <img src={editPen} alt="" onClick={togglePopUp} />}
+            </span>
+            <h1 className="name">{userData.firstName + ' ' + userData.lastName}</h1>
+            <span className="email">
+              28 public playlist -{' '}
+              <Link to={`/account/${uid}/friends`}>
+                {friendCount} {friendCount > 1 ? 'friends' : 'friend'}
+              </Link>
+            </span>
+          </div>
+        )}
       </CommonHeader>
       <CommonBody>
         {!isOwnProfile ? (
