@@ -94,7 +94,7 @@ const LoginForm = () => {
           });
 
           await db.collection('friends').doc(cred.user.uid).set({
-            friends: [],
+            friendList: [],
           });
         }
 
