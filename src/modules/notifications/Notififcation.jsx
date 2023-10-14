@@ -23,7 +23,14 @@ const Notification = ({notification}) => {
 
   // Create the formatted date string
   const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  const linkTo = '/account/' + notification.sender;
+
+  switch (notification.type) {
+    case 'New Message':
+      var linkTo = '/messages/' + notification.sender;
+      break;
+    default:
+      var linkTo = '/account/' + notification.sender;
+  }
 
   const acceptFriendRequest = async (e) => {
     e.preventDefault();
