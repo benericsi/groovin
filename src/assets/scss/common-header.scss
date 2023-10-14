@@ -18,8 +18,8 @@
         height: calc(100% + 4rem);
         width: 100%;
         background-image: linear-gradient(to right bottom, $clr-primary-light, $clr-primary-darker);
-        background-size: 400% 400%;
-        animation: bg-animation 30s ease infinite;
+        //background-size: 400% 400%;
+        //animation: bg-animation 30s ease infinite;
         top: -4rem;
         left: 0;
         z-index: -1;
