@@ -1,0 +1,10 @@
+@import 'variables';
+
+.auth-page {
+    position: relative;
+    height: 100svh;
+    display: flex;
+    flex-direction: row;
+    background-color: $clr-white;
+    overflow: hidden;
+}

@@ -1,0 +1,8 @@
+.auth-page {
+  position: relative;
+  height: 100svh;
+  display: flex;
+  flex-direction: row;
+  background-color: #ffffff;
+  overflow: hidden;
+}/*# sourceMappingURL=authentication.css.map */
