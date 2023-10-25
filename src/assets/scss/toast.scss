@@ -1,0 +1,139 @@
+@import 'variables';
+
+.toast-container {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: 9999;
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    row-gap: .5rem;
+}
+
+.toast {
+    position: relative;
+    right: 0;
+    bottom: 1rem;
+    height: 3.5rem;
+    min-width: 10rem;
+    display: flex;
+    padding: 0 1rem;
+    z-index: 999999999999;
+    line-height: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 2px;
+        background-color: $clr-white;
+        animation: toast 4s linear;
+    }
+
+    p {
+        font-size: 1.1rem;
+        color: $clr-white;
+        letter-spacing: 1px;
+        display: flex;
+        align-items: center;
+    }
+
+    .toast-icon {
+        width: auto;
+        height: 1.5rem;
+        color: $clr-white
+    }
+
+    .toast-close {
+        all: unset;
+        color: $clr-white;
+        cursor: pointer;
+        height: 1.7rem;
+        width: 1.7rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.2rem;
+    }
+
+    &.success {
+        background-color: $clr-green;
+        border: 1px solid $clr-green-darker;
+    }
+
+    &.error {
+        background-color: $clr-red;
+        border: 1px solid $clr-red-darker;
+    }
+
+    &.warning {
+        background-color: $clr-yellow;
+        border: 1px solid $clr-yellow-darker;
+
+    }
+
+    &.info {
+        background-color: $clr-blue;
+        border: 1px solid $clr-blue-darker;
+    }
+}
+
+@media only screen and (max-width: $media-query-sm) {
+    .toast-container {
+        width: 100%;
+        height: 0;
+        padding: 0 1rem;
+        align-items: flex-start;
+        justify-content: flex-start;
+        top: 2rem;
+    }
+
+    .toast {
+        width: 100%;
+        min-width: 100%;
+        justify-content: space-between;
+        padding: 0 1rem;
+        column-gap: 0;
+        align-items: center;
+        height: auto;
+        min-height: 3.5rem;
+        padding: 1rem;
+        //border-radius: 5px;
+        margin-bottom: .125rem;
+
+        p {
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .toast-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+
+        .toast-close {
+            height: 1.5rem;
+            width: 1.5rem;
+            font-size: 1rem;
+        }
+    }
+}
+
+@keyframes toast {
+    0% {
+        width: 100%;
+    }
+
+    100% {
+        width: 0;
+    }
+}

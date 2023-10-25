@@ -9,6 +9,7 @@ import {useState} from 'react';
 import {useDebounce} from '../../hooks/useDebounce';
 import {useNavigate} from 'react-router-dom';
 import {useLoader} from '../../hooks/useLoader';
+import {useToast} from '../../hooks/useToast';
 
 import {FaGoogle} from 'react-icons/fa';
 
@@ -21,7 +22,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
   const {showLoader, hideLoader} = useLoader();
-  //const {addToast} = useToast();
+  const {addToast} = useToast();
 
   useDebounce(
     () => {
@@ -46,12 +47,12 @@ const Login = () => {
     e.preventDefault();
 
     if (!email || !password) {
-      //addToast('error', 'Please fill out all the fields!');
+      addToast('error', 'Please fill out all the fields!');
       return;
     }
 
     if (Object.values(errors).some((error) => error !== '')) {
-      //addToast('error', 'There is an error with at least one field!');
+      addToast('error', 'There is an error with at least one field!');
       return;
     }
   };
