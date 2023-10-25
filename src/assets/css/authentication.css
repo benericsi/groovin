@@ -12,11 +12,19 @@
   bottom: 0;
   left: 0;
   overflow: hidden;
-  background-image: url("../../assets/images/background/large/adrian-korte-5gn2soeAc40-unsplash.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   isolation: isolate;
+}
+.auth-page .hero img {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
+  z-index: -1;
 }
 .auth-page .hero::after {
   content: "";
@@ -36,6 +44,17 @@
   flex-direction: column;
   overflow-y: auto;
   border-left: 1px solid #a6a6a6;
+}
+.auth-page .auth-container .brand-title {
+  position: relative;
+  font-size: clamp(5rem, 5vw, 7rem);
+  margin-bottom: 1rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #000000;
+  font-family: "BiggerDisplay", sans-serif;
+  font-style: italic;
 }
 .auth-page .auth-container .tabs-wrapper {
   position: relative;
@@ -252,4 +271,55 @@
 .auth-page .auth-container .tabs-content .tabs-content-item.active-content .select-wrapper .select-menu.dark:focus ~ label, .auth-page .auth-container .tabs-content .tabs-content-item.active-content .select-wrapper .select-menu.dark:invalid ~ label, .auth-page .auth-container .tabs-content .tabs-content-item.active-content .select-wrapper .select-menu.dark:not(:placeholder-shown) ~ label {
   top: 0;
   color: #f8f8f8;
+}
+
+@media only screen and (max-width: 1600px) {
+  .auth-page .auth-container {
+    padding: 2rem;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .auth-page {
+    min-height: 100svh;
+    height: auto;
+    flex-direction: column-reverse;
+    overflow: auto;
+  }
+  .auth-page .hero {
+    margin: 2rem;
+    min-height: 50svh;
+  }
+  .auth-page .auth-container {
+    width: 100%;
+    box-shadow: none;
+    padding: 0rem 2rem;
+    border: none;
+  }
+  .auth-page .auth-container .brand-title {
+    font-size: 4rem;
+    margin: 2rem 0;
+    line-height: normal;
+  }
+  .auth-page .auth-container .tabs-wrapper .tabs-header .tabs-header-item {
+    min-width: 10rem;
+  }
+  .auth-page .auth-container .tabs-wrapper .tabs-header .tabs-header-item h3 {
+    font-size: 0.9rem;
+  }
+  .auth-page .auth-container .tabs-wrapper .tabs-content .tabs-content-item.active-content h1 {
+    font-size: 1.5rem;
+    line-height: normal;
+  }
+  .auth-page .auth-container .tabs-wrapper .tabs-content .tabs-content-item.active-content form .field-wrapper {
+    flex-direction: column;
+    row-gap: 0.25rem;
+  }
+}
+@media only screen and (max-width: 576px) {
+  .auth-page .hero {
+    margin: 1rem;
+  }
+  .auth-page .auth-container {
+    padding: 0rem 1rem;
+  }
 }/*# sourceMappingURL=authentication.css.map */

@@ -61,8 +61,8 @@ const Login = () => {
     <>
       <h1>Welcome Back!</h1>
       <div className="social-signup">
-        <h4>Connect with,</h4>
-        <Button text="via Google" className="dark">
+        <h4>Connect with</h4>
+        <Button text="Google" className="dark">
           <FaGoogle />
         </Button>
       </div>
