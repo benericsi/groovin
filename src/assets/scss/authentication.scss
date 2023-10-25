@@ -7,4 +7,118 @@
     flex-direction: row;
     background-color: $clr-white;
     overflow: hidden;
+
+    .hero {
+        position: relative;
+        flex: 1;
+        bottom: 0;
+        left: 0;
+        overflow: hidden;
+        background-image: url('../../assets/images/background/large/adrian-korte-5gn2soeAc40-unsplash.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        isolation: isolate;
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, .5);
+            z-index: -1;
+        }
+    }
+
+    .auth-container {
+        position: relative;
+        padding: 3rem;
+        width: clamp(35rem, 50%, 50rem);
+        //box-shadow: .75rem .75rem $clr-black;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        border-left: 1px solid $clr-grey-500;
+
+        .tabs-wrapper {
+            position: relative;
+
+            .tabs-header {
+                position: relative;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+
+                .tabs-header-item {
+                    position: relative;
+                    flex-grow: 1;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 1rem;
+                    width: 50%;
+
+                    &::after {
+                        content: '';
+                        height: 1px;
+                        background-color: $clr-grey-400;
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        width: 100%;
+                        transition: height 0.1s $animation-cubic;
+                    }
+
+                    &:hover {
+                        h3 {
+                            color: $clr-grey-900;
+                        }
+                    }
+
+                    h3 {
+                        text-transform: uppercase;
+                        letter-spacing: 2px;
+                        font-size: 1rem;
+                        color: $clr-grey-400;
+                        transition: color 0.2s $animation-cubic;
+                        margin: 0 1rem;
+                    }
+
+                    &.active-tab {
+                        &::after {
+                            content: '';
+                            width: 100%;
+                            height: 4px;
+                            background-color: $clr-grey-900;
+                            position: absolute;
+                            bottom: 0;
+                            left: 0;
+                        }
+
+                        h3 {
+                            color: $clr-grey-900;
+                        }
+                    }
+                }
+            }
+        }
+
+        .tabs-content {
+            .tabs-content-item {
+                display: none;
+
+                &.active-content {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    color: $clr-grey-900;
+                }
+            }
+        }
+    }
 }

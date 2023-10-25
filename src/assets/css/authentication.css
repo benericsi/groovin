@@ -5,4 +5,98 @@
   flex-direction: row;
   background-color: #ffffff;
   overflow: hidden;
+}
+.auth-page .hero {
+  position: relative;
+  flex: 1;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  background-image: url("../../assets/images/background/large/adrian-korte-5gn2soeAc40-unsplash.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  isolation: isolate;
+}
+.auth-page .hero::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+.auth-page .auth-container {
+  position: relative;
+  padding: 3rem;
+  width: clamp(35rem, 50%, 50rem);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  border-left: 1px solid #a6a6a6;
+}
+.auth-page .auth-container .tabs-wrapper {
+  position: relative;
+}
+.auth-page .auth-container .tabs-wrapper .tabs-header {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.auth-page .auth-container .tabs-wrapper .tabs-header .tabs-header-item {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  width: 50%;
+}
+.auth-page .auth-container .tabs-wrapper .tabs-header .tabs-header-item::after {
+  content: "";
+  height: 1px;
+  background-color: #c4c4c4;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  transition: height 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.auth-page .auth-container .tabs-wrapper .tabs-header .tabs-header-item:hover h3 {
+  color: #121212;
+}
+.auth-page .auth-container .tabs-wrapper .tabs-header .tabs-header-item h3 {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 1rem;
+  color: #c4c4c4;
+  transition: color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  margin: 0 1rem;
+}
+.auth-page .auth-container .tabs-wrapper .tabs-header .tabs-header-item.active-tab::after {
+  content: "";
+  width: 100%;
+  height: 4px;
+  background-color: #121212;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.auth-page .auth-container .tabs-wrapper .tabs-header .tabs-header-item.active-tab h3 {
+  color: #121212;
+}
+.auth-page .auth-container .tabs-content .tabs-content-item {
+  display: none;
+}
+.auth-page .auth-container .tabs-content .tabs-content-item.active-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #121212;
 }/*# sourceMappingURL=authentication.css.map */
