@@ -8,6 +8,7 @@ import {BiLogIn} from 'react-icons/bi';
 import {useState} from 'react';
 import {useDebounce} from '../../hooks/useDebounce';
 import {useNavigate} from 'react-router-dom';
+import {useLoader} from '../../hooks/useLoader';
 
 import {FaGoogle} from 'react-icons/fa';
 
@@ -19,6 +20,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const {showLoader, hideLoader} = useLoader();
   //const {addToast} = useToast();
 
   useDebounce(
@@ -45,12 +47,10 @@ const Login = () => {
 
     if (!email || !password) {
       //addToast('error', 'Please fill out all the fields!');
-      //hideLoader();
       return;
     }
 
     if (Object.values(errors).some((error) => error !== '')) {
-      //hideLoader();
       //addToast('error', 'There is an error with at least one field!');
       return;
     }
