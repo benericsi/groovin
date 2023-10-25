@@ -1,13 +1,47 @@
 import '../../assets/css/authentication.css';
 import AuthTabs from './AuthTabs';
 
-import background from '../../assets/images/background/large/kobu-agency-3hWg9QKl5k8-unsplash.jpg';
-
 const Authentication = () => {
+  var backgroundImagesContext = null;
+
+  if (window.innerWidth <= 1200) {
+    backgroundImagesContext = require.context('../../assets/images/background/small', false, /.*\.jpg$/);
+  } else {
+    backgroundImagesContext = require.context('../../assets/images/background/medium', false, /.*\.jpg$/);
+  }
+
+  const backgroundImages = backgroundImagesContext.keys().map((key) => backgroundImagesContext(key));
+
+  const createGallery = (columnNumber = 9) => {
+    const imagePerColumn = Math.floor(backgroundImages.length / columnNumber);
+    const gallery = [];
+
+    backgroundImages.sort(() => Math.random() - 0.5);
+
+    for (let i = 0; i < columnNumber; i++) {
+      const column = [];
+      for (let j = 0; j < imagePerColumn; j++) {
+        column.push(
+          <div key={j} className="image">
+            <img src={backgroundImages[i * imagePerColumn + j]} alt="background" />
+          </div>
+        );
+      }
+      gallery.push(
+        <div key={i} className={i % 2 === 0 ? 'image-column sliding-down' : 'image-column sliding-up'}>
+          {column}
+        </div>
+      );
+    }
+
+    return gallery;
+  };
+
   return (
     <section className="auth-page">
       <div className="hero">
-        <img src={background} alt="Background Image" />
+        {createGallery(9)}
+        <div className="hero-content"></div>
       </div>
       <div className="auth-container">
         <h1 className="brand-title">Groovin</h1>

@@ -7,7 +7,6 @@ import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';
 
 import {HiPencilSquare} from 'react-icons/hi2';
-import {FaAngleDown} from 'react-icons/fa6';
 import {FaGoogle} from 'react-icons/fa';
 
 const NAME_REGEX = /^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+([ -][A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+)*$/;

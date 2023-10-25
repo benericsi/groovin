@@ -5,7 +5,7 @@
     height: 100svh;
     display: flex;
     flex-direction: row;
-    background-color: $clr-white;
+    background-color: $clr-black;
     overflow: hidden;
 
     .hero {
@@ -14,27 +14,56 @@
         bottom: 0;
         left: 0;
         overflow: hidden;
+        transform: scale(1.175);
+        display: grid;
+        grid-template-columns: repeat(9, 1fr);
+        gap: 3rem;
         isolation: isolate;
 
-        img {
+        .hero-content {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
+            inset: 0;
+            transform: scale(.8525);
+            padding: 1rem;
+        }
+
+        .image-column {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            row-gap: 3rem;
             z-index: -1;
+
+            &.sliding-down {
+                animation: sliding-down 20s linear infinite;
+            }
+
+            &.sliding-up {
+                animation: sliding-up 20s linear infinite;
+            }
+
+            @for $i from 0 to 10 {
+                &:nth-child(#{$i}) {
+                    animation-delay: $i * 0.15s;
+                }
+            }
+
+            .image {
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
         }
 
         &::after {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, .5);
+            background-color: rgba(0, 0, 0, 0.5);
             z-index: -1;
         }
     }
@@ -42,12 +71,12 @@
     .auth-container {
         position: relative;
         padding: 3rem;
-        width: clamp(35rem, 50%, 50rem);
-        //box-shadow: .75rem .75rem $clr-black;
+        width: clamp(40rem, 50%, 55rem);
         display: flex;
         flex-direction: column;
         overflow-y: auto;
         border-left: 1px solid $clr-grey-500;
+        background-color: $clr-white;
 
         .brand-title {
             position: relative;
@@ -223,89 +252,33 @@
                             }
                         }
                     }
-
-                    .select-wrapper {
-                        width: 100%;
-                        margin: 0.7rem 0;
-                        position: relative;
-
-                        label {
-                            position: absolute;
-                            left: 0.5rem;
-                            top: 50%;
-                            transform: translateY(-50%);
-                            font-size: 1.2rem;
-                            color: $clr-grey-500;
-                            pointer-events: none;
-                            transition: 0.2s;
-                            padding: 0 0.2rem;
-                        }
-
-                        .select-icon {
-                            position: absolute;
-                            right: 0.75rem;
-                            top: 50%;
-                            transform: translateY(-50%);
-                            pointer-events: none;
-                            width: 1rem;
-                            height: 1rem;
-                        }
-
-                        .select-menu {
-                            width: 100%;
-                            padding: 0.75rem;
-                            --webkit-appearance: none;
-                            -moz-appearance: none;
-                            appearance: none;
-                            cursor: pointer;
-                            font-size: 0.9rem;
-                            transition: border 0.1s $animation-cubic;
-                            outline: none;
-
-                            &.light {
-                                border: 2px solid $clr-grey-700;
-                                color: $clr-grey-900;
-                                background-color: $clr-grey-100;
-
-                                &~label {
-                                    background-color: $clr-grey-100;
-                                }
-
-                                &:focus,
-                                &:invalid,
-                                &:not(:placeholder-shown) {
-                                    border: 2px solid $clr-grey-900;
-
-                                    &~label {
-                                        top: 0;
-                                        color: $clr-grey-900;
-                                    }
-                                }
-                            }
-
-                            &.dark {
-                                border: 2px solid $clr-grey-900;
-                                color: $clr-grey-100;
-                                background-color: $clr-grey-900;
-
-                                &~label {
-                                    background-color: $clr-grey-900;
-                                }
-
-                                &:focus,
-                                &:invalid,
-                                &:not(:placeholder-shown) {
-                                    border: 2px solid $clr-grey-100;
-
-                                    &~label {
-                                        top: 0;
-                                        color: $clr-grey-100;
-                                    }
-                                }
-                            }
-                        }
-                    }
                 }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: $media-query-3xl) {
+    .auth-page {
+        .hero {
+            gap: 2rem;
+            grid-template-columns: repeat(7, 1fr);
+
+            .image-column {
+                row-gap: 2rem;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: $media-query-2xl) {
+    .auth-page {
+        .hero {
+            gap: 1.5rem;
+            grid-template-columns: repeat(5, 1fr);
+
+            .image-column {
+                row-gap: 1.5rem;
             }
         }
     }
@@ -313,6 +286,15 @@
 
 @media only screen and (max-width: $media-query-xl) {
     .auth-page {
+        .hero {
+            gap: 1.5rem;
+            grid-template-columns: repeat(4, 1fr);
+
+            .image-column {
+                row-gap: 1.5rem;
+            }
+        }
+
         .auth-container {
             padding: 2rem;
         }
@@ -328,7 +310,32 @@
 
         .hero {
             margin: 2rem;
-            min-height: 50svh;
+            transform: scale(1);
+            gap: .5rem;
+            max-height: 40svh;
+            grid-template-columns: repeat(5, 1fr);
+
+            .hero-content {
+                transform: scale(1);
+
+                .hero-footer {
+                    padding: 1rem;
+
+                    .hero-links {
+                        gap: 1rem;
+
+                        h4,
+                        a {
+                            font-size: .8rem;
+                            opacity: 1;
+                        }
+                    }
+                }
+            }
+
+            .image-column {
+                row-gap: .5rem;
+            }
         }
 
         .auth-container {
@@ -380,10 +387,55 @@
     .auth-page {
         .hero {
             margin: 1rem;
+            grid-template-columns: repeat(3, 1fr);
         }
 
         .auth-container {
             padding: 0rem 1rem;
         }
+    }
+}
+
+@keyframes sliding-down {
+    0% {
+        transform: translateY(-3%);
+        opacity: 0;
+    }
+
+    10% {
+        transform: translateY(-2.0999999999999996%);
+        opacity: 1;
+    }
+
+    90% {
+        transform: translateY(2.0999999999999996%);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(3%);
+        opacity: 0;
+    }
+}
+
+@keyframes sliding-up {
+    0% {
+        transform: translateY(3%);
+        opacity: 0;
+    }
+
+    15% {
+        transform: translateY(2.0999999999999996%);
+        opacity: 1;
+    }
+
+    85% {
+        transform: translateY(-2.0999999999999996%);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-3%);
+        opacity: 0;
     }
 }
