@@ -1,0 +1,49 @@
+@import 'variables';
+
+.btn-primary {
+    all: unset;
+    font-weight: bold;
+    box-shadow: 0;
+    transition: box-shadow 0.2s $animation-cubic;
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+    margin: 0.5rem 0;
+    text-transform: uppercase;
+    cursor: pointer;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+
+    &:active {
+        opacity: 0.75;
+    }
+
+
+    &.light {
+        color: $clr-white;
+        border: 1px solid $clr-white;
+
+        &:hover,
+        &:focus &:active {
+            box-shadow: .5rem .5rem $clr-white;
+            background-color: $clr-white;
+            border: 1px solid $clr-black;
+            color: $clr-black;
+        }
+    }
+
+    &.dark {
+        color: $clr-black;
+        border: 1px solid $clr-black;
+
+        &:hover,
+        &:focus &:active {
+            box-shadow: .5rem .5rem $clr-black;
+            background-color: $clr-black;
+            border: 1px solid $clr-white;
+            color: $clr-white;
+        }
+    }
+}

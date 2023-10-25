@@ -1,0 +1,39 @@
+.btn-primary {
+  all: unset;
+  font-weight: bold;
+  box-shadow: 0;
+  transition: box-shadow 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  margin: 0.5rem 0;
+  text-transform: uppercase;
+  cursor: pointer;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.btn-primary:active {
+  opacity: 0.75;
+}
+.btn-primary.light {
+  color: #ffffff;
+  border: 1px solid #ffffff;
+}
+.btn-primary.light:hover, .btn-primary.light:focus .btn-primary.light:active {
+  box-shadow: 0.5rem 0.5rem #ffffff;
+  background-color: #ffffff;
+  border: 1px solid #000000;
+  color: #000000;
+}
+.btn-primary.dark {
+  color: #000000;
+  border: 1px solid #000000;
+}
+.btn-primary.dark:hover, .btn-primary.dark:focus .btn-primary.dark:active {
+  box-shadow: 0.5rem 0.5rem #000000;
+  background-color: #000000;
+  border: 1px solid #ffffff;
+  color: #ffffff;
+}/*# sourceMappingURL=button.css.map */
