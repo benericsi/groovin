@@ -108,8 +108,8 @@
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 3px;
-  color: #c72c41;
-  text-shadow: 0.25rem 0.5rem #510a32;
+  color: #3D8AE8;
+  text-shadow: 0.25rem 0.25rem #052C5A;
   font-family: "BiggerDisplay", sans-serif;
   font-style: italic;
 }
@@ -241,7 +241,7 @@
   margin-bottom: 1rem;
 }
 .auth-page .auth-container .tabs-content .tabs-content-item.active-content form .forgot-pass a {
-  color: #ee4540;
+  color: #0C6DE2;
   text-decoration: none;
   font-style: italic;
 }

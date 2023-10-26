@@ -1,1 +1,9 @@
 @import 'variables';
+
+.main-wrapper {
+    background-color: $clr-white;
+    height: 100svh;
+    width: 100vw;
+    display: flex;
+    column-gap: .25rem;
+}

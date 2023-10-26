@@ -97,8 +97,8 @@
             text-align: center;
             text-transform: uppercase;
             letter-spacing: 3px;
-            color: $clr-primary;
-            text-shadow: .25rem .5rem $clr-primary-darker;
+            color: $clr-primary-500;
+            text-shadow: .25rem .25rem $clr-primary-900;
             font-family: $font-display;
             font-style: italic;
         }
@@ -254,7 +254,7 @@
                             margin-bottom: 1rem;
 
                             a {
-                                color: $clr-primary-light;
+                                color: $clr-primary-600;
                                 text-decoration: none;
                                 font-style: italic;
 

@@ -1,1 +1,8 @@
-/*# sourceMappingURL=main-page.css.map */
+.main-wrapper {
+  background-color: #ffffff;
+  height: 100svh;
+  width: 100vw;
+  display: flex;
+  -moz-column-gap: 0.25rem;
+       column-gap: 0.25rem;
+}/*# sourceMappingURL=main-page.css.map */

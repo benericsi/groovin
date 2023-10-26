@@ -1,0 +1,27 @@
+@import 'variables';
+
+.side-bar {
+    position: relative;
+    top: 0;
+    left: 0;
+    background-color: $clr-white;
+    z-index: 100;
+    transition: width .2s $animation-cubic;
+
+    &.resizing {
+        transition: none;
+    }
+
+    .resize-handle {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 2px;
+        height: 100%;
+        cursor: col-resize;
+        background-color: $clr-grey-300;
+        z-index: 100;
+        transform: translateX(100%);
+    }
+
+}

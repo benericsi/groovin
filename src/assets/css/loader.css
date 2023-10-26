@@ -20,7 +20,7 @@
 .loader-container .loader::before {
   content: "";
   position: absolute;
-  background-color: #c72c41;
+  background-color: #0C6DE2;
   top: 0;
   left: 0;
   width: 0%;
