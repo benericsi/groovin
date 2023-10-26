@@ -23,6 +23,15 @@
   inset: 0;
   transform: scale(0.8525);
   padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.auth-page .hero .hero-content h1 {
+  color: #ffffff;
+  text-align: center;
+  line-height: 1.2;
+  font-size: clamp(3rem, 4vw, 6rem);
 }
 .auth-page .hero .image-column {
   position: relative;
@@ -79,7 +88,7 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
   z-index: -1;
 }
 .auth-page .auth-container {
@@ -98,8 +107,9 @@
   margin-bottom: 1rem;
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  color: #000000;
+  letter-spacing: 3px;
+  color: #c72c41;
+  text-shadow: 0.25rem 0.5rem #510a32;
   font-family: "BiggerDisplay", sans-serif;
   font-style: italic;
 }
@@ -231,7 +241,7 @@
   margin-bottom: 1rem;
 }
 .auth-page .auth-container .tabs-content .tabs-content-item.active-content form .forgot-pass a {
-  color: #00B8D9;
+  color: #ee4540;
   text-decoration: none;
   font-style: italic;
 }

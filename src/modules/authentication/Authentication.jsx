@@ -41,7 +41,13 @@ const Authentication = () => {
     <section className="auth-page">
       <div className="hero">
         {createGallery(9)}
-        <div className="hero-content"></div>
+        <div className="hero-content">
+          <h1>
+            Made for Groovers,
+            <br />
+            by Groovers.
+          </h1>
+        </div>
       </div>
       <div className="auth-container">
         <h1 className="brand-title">Groovin</h1>
