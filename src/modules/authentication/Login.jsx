@@ -48,7 +48,6 @@ const Login = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    showLoader();
 
     if (!email || !password) {
       addToast('error', 'Please fill out all the fields!');
@@ -60,6 +59,7 @@ const Login = () => {
       return;
     }
 
+    showLoader();
     login(email, password)
       .then(async (cred) => {
         setEmail('');

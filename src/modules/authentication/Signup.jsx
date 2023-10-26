@@ -2,12 +2,14 @@ import Input from '../../ui/Input';
 import Button from '../../ui/Button';
 
 import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import {useDebounce} from '../../hooks/useDebounce';
 import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';
+import {useAuth} from '../../hooks/useAuth';
+import {db} from '../../setup/Firebase';
 
 import {HiPencilSquare} from 'react-icons/hi2';
-import {FaGoogle} from 'react-icons/fa';
 
 const NAME_REGEX = /^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+([ -][A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+)*$/;
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
@@ -20,6 +22,8 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
 
+  const navigate = useNavigate();
+  const {signup} = useAuth();
   const {addToast} = useToast();
   const {showLoader, hideLoader} = useLoader();
 
@@ -131,22 +135,71 @@ const Signup = () => {
     [password, passwordConfirmation]
   );
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = (e) => {
     e.preventDefault();
+
+    //Validation
+    if (!lastName.trim() || !firstName.trim() || !email.trim() || !password.trim() || !passwordConfirmation.trim()) {
+      addToast('error', 'Please fill out all the fields!');
+      return;
+    }
+
+    if (Object.values(errors).some((error) => error !== '')) {
+      addToast('error', 'There is an error with at least one field!');
+      return;
+    }
+
+    if (password !== passwordConfirmation) {
+      addToast('error', 'Passwords do not match!');
+      return;
+    }
+
+    showLoader();
+    signup(email, password)
+      .then(async (cred) => {
+        setEmail('');
+        setPassword('');
+        setPasswordConfirmation('');
+        setFirstName('');
+        setLastName('');
+
+        // Add user to the database
+        await db
+          .collection('users')
+          .doc(cred.user.uid)
+          .set({
+            firstName: firstName,
+            lastName: lastName,
+            displayName: firstName + ' ' + lastName,
+            email: email,
+            photoURL: 'default',
+            friends: [],
+          });
+
+        hideLoader();
+        addToast('success', 'You have successfully signed up!');
+        navigate('/');
+      })
+      .catch((error) => {
+        hideLoader(); // Ensure loader is hidden even in case of an error
+        if (error.code === 'auth/email-already-in-use') {
+          addToast('error', 'The email address is already in use.');
+        } else if (error.code === 'auth/invalid-email') {
+          addToast('error', 'The email address is not valid.');
+        } else if (error.code === 'auth/operation-not-allowed') {
+          addToast('error', 'Email/password accounts are not enabled.');
+        } else if (error.code === 'auth/weak-password') {
+          addToast('error', 'The password is not strong enough.');
+        } else {
+          addToast('error', error.message);
+        }
+      });
   };
 
   return (
     <>
       <h1>First Time Here?</h1>
-      <div className="social-signup">
-        <h4>Connect with</h4>
-        <Button text="Google" className="dark">
-          <FaGoogle />
-        </Button>
-      </div>
-      <div className="bg-line">
-        <h4>or</h4>
-      </div>
+
       <form onSubmit={handleFormSubmit}>
         <div className="field-wrapper">
           <Input
