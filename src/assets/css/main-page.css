@@ -1,8 +1,6 @@
 .main-wrapper {
-  background-color: #ffffff;
+  background-color: #ebebeb;
   height: 100svh;
   width: 100vw;
   display: flex;
-  -moz-column-gap: 0.25rem;
-       column-gap: 0.25rem;
 }/*# sourceMappingURL=main-page.css.map */

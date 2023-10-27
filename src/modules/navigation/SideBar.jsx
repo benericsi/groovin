@@ -1,10 +1,11 @@
 import '../../assets/css/sidebar.css';
 
 import {NavLink, useLocation, useNavigate} from 'react-router-dom';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useAuth} from '../../hooks/useAuth';
 import {useLoader} from '../../hooks/useLoader';
 import {useToast} from '../../hooks/useToast';
+import {db} from '../../setup/Firebase';
 
 import {AiFillHome, AiOutlineHome} from 'react-icons/ai';
 import {BiSearchAlt, BiSolidSearchAlt2} from 'react-icons/bi';
@@ -26,15 +27,32 @@ const JUMP_AT = 12;
 const MAX_WIDTH = 30;
 
 const SideBar = () => {
-  const {logout} = useAuth();
+  const {currentUser, logout} = useAuth();
   const {showLoader, hideLoader} = useLoader();
   const {addToast} = useToast();
   const navigate = useNavigate();
 
+  const [userData, setUserData] = useState(null);
   const [isResizing, setIsResizing] = useState(false);
   const [sidebarWidth, setSidebarWidth] = useState(MIN_WIDTH);
   const [isSideOpen, setIsSideOpen] = useState(false);
   const location = useLocation().pathname;
+
+  useEffect(() => {
+    if (currentUser) {
+      db.collection('users')
+        .doc(currentUser.uid)
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            setUserData(doc.data());
+          }
+        })
+        .catch((error) => {
+          addToast('error', error.message);
+        });
+    }
+  }, [currentUser]);
 
   const handleMouseDown = (e) => {
     e.preventDefault();
@@ -83,6 +101,21 @@ const SideBar = () => {
     <aside className={`side-bar ${isSideOpen ? 'opened' : ''} ${isResizing ? 'resizing' : ''}`} style={{width: `${sidebarWidth}rem`}}>
       <div className="resize-handle" onMouseDown={handleMouseDown}></div>
       <ul className="side-list">
+        <li className="logo">
+          <NavLink to="/" className="side-link">
+            <h1>Groovin</h1>
+          </NavLink>
+        </li>
+
+        {userData && (
+          <li className="profile-link">
+            <NavLink to={`/profile/${currentUser.uid}`} className="side-link">
+              <img src={userData.photoURL} alt="" className="rounded" />
+              <span className="name-text">{userData.lastName}</span>
+            </NavLink>
+          </li>
+        )}
+
         <span className="part-title">General</span>
         <li className="side-list-item">
           <NavLink to="/" className={`side-link ${location === '/' ? 'active' : ''}`}>
@@ -145,8 +178,8 @@ const SideBar = () => {
 
         <span className="part-title">Account</span>
         <li className="side-list-item">
-          <NavLink to="/account" className={`side-link ${location === '/account' ? 'active' : ''}`}>
-            {location === '/account' ? <RiAccountCircleFill className="side-svg" /> : <RiAccountCircleLine className="side-svg" />}
+          <NavLink to={`/profile/${currentUser.uid}`} className={`side-link ${location === '/profile' ? 'active' : ''}`}>
+            {location === '/profile' ? <RiAccountCircleFill className="side-svg" /> : <RiAccountCircleLine className="side-svg" />}
             <span className="side-text">Profile</span>
           </NavLink>
         </li>

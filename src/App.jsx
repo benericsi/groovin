@@ -8,6 +8,7 @@ import PrivateRoute from './setup/PrivateRoute';
 const Authentication = lazy(() => import('./modules/authentication/Authentication'));
 const Main = lazy(() => import('./modules/main/Main'));
 const Dashboard = lazy(() => import('./modules/main/Dashboard'));
+const Profile = lazy(() => import('./modules/profile/Profile'));
 
 function App() {
   return (
@@ -18,6 +19,9 @@ function App() {
         <Route element={<PrivateRoute />}>
           <Route exact path="/" element={<Main />}>
             <Route index element={<Dashboard />} />
+            <Route path="/profile">
+              <Route path=":uid" element={<Profile />} />
+            </Route>
           </Route>
         </Route>
       </Routes>
