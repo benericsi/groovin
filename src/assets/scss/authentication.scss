@@ -97,8 +97,10 @@
             text-align: center;
             text-transform: uppercase;
             letter-spacing: 3px;
-            color: $clr-primary-500;
-            text-shadow: .25rem .25rem $clr-primary-900;
+            color: $clr-white;
+            -webkit-text-stroke-width: 3px;
+            -webkit-text-stroke-color: $clr-primary-500;
+            //text-shadow: .25rem .25rem $clr-primary-900;
             font-family: $font-display;
             font-style: italic;
         }

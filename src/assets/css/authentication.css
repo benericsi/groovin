@@ -108,8 +108,9 @@
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 3px;
-  color: #3D8AE8;
-  text-shadow: 0.25rem 0.25rem #052C5A;
+  color: #ffffff;
+  -webkit-text-stroke-width: 3px;
+  -webkit-text-stroke-color: #3D8AE8;
   font-family: "BiggerDisplay", sans-serif;
   font-style: italic;
 }

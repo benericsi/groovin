@@ -19,7 +19,7 @@ const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 
 const Login = () => {
   const navigate = useNavigate();
-  const {login, loginWithGoogle} = useAuth();
+  const {login, loginWithGoogle, resetPassword} = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -112,6 +112,27 @@ const Login = () => {
       });
   };
 
+  const handlePasswordReset = (e) => {
+    e.preventDefault();
+    if (!email) {
+      addToast('error', 'Please enter your e-mail address!');
+      return;
+    }
+
+    showLoader();
+    resetPassword(email)
+      .then(() => {
+        // Reset password was successful
+        hideLoader();
+        addToast('success', 'Password reset e-mail sent!');
+      })
+      .catch((error) => {
+        // Reset password was unsuccessful
+        hideLoader();
+        addToast('error', error.message);
+      });
+  };
+
   return (
     <>
       <h1>Welcome Back!</h1>
@@ -148,7 +169,11 @@ const Login = () => {
           error={errors.password}
         />
         <span className="forgot-pass">
-          Forgot password? Reset <Link to="">here</Link>.
+          Forgot password? Reset{' '}
+          <Link to="" onClick={handlePasswordReset}>
+            here
+          </Link>
+          .
         </span>
         <Button type="submit" text="Log In" className="dark">
           <BiLogIn />

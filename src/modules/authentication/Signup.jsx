@@ -7,7 +7,7 @@ import {useDebounce} from '../../hooks/useDebounce';
 import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';
 import {useAuth} from '../../hooks/useAuth';
-import {db} from '../../setup/Firebase';
+import {db, storage} from '../../setup/Firebase';
 
 import {HiPencilSquare} from 'react-icons/hi2';
 
@@ -21,6 +21,7 @@ const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const [inputPhoto, setInputPhoto] = useState('default');
 
   const navigate = useNavigate();
   const {signup} = useAuth();
@@ -135,7 +136,7 @@ const Signup = () => {
     [password, passwordConfirmation]
   );
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     //Validation
@@ -163,6 +164,15 @@ const Signup = () => {
         setFirstName('');
         setLastName('');
 
+        const storageRef = storage.ref();
+        const fileRef = storageRef.child(`profile-pictures/${cred.user.uid}`);
+        var imageUrl = 'default';
+        if (inputPhoto !== 'default') {
+          await fileRef.put(inputPhoto);
+          var imageUrl = await fileRef.getDownloadURL();
+        }
+        // Get the image URL from Firebase Storage
+
         // Add user to the database
         await db
           .collection('users')
@@ -172,7 +182,7 @@ const Signup = () => {
             lastName: lastName,
             displayName: firstName + ' ' + lastName,
             email: email,
-            photoURL: 'default',
+            photoURL: imageUrl,
             friends: [],
           });
 
@@ -261,6 +271,7 @@ const Signup = () => {
             error={errors.passwordConfirmation}
           />
         </div>
+        <input type="file" accept="image/*" onChange={(e) => setInputPhoto(e.target.files[0])} className="input-field light" />
         <Button type="submit" text="Sign Up" className="dark">
           <HiPencilSquare />
         </Button>
