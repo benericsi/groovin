@@ -48,11 +48,11 @@
 .side-bar .side-list .side-list-item .side-link .side-svg {
   font-size: 1.125rem;
   margin: 0 1.25rem;
-  color: #7e7e7e;
+  color: #5e5e5e;
 }
 .side-bar .side-list .side-list-item .side-link .side-text {
   font-size: 1.125rem;
-  color: #7e7e7e;
+  color: #5e5e5e;
 }
 .side-bar .side-list .side-list-item .side-link:hover, .side-bar .side-list .side-list-item .side-link.active {
   opacity: 1;

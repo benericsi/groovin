@@ -1,7 +1,11 @@
-import {NavLink, useLocation} from 'react-router-dom';
 import '../../assets/css/sidebar.css';
 
+import {NavLink, useLocation, useNavigate} from 'react-router-dom';
 import React, {useState} from 'react';
+import {useAuth} from '../../hooks/useAuth';
+import {useLoader} from '../../hooks/useLoader';
+import {useToast} from '../../hooks/useToast';
+
 import {AiFillHome, AiOutlineHome} from 'react-icons/ai';
 import {BiSearchAlt, BiSolidSearchAlt2} from 'react-icons/bi';
 import {IoMusicalNotesOutline, IoMusicalNotesSharp} from 'react-icons/io5';
@@ -22,6 +26,11 @@ const JUMP_AT = 12;
 const MAX_WIDTH = 30;
 
 const SideBar = () => {
+  const {logout} = useAuth();
+  const {showLoader, hideLoader} = useLoader();
+  const {addToast} = useToast();
+  const navigate = useNavigate();
+
   const [isResizing, setIsResizing] = useState(false);
   const [sidebarWidth, setSidebarWidth] = useState(MIN_WIDTH);
   const [isSideOpen, setIsSideOpen] = useState(false);
@@ -56,6 +65,18 @@ const SideBar = () => {
 
   const handleLogOut = (e) => {
     e.preventDefault();
+    showLoader();
+
+    logout()
+      .then(() => {
+        addToast('success', 'You have logged out successfully!');
+        hideLoader();
+        navigate('/auth');
+      })
+      .catch((error) => {
+        addToast('error', error.message);
+        hideLoader();
+      });
   };
 
   return (
