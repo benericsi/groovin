@@ -169,9 +169,8 @@ const Signup = () => {
         var imageUrl = 'default';
         if (inputPhoto !== 'default') {
           await fileRef.put(inputPhoto);
-          var imageUrl = await fileRef.getDownloadURL();
+          imageUrl = await fileRef.getDownloadURL();
         }
-        // Get the image URL from Firebase Storage
 
         // Add user to the database
         await db

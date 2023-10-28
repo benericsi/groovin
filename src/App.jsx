@@ -9,6 +9,7 @@ const Authentication = lazy(() => import('./modules/authentication/Authenticatio
 const Main = lazy(() => import('./modules/main/Main'));
 const Dashboard = lazy(() => import('./modules/main/Dashboard'));
 const Profile = lazy(() => import('./modules/profile/Profile'));
+const ErrorPage = lazy(() => import('./common/ErrorPage'));
 
 function App() {
   return (
@@ -24,6 +25,8 @@ function App() {
             </Route>
           </Route>
         </Route>
+
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </Suspense>
   );

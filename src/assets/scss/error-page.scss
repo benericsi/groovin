@@ -1,0 +1,28 @@
+@import './variables';
+
+.not-found-wrapper {
+    background-color: $clr-white;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: $clr-black;
+    padding: 1rem;
+    text-align: center;
+    line-height: 1.4;
+    row-gap: 2rem;
+
+    .error-code {
+        font-size: 5rem;
+        font-weight: bold;
+        font-style: italic;
+        font-family: $font-display;
+        margin: 2rem 0;
+        color: $clr-primary-600;
+        letter-spacing: 2px;
+    }
+}
