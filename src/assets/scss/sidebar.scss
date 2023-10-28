@@ -54,48 +54,7 @@
             }
         }
 
-        .profile-link {
-            width: 100%;
-            transform: translateX(-.5rem);
 
-            .side-link {
-                width: 100%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-
-
-                &:hover {
-                    cursor: pointer;
-                    position: relative;
-
-                    .name-text {
-                        opacity: 1;
-                        color: $clr-primary-600;
-                    }
-                }
-
-                .name-text {
-                    font-weight: 400;
-                    font-size: 1.3rem;
-                    opacity: .7;
-                    color: $clr-grey-700;
-                    transition: opacity .2s $animation-cubic;
-                }
-
-                .rounded {
-                    width: 4rem;
-                    height: 4rem;
-                    min-height: 4rem;
-                    min-width: 4rem;
-                    border-radius: 50%;
-                    object-fit: cover;
-                    //border: 2px solid $clr-primary-600;
-                    margin-bottom: 0.25rem;
-                }
-            }
-        }
 
         .part-title {
             text-transform: uppercase;

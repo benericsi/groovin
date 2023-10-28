@@ -22,9 +22,9 @@ import {HiEnvelope, HiOutlineEnvelope} from 'react-icons/hi2';
 import {BiSolidBell, BiBell} from 'react-icons/bi';
 import {BiLogOut} from 'react-icons/bi';
 
-const MIN_WIDTH = 12;
-const JUMP_AT = 12;
-const MAX_WIDTH = 30;
+const MIN_WIDTH = 15;
+//const JUMP_AT = 15;
+const MAX_WIDTH = 25;
 
 const SideBar = () => {
   const {currentUser, logout} = useAuth();
@@ -32,27 +32,10 @@ const SideBar = () => {
   const {addToast} = useToast();
   const navigate = useNavigate();
 
-  const [userData, setUserData] = useState(null);
   const [isResizing, setIsResizing] = useState(false);
   const [sidebarWidth, setSidebarWidth] = useState(MIN_WIDTH);
-  const [isSideOpen, setIsSideOpen] = useState(false);
+  //const [isSideOpen, setIsSideOpen] = useState(false); ${isSideOpen ? 'opened' : ''}
   const location = useLocation().pathname;
-
-  useEffect(() => {
-    if (currentUser) {
-      db.collection('users')
-        .doc(currentUser.uid)
-        .get()
-        .then((doc) => {
-          if (doc.exists) {
-            setUserData(doc.data());
-          }
-        })
-        .catch((error) => {
-          addToast('error', error.message);
-        });
-    }
-  }, [currentUser]);
 
   const handleMouseDown = (e) => {
     e.preventDefault();
@@ -63,14 +46,13 @@ const SideBar = () => {
 
   const handleMouseMove = (e) => {
     e.preventDefault();
-    if (e.clientX / 16 > MIN_WIDTH && e.clientX / 16 <= MAX_WIDTH) {
-      if (e.clientX / 16 < JUMP_AT) {
-        setSidebarWidth(MIN_WIDTH);
-        setIsSideOpen(false);
-      } else {
-        setSidebarWidth(e.clientX / 16);
-        setIsSideOpen(true);
-      }
+    const newWidth = e.clientX / 16;
+    if (newWidth > MIN_WIDTH && newWidth < MAX_WIDTH) {
+      setSidebarWidth(newWidth);
+    } else if (newWidth <= MIN_WIDTH) {
+      setSidebarWidth(MIN_WIDTH);
+    } else if (newWidth >= MAX_WIDTH) {
+      setSidebarWidth(MAX_WIDTH);
     }
   };
 
@@ -87,7 +69,7 @@ const SideBar = () => {
 
     logout()
       .then(() => {
-        addToast('success', 'You have logged out successfully!');
+        addToast('success', 'You have successfully logged out!');
         hideLoader();
         navigate('/auth');
       })
@@ -98,7 +80,7 @@ const SideBar = () => {
   };
 
   return (
-    <aside className={`side-bar ${isSideOpen ? 'opened' : ''} ${isResizing ? 'resizing' : ''}`} style={{width: `${sidebarWidth}rem`}}>
+    <aside className={`side-bar ${isResizing ? 'resizing' : ''}`} style={{width: `${sidebarWidth}rem`}}>
       <div className="resize-handle" onMouseDown={handleMouseDown}></div>
       <ul className="side-list">
         <li className="logo">
@@ -107,24 +89,15 @@ const SideBar = () => {
           </NavLink>
         </li>
 
-        {userData && (
-          <li className="profile-link">
-            <NavLink to={`/profile/${currentUser.uid}`} className="side-link">
-              <img src={userData.photoURL} alt="" className="rounded" />
-              <span className="name-text">{userData.lastName}</span>
-            </NavLink>
-          </li>
-        )}
-
         <span className="part-title">General</span>
         <li className="side-list-item">
-          <NavLink to="/" className={`side-link ${location === '/' ? 'active' : ''}`}>
+          <NavLink to="/" className="side-link">
             {location === '/' ? <AiFillHome className="side-svg" /> : <AiOutlineHome className="side-svg" />}
             <span className="side-text">Home</span>
           </NavLink>
         </li>
         <li className="side-list-item">
-          <NavLink to="/search" className={`side-link ${location === '/search' ? 'active' : ''}`}>
+          <NavLink to="/search" className="side-link">
             {location === '/search' ? <BiSolidSearchAlt2 className="side-svg" /> : <BiSearchAlt className="side-svg" />}
             <span className="side-text">Search</span>
           </NavLink>
@@ -132,25 +105,25 @@ const SideBar = () => {
 
         <span className="part-title">Library</span>
         <li className="side-list-item">
-          <NavLink to="/playlists" className={`side-link ${location === '/playlists' ? 'active' : ''}`}>
+          <NavLink to="/playlists" className="side-link">
             {location === '/playlists' ? <PiPlaylistFill className="side-svg" /> : <PiPlaylistLight className="side-svg" />}
             <span className="side-text">Playlists</span>
           </NavLink>
         </li>
         <li className="side-list-item">
-          <NavLink to="/favs" className={`side-link ${location === '/favs' ? 'active' : ''}`}>
+          <NavLink to="/favs" className="side-link">
             {location === '/favs' ? <HiHeart className="side-svg" /> : <HiOutlineHeart className="side-svg" />}
             <span className="side-text">Favourites</span>
           </NavLink>
         </li>
         <li className="side-list-item">
-          <NavLink to="/artists" className={`side-link ${location === '/artists' ? 'active' : ''}`}>
+          <NavLink to="/artists" className="side-link">
             {location === '/artists' ? <IoPersonSharp className="side-svg" /> : <IoPersonOutline className="side-svg" />}
             <span className="side-text">Artists</span>
           </NavLink>
         </li>
         <li className="side-list-item">
-          <NavLink to="/albums" className={`side-link ${location === '/albums' ? 'active' : ''}`}>
+          <NavLink to="/albums" className="side-link">
             {location === '/albums' ? <PiVinylRecordFill className="side-svg" /> : <PiVinylRecordLight className="side-svg" />}
             <span className="side-text">Albums</span>
           </NavLink>
@@ -158,19 +131,19 @@ const SideBar = () => {
 
         <span className="part-title">Discover</span>
         <li className="side-list-item">
-          <NavLink to="/songs" className={`side-link ${location === '/songs' ? 'active' : ''}`}>
+          <NavLink to="/songs" className="side-link">
             {location === '/songs' ? <IoMusicalNotesSharp className="side-svg" /> : <IoMusicalNotesOutline className="side-svg" />}
             <span className="side-text">Songs</span>
           </NavLink>
         </li>
         <li className="side-list-item">
-          <NavLink to="/genres" className={`side-link ${location === '/genres' ? 'active' : ''}`}>
+          <NavLink to="/genres" className="side-link">
             {location === '/genres' ? <LiaStarSolid className="side-svg" /> : <LiaStar className="side-svg" />}
             <span className="side-text">Genres</span>
           </NavLink>
         </li>
         <li className="side-list-item">
-          <NavLink to="/radio" className={`side-link ${location === '/radio' ? 'active' : ''}`}>
+          <NavLink to="/radio" className="side-link">
             {location === '/radio' ? <PiRadioFill className="side-svg" /> : <PiRadioLight className="side-svg" />}
             <span className="side-text">Radio</span>
           </NavLink>
@@ -178,25 +151,25 @@ const SideBar = () => {
 
         <span className="part-title">Account</span>
         <li className="side-list-item">
-          <NavLink to={`/profile/${currentUser.uid}`} className={`side-link ${location === '/profile' ? 'active' : ''}`}>
-            {location === '/profile' ? <RiAccountCircleFill className="side-svg" /> : <RiAccountCircleLine className="side-svg" />}
+          <NavLink to={`/profile/${currentUser.uid}`} className="side-link">
+            {location.startsWith('/profile') ? <RiAccountCircleFill className="side-svg" /> : <RiAccountCircleLine className="side-svg" />}
             <span className="side-text">Profile</span>
           </NavLink>
         </li>
         <li className="side-list-item">
-          <NavLink to="/friends" className={`side-link ${location === '/friends' ? 'active' : ''}`}>
+          <NavLink to="/friends" className="side-link">
             {location === '/friends' ? <IoPeopleSharp className="side-svg" /> : <IoPeopleOutline className="side-svg" />}
             <span className="side-text">Friends</span>
           </NavLink>
         </li>
         <li className="side-list-item">
-          <NavLink to="/messages" className={`side-link ${location === '/messages' ? 'active' : ''}`}>
+          <NavLink to="/messages" className="side-link">
             {location === '/messages' ? <HiEnvelope className="side-svg" /> : <HiOutlineEnvelope className="side-svg" />}
             <span className="side-text">Messages</span>
           </NavLink>
         </li>
         <li className="side-list-item">
-          <NavLink to="/notifications" className={`side-link ${location === '/notifications' ? 'active' : ''}`}>
+          <NavLink to="/notifications" className="side-link">
             {location === '/notifications' ? <BiSolidBell className="side-svg" /> : <BiBell className="side-svg" />}
             <span className="side-text">Notifications</span>
           </NavLink>

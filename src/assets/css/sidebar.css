@@ -43,42 +43,6 @@
   font-family: "Oswald", sans-serif;
   color: #0C6DE2;
 }
-.side-bar .side-list .profile-link {
-  width: 100%;
-  transform: translateX(-0.5rem);
-}
-.side-bar .side-list .profile-link .side-link {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-.side-bar .side-list .profile-link .side-link:hover {
-  cursor: pointer;
-  position: relative;
-}
-.side-bar .side-list .profile-link .side-link:hover .name-text {
-  opacity: 1;
-  color: #0C6DE2;
-}
-.side-bar .side-list .profile-link .side-link .name-text {
-  font-weight: 400;
-  font-size: 1.3rem;
-  opacity: 0.7;
-  color: #5e5e5e;
-  transition: opacity 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-.side-bar .side-list .profile-link .side-link .rounded {
-  width: 4rem;
-  height: 4rem;
-  min-height: 4rem;
-  min-width: 4rem;
-  border-radius: 50%;
-  -o-object-fit: cover;
-     object-fit: cover;
-  margin-bottom: 0.25rem;
-}
 .side-bar .side-list .part-title {
   text-transform: uppercase;
   font-size: 1.3rem;
