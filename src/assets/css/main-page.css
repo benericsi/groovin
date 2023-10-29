@@ -52,7 +52,6 @@
 .main-wrapper .main-content .main-body {
   height: calc(100vh - 4rem);
   overflow-y: auto;
-  padding: 1rem;
 }
 
 @media only screen and (max-width: 1200px) {

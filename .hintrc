@@ -9,7 +9,8 @@
         "ignore": [
           "inset",
           "scroll-behavior",
-          "position: sticky"
+          "position: sticky",
+          "aspect-ratio"
         ]
       }
     ]

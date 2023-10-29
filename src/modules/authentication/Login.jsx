@@ -11,7 +11,7 @@ import {useNavigate} from 'react-router-dom';
 import {useLoader} from '../../hooks/useLoader';
 import {useToast} from '../../hooks/useToast';
 import {useAuth} from '../../hooks/useAuth';
-import {db} from '../../setup/Firebase';
+import {db, storage} from '../../setup/Firebase';
 
 import {FaGoogle} from 'react-icons/fa';
 
@@ -90,12 +90,24 @@ const Login = () => {
     loginWithGoogle()
       .then(async (cred) => {
         if (cred.additionalUserInfo.isNewUser) {
+          const storageRef = storage.ref();
+          const pictureRef = storageRef.child(`profile-pictures/${cred.user.uid}`);
+          var pictureURL = 'default';
+
+          if (cred.user.photoURL) {
+            await fetch(cred.user.photoURL).then(async (response) => {
+              const blob = await response.blob();
+              await pictureRef.put(blob);
+              pictureURL = await pictureRef.getDownloadURL();
+            });
+          }
+
           await db.collection('users').doc(cred.user.uid).set({
             firstName: cred.additionalUserInfo.profile.given_name,
             lastName: cred.additionalUserInfo.profile.family_name,
             displayName: cred.user.displayName,
             email: cred.user.email,
-            photoURL: cred.user.photoURL,
+            photoURL: pictureURL,
             friends: [],
           });
         }
@@ -106,6 +118,7 @@ const Login = () => {
       })
       .catch((error) => {
         addToast('error', error.message);
+        return;
       })
       .finally(() => {
         hideLoader();

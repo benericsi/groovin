@@ -85,7 +85,7 @@
   transform: translateX(0);
 }
 .nav-bar.opened .nav-list .nav-list-item.last-in-group {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
 }
 .nav-bar .open-close-navbar {
   width: 2rem;
