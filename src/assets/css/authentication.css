@@ -3,11 +3,12 @@
   height: 100svh;
   display: flex;
   flex-direction: row;
-  background-color: #000000;
+  background-color: #ffffff;
   overflow: hidden;
 }
 .auth-page .hero {
   position: relative;
+  background-color: #000000;
   flex: 1;
   bottom: 0;
   left: 0;
@@ -93,6 +94,7 @@
 }
 .auth-page .auth-container {
   position: relative;
+  top: 0;
   padding: 3rem;
   width: clamp(40rem, 50%, 55rem);
   display: flex;
@@ -108,9 +110,7 @@
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 3px;
-  color: #ffffff;
-  -webkit-text-stroke-width: 3px;
-  -webkit-text-stroke-color: #3D8AE8;
+  color: #0C6DE2;
   font-family: "BiggerDisplay", sans-serif;
   font-style: italic;
 }

@@ -46,11 +46,20 @@
 .main-wrapper .main-content .main-header .header-interactions .header-interaction-item .header-interaction-img {
   color: #5e5e5e;
   opacity: 0.7;
-  font-size: 1.125rem;
+  font-size: 1.3rem;
   transition: opacity 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .main-wrapper .main-content .main-body {
   height: calc(100vh - 4rem);
   overflow-y: auto;
   padding: 1rem;
+}
+
+@media only screen and (max-width: 1200px) {
+  .main-content {
+    margin: 4rem 0;
+  }
+  .main-content .main-header {
+    display: none !important;
+  }
 }/*# sourceMappingURL=main-page.css.map */

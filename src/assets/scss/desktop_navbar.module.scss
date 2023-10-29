@@ -1,0 +1,174 @@
+@import 'variables';
+
+.nav-bar {
+    position: relative;
+    top: 0;
+    left: 0;
+    background-color: $clr-white;
+    z-index: 999;
+    transition: width 0.2s $animation-cubic;
+
+    &.resizing {
+        transition: none;
+    }
+
+    @for $i from 1 through 19 {
+        .nav-list {
+            .nav-list-item:nth-child(#{$i}) {
+                .nav-link {
+                    .nav-text {
+                        transition-delay: 0.04s * $i;
+                    }
+                }
+            }
+        }
+    }
+
+    .resize-handle {
+        position: absolute;
+        top: 0;
+        right: 1px;
+        width: 2px;
+        height: 100%;
+        cursor: col-resize;
+        background-color: $clr-grey-300;
+        transform: translateX(100%);
+    }
+
+    &.opened {
+        .nav-list {
+            .nav-list-item {
+                .part-title {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+
+                .nav-link {
+                    .nav-text {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                }
+
+                &.last-in-group {
+                    margin-bottom: .5rem;
+                }
+            }
+        }
+    }
+
+    .open-close-navbar {
+        width: 2rem;
+        height: 2rem;
+        background-color: $clr-white;
+        border: 2px solid $clr-grey-300;
+        border-radius: 50%;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        top: 0;
+        right: 0;
+        transform: translate(50%, 150%);
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .nav-list {
+        list-style-type: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+        overflow: hidden;
+        overflow-y: auto;
+        padding: 1rem 0;
+
+
+        .logo {
+            width: 3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: center;
+
+            .nav-link {
+                &:hover {
+                    cursor: default;
+                }
+
+                h4 {
+                    text-transform: uppercase;
+                    font-size: 1.5rem;
+                    font-family: $font-content;
+                    color: $clr-primary-600;
+                }
+            }
+        }
+
+        .nav-list-item {
+            width: 100%;
+
+            .part-title {
+                position: relative;
+                text-transform: uppercase;
+                font-size: 1.3rem;
+                margin-left: 1.25rem;
+                opacity: 0;
+                transform: translateX(-100%);
+                transition: opacity 0.2s, transform 0.2s $animation-cubic;
+            }
+
+            .nav-link {
+                position: relative;
+                display: flex;
+                align-items: center;
+                height: 2.25rem;
+                text-decoration: none;
+                opacity: .7;
+                transition: opacity .2s $animation-cubic;
+
+                .nav-svg {
+                    min-width: 2.5rem;
+                    font-size: 1.3rem;
+                    margin: 0 1.25rem;
+                    color: $clr-grey-700;
+                    background-color: $clr-white;
+                }
+
+                .nav-text {
+                    font-size: 1.3rem;
+                    color: $clr-grey-700;
+                    transform: translateX(-100%);
+                    opacity: 0;
+                    transition: opacity 0.2s, transform 0.2s $animation-cubic;
+                }
+
+                &:hover,
+                &.active {
+                    opacity: 1;
+                    cursor: pointer;
+
+                    .nav-svg,
+                    .nav-text {
+                        color: $clr-primary-600;
+                    }
+                }
+
+                &.active::after {
+                    content: '';
+                    position: absolute;
+                    width: 3px;
+                    height: 100%;
+                    background-color: $clr-primary-600;
+                    right: 0px;
+                    top: 0;
+                    border-radius: 25px;
+                }
+            }
+        }
+
+
+    }
+}
