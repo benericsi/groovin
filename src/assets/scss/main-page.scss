@@ -15,14 +15,14 @@
             top: 0;
             background-color: $clr-white;
             height: 4rem;
-            border-bottom: 2px solid $clr-grey-300;
-            //box-shadow: $panel-box-shadow;
+            //border-bottom: 2px solid $clr-grey-300;
+            box-shadow: $panel-box-shadow;
             //backdrop-filter: blur(10px);
             z-index: 100;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 1rem;
+            padding: 1rem 2rem;
 
             .header-interactions {
                 height: 100%;

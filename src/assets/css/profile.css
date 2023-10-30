@@ -71,7 +71,20 @@
   color: #0C6DE2;
 }
 .user-header .user-profile-details .user-profile-actions .user-profile-edit {
+  all: unset;
+  cursor: pointer;
   align-self: flex-end;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: #5e5e5e;
+  opacity: 0.7;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.user-header .user-profile-details .user-profile-actions .user-profile-edit:hover {
+  opacity: 1;
+  color: #0C6DE2;
 }
 
 @keyframes bg-animation {

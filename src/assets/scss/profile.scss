@@ -80,7 +80,21 @@
             }
 
             .user-profile-edit {
+                all: unset;
+                cursor: pointer;
                 align-self: flex-end;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: .5rem;
+                color: $clr-grey-700;
+                opacity: .7;
+                transition: all .2s $animation-cubic;
+
+                &:hover {
+                    opacity: 1;
+                    color: $clr-primary-600;
+                }
             }
         }
 
