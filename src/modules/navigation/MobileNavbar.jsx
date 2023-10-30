@@ -1,6 +1,6 @@
 import mobileNavStyle from '../../assets/css/mobile_navbar.module.css';
 
-import {NavLink, useLocation, useNavigate} from 'react-router-dom';
+import {NavLink, useLocation, useNavigate, useParams} from 'react-router-dom';
 import React, {useState} from 'react';
 import {useAuth} from '../../hooks/useAuth';
 import {useLoader} from '../../hooks/useLoader';
@@ -23,6 +23,7 @@ import {BiSolidBell, BiBell} from 'react-icons/bi';
 import {BiLogOut} from 'react-icons/bi';
 
 const MobileNavbar = () => {
+  const {uid} = useParams();
   const {currentUser, logout} = useAuth();
   const location = useLocation().pathname;
   const navigate = useNavigate();
@@ -70,8 +71,8 @@ const MobileNavbar = () => {
             <NavLink to="/search" className={`${mobileNavStyle['header-link']} ${location === '/seacrh' ? mobileNavStyle['active'] : ''}`}>
               {location === '/search' ? <BiSolidSearchAlt2 className={mobileNavStyle['header-svg']} /> : <BiSearchAlt className={mobileNavStyle['header-svg']} />}
             </NavLink>
-            <NavLink to={`/profile/${currentUser.uid}`} className={`${mobileNavStyle['header-link']} ${location.startsWith('/profile') ? mobileNavStyle['active'] : ''}`}>
-              {location.startsWith('/profile') ? <RiAccountCircleFill className={mobileNavStyle['header-svg']} /> : <RiAccountCircleLine className={mobileNavStyle['header-svg']} />}
+            <NavLink to={`/profile/${currentUser.uid}`} className={`${mobileNavStyle['header-link']} ${location === `/profile/${currentUser.uid}` ? mobileNavStyle['active'] : ''}`}>
+              {location === `/profile/${currentUser.uid}` ? <RiAccountCircleFill className={mobileNavStyle['header-svg']} /> : <RiAccountCircleLine className={mobileNavStyle['header-svg']} />}
             </NavLink>
           </li>
         </ul>
@@ -135,8 +136,8 @@ const MobileNavbar = () => {
       <nav className={mobileNavStyle['nav-bar']}>
         <ul className={mobileNavStyle['nav-list']}>
           <li className={`${mobileNavStyle['nav-list-item']}`}>
-            <NavLink to="/friends" className={`${mobileNavStyle['nav-link']} ${location === '/friends' ? mobileNavStyle['active'] : mobileNavStyle['inactive']} `}>
-              {location === '/friends' ? <IoPeopleSharp className={mobileNavStyle['navbar-svg']} /> : <IoPeopleOutline className={mobileNavStyle['navbar-svg']} />}
+            <NavLink to={`/profile/${currentUser.uid}/friends`} className={`${mobileNavStyle['nav-link']} ${location === `/profile/${currentUser.uid}/friends` ? mobileNavStyle['active'] : mobileNavStyle['inactive']} `}>
+              {location === `/profile/${currentUser.uid}/friends` ? <IoPeopleSharp className={mobileNavStyle['navbar-svg']} /> : <IoPeopleOutline className={mobileNavStyle['navbar-svg']} />}
             </NavLink>
           </li>
 

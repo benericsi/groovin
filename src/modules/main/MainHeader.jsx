@@ -60,7 +60,7 @@ const MainHeader = () => {
           {location === '/messages' ? <HiEnvelope className="header-interaction-img" /> : <HiOutlineEnvelope className="header-interaction-img" />}
         </NavLink>
         <NavLink to={`/profile/${currentUser.uid}`} className="header-interaction-item" title="Profile">
-          {location.startsWith('/profile') ? <RiAccountCircleFill className="header-interaction-img" /> : <RiAccountCircleLine className="header-interaction-img" />}
+          {location === `/profile/${currentUser.uid}` ? <RiAccountCircleFill className="header-interaction-img" /> : <RiAccountCircleLine className="header-interaction-img" />}
         </NavLink>
         <div className="header-interaction-item " onClick={handleLogOut} title="Log Out">
           <BiLogOut className="header-interaction-img" />

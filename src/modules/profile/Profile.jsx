@@ -8,12 +8,13 @@ import {useTitle} from '../../hooks/useTitle';
 import {useAuth} from '../../hooks/useAuth';
 import {useLoader} from '../../hooks/useLoader';
 import {useToast} from '../../hooks/useToast';
-import {useParams} from 'react-router-dom';
+import {Outlet, useParams, NavLink, useLocation} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import {db, storage} from '../../setup/Firebase';
 
 import {RiAccountCircleFill} from 'react-icons/ri';
 import {BiEdit} from 'react-icons/bi';
+import {AiOutlinePlusCircle} from 'react-icons/ai';
 
 const Profile = () => {
   useTitle('Profile');
@@ -21,6 +22,7 @@ const Profile = () => {
   const {currentUser} = useAuth();
   const {showLoader, hideLoader} = useLoader();
   const {addToast} = useToast();
+  const location = useLocation().pathname;
 
   const isOwnProfile = currentUser.uid === uid;
   const [userData, setUserData] = useState(null);
@@ -31,7 +33,6 @@ const Profile = () => {
 
   useEffect(() => {
     const getUserByUid = async (uid) => {
-      console.log('query');
       try {
         showLoader();
         const unsubscribe = db
@@ -88,6 +89,8 @@ const Profile = () => {
           });
 
         currentUser.updateProfile({
+          firstName: inputName.split(' ')[0],
+          lastName: inputName.split(' ')[1],
           displayName: inputName,
         });
 
@@ -108,6 +111,8 @@ const Profile = () => {
           });
 
         currentUser.updateProfile({
+          firstName: inputName.split(' ')[0],
+          lastName: inputName.split(' ')[1],
           displayName: inputName,
           photoURL: inputPhoto ? imageUrl : 'default',
         });
@@ -146,18 +151,47 @@ const Profile = () => {
             <div className="user-background"></div>
           </div>
           <div className="user-profile-details">
-            <div className="user-profile-image">{userData.photoURL !== 'default' ? <img src={userData.photoURL} alt="" /> : <RiAccountCircleFill className="default-photo" />}</div>
+            <div className="user-profile-image">
+              {userData.photoURL !== 'default' ? <img src={userData.photoURL} alt="" /> : <RiAccountCircleFill className="default-photo" />}
+              {isOwnProfile ? (
+                <div className="story">
+                  <AiOutlinePlusCircle />
+                  <span>Add to story</span>
+                </div>
+              ) : null}
+            </div>
             <div className="user-profile-actions">
               <span className="user-profile-name">{userData.displayName}</span>
-              {isOwnProfile && (
+              {isOwnProfile ? (
                 <button className="user-profile-edit" onClick={togglePopUp}>
                   <BiEdit /> Edit Profile
                 </button>
+              ) : (
+                <span></span>
               )}
             </div>
           </div>
+          <nav className="user-nav">
+            <ul className="user-nav-list">
+              <li className="user-nav-list-item">
+                <NavLink to={`/profile/${uid}`} className={`user-nav-link ${location === `/profile/${uid}` ? 'active' : 'inactive'}`}>
+                  Profile
+                </NavLink>
+              </li>
+              <li className="user-nav-list-item">
+                <NavLink to={`/profile/${uid}/friends`} className={`user-nav-link ${location === `/profile/${uid}/friends` ? 'active' : 'inactive'}`}>
+                  Friends {userData.friends.length}
+                </NavLink>
+              </li>
+              <li className="user-nav-list-item"></li>
+            </ul>
+          </nav>
         </div>
       )}
+
+      <div className="user-body">
+        <Outlet context={[uid]} />
+      </div>
     </>
   );
 };

@@ -51,6 +51,42 @@
             position: relative;
             width: 10rem;
             height: 10rem;
+            overflow: hidden;
+
+            &:hover {
+                .story {
+                    transform: translateX(0);
+                }
+            }
+
+            .story {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                height: 100%;
+                width: 100%;
+                background-color: rgba(0, 0, 0, 0.4);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                row-gap: .5rem;
+                align-items: center;
+                transform: translateX(100%);
+                cursor: pointer;
+                border-radius: 50%;
+                border: 5px solid $clr-white;
+
+                svg {
+                    color: $clr-white;
+                    font-size: 2.5rem;
+                }
+
+                span {
+                    font-size: 1.2rem;
+                    color: $clr-white;
+                    //font-weight: bold;
+                }
+            }
 
             img {
                 width: 100%;
@@ -76,7 +112,8 @@
             .user-profile-name {
                 font-size: 3rem;
                 font-weight: 600;
-                color: $clr-primary-600;
+                //color: $clr-primary-600;
+                color: $clr-grey-900
             }
 
             .user-profile-edit {
@@ -97,8 +134,49 @@
                 }
             }
         }
-
     }
+
+    .user-nav {
+        background-color: $clr-white;
+        position: relative;
+        width: 100%;
+        height: 3rem;
+        padding: .5rem 2rem;
+        display: flex;
+        align-items: center;
+        max-width: $media-query-2xl;
+
+        .user-nav-list {
+            display: flex;
+            gap: 1.5rem;
+
+            .user-nav-list-item {
+
+                .user-nav-link {
+                    color: $clr-grey-700;
+                    opacity: .7;
+                    font-size: 1rem;
+                    text-transform: uppercase;
+                    transition: all .2s $animation-cubic;
+
+                    &:hover,
+                    &.active {
+                        color: $clr-primary-600;
+                        opacity: 1;
+                    }
+
+                    &:not(:hover).inactive {
+                        color: $clr-grey-700 !important;
+                        opacity: 0.7 !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.user-body {
+    padding: 1rem 2rem;
 }
 
 @keyframes bg-animation {

@@ -1,6 +1,6 @@
 import desktopNavStyle from '../../assets/css/desktop_navbar.module.css';
 
-import {NavLink, useLocation, useNavigate} from 'react-router-dom';
+import {NavLink, useLocation, useNavigate, useParams} from 'react-router-dom';
 import React, {useState} from 'react';
 import {useAuth} from '../../hooks/useAuth';
 import {useLoader} from '../../hooks/useLoader';
@@ -27,13 +27,14 @@ const JUMP_AT = 15;
 const MAX_WIDTH = 30;
 
 const DesktopNavbar = () => {
+  const {uid} = useParams();
   const {currentUser, logout} = useAuth();
   const {showLoader, hideLoader} = useLoader();
   const {addToast} = useToast();
 
   const [isResizing, setIsResizing] = useState(false);
-  const [navbarWidth, setNavbarWidth] = useState(MIN_WIDTH);
-  const [isNavOpen, setIsNavOpen] = useState(false);
+  const [navbarWidth, setNavbarWidth] = useState(JUMP_AT);
+  const [isNavOpen, setIsNavOpen] = useState(true);
 
   const navigate = useNavigate();
   const location = useLocation().pathname;
@@ -171,14 +172,14 @@ const DesktopNavbar = () => {
           <span className={desktopNavStyle['part-title']}>Account</span>
         </li>
         <li className={desktopNavStyle['nav-list-item']}>
-          <NavLink to={`/profile/${currentUser.uid}`} className={`${desktopNavStyle['nav-link']} ${location.startsWith('/profile') ? desktopNavStyle['active'] : ''}`}>
-            {location.startsWith('/profile') ? <RiAccountCircleFill className={desktopNavStyle['nav-svg']} /> : <RiAccountCircleLine className={desktopNavStyle['nav-svg']} />}
+          <NavLink to={`/profile/${currentUser.uid}`} className={`${desktopNavStyle['nav-link']} ${location === `/profile/${currentUser.uid}` ? desktopNavStyle['active'] : ''}`}>
+            {location === `/profile/${currentUser.uid}` ? <RiAccountCircleFill className={desktopNavStyle['nav-svg']} /> : <RiAccountCircleLine className={desktopNavStyle['nav-svg']} />}
             <span className={desktopNavStyle['nav-text']}>Profile</span>
           </NavLink>
         </li>
         <li className={desktopNavStyle['nav-list-item']}>
-          <NavLink to="/friends" className={`${desktopNavStyle['nav-link']} ${location === '/friends' ? desktopNavStyle['active'] : ''}`}>
-            {location === '/friends' ? <IoPeopleSharp className={desktopNavStyle['nav-svg']} /> : <IoPeopleOutline className={desktopNavStyle['nav-svg']} />}
+          <NavLink to={`/profile/${currentUser.uid}/friends`} className={`${desktopNavStyle['nav-link']} ${location === `/profile/${currentUser.uid}/friends` ? desktopNavStyle['active'] : ''}`}>
+            {location === `/profile/${currentUser.uid}/friends` ? <IoPeopleSharp className={desktopNavStyle['nav-svg']} /> : <IoPeopleOutline className={desktopNavStyle['nav-svg']} />}
             <span className={desktopNavStyle['nav-text']}>Friends</span>
           </NavLink>
         </li>

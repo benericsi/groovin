@@ -10,6 +10,8 @@ const Main = lazy(() => import('./modules/main/Main'));
 const Dashboard = lazy(() => import('./modules/main/Dashboard'));
 const Profile = lazy(() => import('./modules/profile/Profile'));
 const ErrorPage = lazy(() => import('./common/ErrorPage'));
+const ProfileMain = lazy(() => import('./modules/profile/ProfileMain'));
+const Friends = lazy(() => import('./modules/profile/Friends'));
 
 function App() {
   return (
@@ -20,8 +22,9 @@ function App() {
         <Route element={<PrivateRoute />}>
           <Route exact path="/" element={<Main />}>
             <Route index element={<Dashboard />} />
-            <Route path="/profile">
-              <Route path=":uid" element={<Profile />} />
+            <Route exact path="/profile/:uid" element={<Profile />}>
+              <Route index element={<ProfileMain />} />
+              <Route path="friends" element={<Friends />} />
             </Route>
           </Route>
         </Route>
