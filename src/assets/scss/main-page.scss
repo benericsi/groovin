@@ -40,17 +40,18 @@
                     align-items: center;
                     justify-content: center;
 
-                    &.active {
+                    &.active,
+                    &:hover {
                         .header-interaction-img {
                             color: $clr-primary-600;
                             opacity: 1;
                         }
                     }
 
-                    &:hover {
+                    &:not(:hover).inactive {
                         .header-interaction-img {
-                            color: $clr-primary-600;
-                            opacity: 1;
+                            color: $clr-grey-700 !important;
+                            opacity: 0.7 !important;
                         }
                     }
 

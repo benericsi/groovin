@@ -53,13 +53,13 @@ const MainHeader = () => {
       </div>
 
       <div className="header-interactions">
-        <NavLink to="/notifications" className="header-interaction-item" title="Notifications">
-          {location === '/notifications' ? <BiSolidBell className="header-interaction-img" /> : <BiBell className="header-interaction-img" />}
+        <NavLink to={`/profile/${currentUser.uid}/notifications`} className={`header-interaction-item ${location === `/profile/${currentUser.uid}/notifications` ? 'active' : 'inactive'}`} title="Notifications">
+          {location === `/profile/${currentUser.uid}/notifications` ? <BiSolidBell className="header-interaction-img" /> : <BiBell className="header-interaction-img" />}
         </NavLink>
-        <NavLink to="/messages" className="header-interaction-item" title="Messages">
-          {location === '/messages' ? <HiEnvelope className="header-interaction-img" /> : <HiOutlineEnvelope className="header-interaction-img" />}
+        <NavLink to={`/profile/${currentUser.uid}/messages`} className={`header-interaction-item ${location === `/profile/${currentUser.uid}/messages` ? 'active' : 'inactive'}`} title="Messages">
+          {location === `/profile/${currentUser.uid}/messages` ? <HiEnvelope className="header-interaction-img" /> : <HiOutlineEnvelope className="header-interaction-img" />}
         </NavLink>
-        <NavLink to={`/profile/${currentUser.uid}`} className="header-interaction-item" title="Profile">
+        <NavLink to={`/profile/${currentUser.uid}`} className={`header-interaction-item ${location === `/profile/${currentUser.uid}` ? 'active' : 'inactive'}`} title="Profile">
           {location === `/profile/${currentUser.uid}` ? <RiAccountCircleFill className="header-interaction-img" /> : <RiAccountCircleLine className="header-interaction-img" />}
         </NavLink>
         <div className="header-interaction-item " onClick={handleLogOut} title="Log Out">

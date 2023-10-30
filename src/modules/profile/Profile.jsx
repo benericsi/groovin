@@ -183,6 +183,20 @@ const Profile = () => {
                   Friends {userData.friends.length}
                 </NavLink>
               </li>
+              {isOwnProfile ? (
+                <>
+                  <li className="user-nav-list-item">
+                    <NavLink to={`/profile/${uid}/messages`} className={`user-nav-link ${location === `/profile/${uid}/messages` ? 'active' : 'inactive'}`}>
+                      Messages
+                    </NavLink>
+                  </li>
+                  <li className="user-nav-list-item">
+                    <NavLink to={`/profile/${uid}/notifications`} className={`user-nav-link ${location === `/profile/${uid}/notifications` ? 'active' : 'inactive'}`}>
+                      Notifications
+                    </NavLink>
+                  </li>
+                </>
+              ) : null}
               <li className="user-nav-list-item"></li>
             </ul>
           </nav>
@@ -190,7 +204,7 @@ const Profile = () => {
       )}
 
       <div className="user-body">
-        <Outlet context={[uid]} />
+        <Outlet context={[uid, isOwnProfile]} />
       </div>
     </>
   );

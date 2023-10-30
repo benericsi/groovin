@@ -184,14 +184,14 @@ const DesktopNavbar = () => {
           </NavLink>
         </li>
         <li className={desktopNavStyle['nav-list-item']}>
-          <NavLink to="/messages" className={`${desktopNavStyle['nav-link']} ${location === '/messages' ? desktopNavStyle['active'] : ''}`}>
-            {location === '/messages' ? <HiEnvelope className={desktopNavStyle['nav-svg']} /> : <HiOutlineEnvelope className={desktopNavStyle['nav-svg']} />}
+          <NavLink to={`/profile/${currentUser.uid}/messages`} className={`${desktopNavStyle['nav-link']} ${location === `/profile/${currentUser.uid}/messages` ? desktopNavStyle['active'] : ''}`}>
+            {location === `/profile/${currentUser.uid}/messages` ? <HiEnvelope className={desktopNavStyle['nav-svg']} /> : <HiOutlineEnvelope className={desktopNavStyle['nav-svg']} />}
             <span className={desktopNavStyle['nav-text']}>Messages</span>
           </NavLink>
         </li>
         <li className={desktopNavStyle['nav-list-item']}>
-          <NavLink to="/notifications" className={`${desktopNavStyle['nav-link']} ${location === '/notifications' ? desktopNavStyle['active'] : ''}`}>
-            {location === '/notifications' ? <BiSolidBell className={desktopNavStyle['nav-svg']} /> : <BiBell className={desktopNavStyle['nav-svg']} />}
+          <NavLink to={`/profile/${currentUser.uid}/notifications`} className={`${desktopNavStyle['nav-link']} ${location === `/profile/${currentUser.uid}/notifications` ? desktopNavStyle['active'] : ''}`}>
+            {location === `/profile/${currentUser.uid}/notifications` ? <BiSolidBell className={desktopNavStyle['nav-svg']} /> : <BiBell className={desktopNavStyle['nav-svg']} />}
             <span className={desktopNavStyle['nav-text']}>Notifications</span>
           </NavLink>
         </li>

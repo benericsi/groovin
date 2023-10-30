@@ -154,15 +154,15 @@ const MobileNavbar = () => {
           </li>
 
           <li className={mobileNavStyle['nav-list-item']}>
-            <NavLink to="/messages" className={`${mobileNavStyle['nav-link']} ${location === '/messages' ? mobileNavStyle['active'] : mobileNavStyle['inactive']}`}>
-              {location === '/messages' ? <HiEnvelope className={mobileNavStyle['navbar-svg']} /> : <HiOutlineEnvelope className={mobileNavStyle['navbar-svg']} />}
+            <NavLink to={`/profile/${currentUser.uid}/messages`} className={`${mobileNavStyle['nav-link']} ${location === `/profile/${currentUser.uid}/messages` ? mobileNavStyle['active'] : mobileNavStyle['inactive']}`}>
+              {location === `/profile/${currentUser.uid}/messages` ? <HiEnvelope className={mobileNavStyle['navbar-svg']} /> : <HiOutlineEnvelope className={mobileNavStyle['navbar-svg']} />}
               <span className={mobileNavStyle['new-notification']}></span>
             </NavLink>
           </li>
 
           <li className={mobileNavStyle['nav-list-item']}>
-            <NavLink to="/notifications" className={`${mobileNavStyle['nav-link']} ${location === '/notifications' ? mobileNavStyle['active'] : mobileNavStyle['inactive']}`}>
-              {location === '/notifications' ? <BiSolidBell className={mobileNavStyle['navbar-svg']} /> : <BiBell className={mobileNavStyle['navbar-svg']} />}
+            <NavLink to={`/profile/${currentUser.uid}/notifications`} className={`${mobileNavStyle['nav-link']} ${location === `/profile/${currentUser.uid}/notifications` ? mobileNavStyle['active'] : mobileNavStyle['inactive']}`}>
+              {location === `/profile/${currentUser.uid}/notifications` ? <BiSolidBell className={mobileNavStyle['navbar-svg']} /> : <BiBell className={mobileNavStyle['navbar-svg']} />}
               <span className={mobileNavStyle['new-notification']}></span>
             </NavLink>
           </li>
