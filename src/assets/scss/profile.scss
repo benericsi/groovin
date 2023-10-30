@@ -124,8 +124,8 @@
                 align-items: center;
                 justify-content: center;
                 gap: .5rem;
-                color: $clr-grey-700;
-                opacity: .7;
+                color: $clr-grey-800;
+                opacity: .8;
                 transition: all .2s $animation-cubic;
 
                 &:hover {
@@ -153,8 +153,8 @@
             .user-nav-list-item {
 
                 .user-nav-link {
-                    color: $clr-grey-700;
-                    opacity: .7;
+                    color: $clr-grey-800;
+                    opacity: .8;
                     font-size: 1rem;
                     text-transform: uppercase;
                     transition: all .2s $animation-cubic;
@@ -166,8 +166,8 @@
                     }
 
                     &:not(:hover).inactive {
-                        color: $clr-grey-700 !important;
-                        opacity: 0.7 !important;
+                        color: $clr-grey-800 !important;
+                        opacity: 0.8 !important;
                     }
                 }
             }

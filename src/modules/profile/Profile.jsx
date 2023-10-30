@@ -4,7 +4,6 @@ import Button from '../../ui/Button';
 import Input from '../../ui/Input';
 import PopUp from '../../common/PopUp';
 
-import {useTitle} from '../../hooks/useTitle';
 import {useAuth} from '../../hooks/useAuth';
 import {useLoader} from '../../hooks/useLoader';
 import {useToast} from '../../hooks/useToast';
@@ -17,7 +16,6 @@ import {BiEdit} from 'react-icons/bi';
 import {AiOutlinePlusCircle} from 'react-icons/ai';
 
 const Profile = () => {
-  useTitle('Profile');
   const {uid} = useParams();
   const {currentUser} = useAuth();
   const {showLoader, hideLoader} = useLoader();

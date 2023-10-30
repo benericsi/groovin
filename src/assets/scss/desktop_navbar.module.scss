@@ -117,6 +117,7 @@
                 margin-left: 1.25rem;
                 opacity: 0;
                 transform: translateX(-100%);
+                color: $clr-grey-900;
                 transition: opacity 0.2s, transform 0.2s $animation-cubic;
             }
 
@@ -126,20 +127,20 @@
                 align-items: center;
                 height: 2.25rem;
                 text-decoration: none;
-                opacity: .7;
+                opacity: .8;
                 transition: opacity .2s $animation-cubic;
 
                 .nav-svg {
                     min-width: 2.5rem;
                     font-size: 1.3rem;
                     margin: 0 1.25rem;
-                    color: $clr-grey-700;
+                    color: $clr-grey-800;
                     background-color: $clr-white;
                 }
 
                 .nav-text {
                     font-size: 1.3rem;
-                    color: $clr-grey-700;
+                    color: $clr-grey-800;
                     transform: translateX(-100%);
                     opacity: 0;
                     transition: opacity 0.2s, transform 0.2s $animation-cubic;

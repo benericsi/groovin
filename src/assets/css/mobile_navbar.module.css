@@ -41,7 +41,7 @@
   margin: 0;
   min-width: 2rem;
   height: 1.75rem;
-  color: #5e5e5e;
+  color: #3f3f3f;
 }
 
 .mobile-header-wrapper {
@@ -93,7 +93,7 @@
   margin: 0;
   min-width: 2rem;
   height: 1.75rem;
-  color: #5e5e5e;
+  color: #3f3f3f;
 }
 
 .nav-aside-wrapper {
@@ -147,7 +147,7 @@
 .nav-aside-wrapper.opened .nav-aside .side-list .side-list-item .side-link .side-svg {
   min-height: 1.5rem;
   min-width: 1.5rem;
-  color: #5e5e5e;
+  color: #3f3f3f;
 }
 .nav-aside-wrapper.opened .nav-aside .side-list .side-list-item .side-link .side-svg.scale-down {
   transform: scale(0.9);
@@ -155,7 +155,7 @@
 .nav-aside-wrapper.opened .nav-aside .side-list .side-list-item .side-link .side-text {
   font-size: 1.5rem;
   margin-left: 2.5rem;
-  color: #5e5e5e;
+  color: #3f3f3f;
 }
 .nav-aside-wrapper.opened .nav-aside .side-list .side-list-item .side-link.active {
   position: relative;

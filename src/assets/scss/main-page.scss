@@ -50,14 +50,14 @@
 
                     &:not(:hover).inactive {
                         .header-interaction-img {
-                            color: $clr-grey-700 !important;
-                            opacity: 0.7 !important;
+                            color: $clr-grey-800 !important;
+                            opacity: 0.8 !important;
                         }
                     }
 
                     .header-interaction-img {
-                        color: $clr-grey-700;
-                        opacity: 0.7;
+                        color: $clr-grey-800;
+                        opacity: 0.8;
                         font-size: 1.3rem;
                         transition: opacity .2s $animation-cubic;
                     }

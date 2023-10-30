@@ -48,7 +48,7 @@
                     margin: 0;
                     min-width: 2rem;
                     height: 1.75rem;
-                    color: $clr-grey-700;
+                    color: $clr-grey-800;
                 }
             }
         }
@@ -109,7 +109,7 @@
                     margin: 0;
                     min-width: 2rem;
                     height: 1.75rem;
-                    color: $clr-grey-700;
+                    color: $clr-grey-800;
                 }
             }
         }
@@ -170,7 +170,7 @@
                         .side-svg {
                             min-height: 1.5rem;
                             min-width: 1.5rem;
-                            color: $clr-grey-700;
+                            color: $clr-grey-800;
 
                             &.scale-down {
                                 transform: scale(.9);
@@ -180,7 +180,7 @@
                         .side-text {
                             font-size: 1.5rem;
                             margin-left: 2.5rem;
-                            color: $clr-grey-700;
+                            color: $clr-grey-800;
                         }
 
                         &.active {

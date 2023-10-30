@@ -15,7 +15,7 @@
   gap: 1rem;
 }
 .btn-primary:active {
-  opacity: 0.75;
+  opacity: 0.8;
 }
 .btn-primary.light {
   color: #ffffff;
