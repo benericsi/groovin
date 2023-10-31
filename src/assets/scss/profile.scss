@@ -116,7 +116,8 @@
                 color: $clr-grey-900
             }
 
-            .user-profile-edit {
+            .user-profile-edit,
+            .friend-action {
                 all: unset;
                 cursor: pointer;
                 align-self: flex-end;
@@ -132,6 +133,10 @@
                     opacity: 1;
                     color: $clr-primary-600;
                 }
+            }
+
+            .friend-action {
+                align-self: start;
             }
         }
     }
@@ -220,7 +225,8 @@
                     font-size: 2rem;
                 }
 
-                .user-profile-edit {
+                .user-profile-edit,
+                .friend-action {
                     align-self: center;
                 }
             }

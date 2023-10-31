@@ -7,19 +7,23 @@ import PopUp from '../../common/PopUp';
 import {useAuth} from '../../hooks/useAuth';
 import {useLoader} from '../../hooks/useLoader';
 import {useToast} from '../../hooks/useToast';
-import {Outlet, useParams, NavLink, useLocation} from 'react-router-dom';
+import {Outlet, useParams, NavLink, useLocation, useNavigate} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import {db, storage} from '../../setup/Firebase';
+import firebase from 'firebase/compat/app';
 
 import {RiAccountCircleFill} from 'react-icons/ri';
 import {BiEdit} from 'react-icons/bi';
 import {AiOutlinePlusCircle} from 'react-icons/ai';
+import {BiUserPlus, BiUserMinus} from 'react-icons/bi';
+import {MdOutlineCancel} from 'react-icons/md';
 
 const Profile = () => {
   const {uid} = useParams();
   const {currentUser} = useAuth();
   const {showLoader, hideLoader} = useLoader();
   const {addToast} = useToast();
+  const navigate = useNavigate();
   const location = useLocation().pathname;
 
   const isOwnProfile = currentUser.uid === uid;
@@ -29,10 +33,12 @@ const Profile = () => {
   const [inputName, setInputName] = useState(currentUser.displayName);
   const [inputPhoto, setInputPhoto] = useState(null);
 
+  const [friendStatus, setFriendStatus] = useState(null);
+
   useEffect(() => {
-    const getUserByUid = async (uid) => {
+    const getUserByUid = async () => {
+      showLoader();
       try {
-        showLoader();
         const unsubscribe = db
           .collection('users')
           .doc(uid)
@@ -54,7 +60,39 @@ const Profile = () => {
       }
     };
 
-    getUserByUid(uid);
+    const getFriendStatus = async () => {
+      showLoader();
+      try {
+        const unsubscribe = db
+          .collection('requests')
+          .where('sender', '==', currentUser.uid)
+          .where('receiver', '==', uid)
+          .onSnapshot((doc) => {
+            if (doc.empty) {
+              setFriendStatus('not-friends');
+            } else {
+              doc.forEach((doc) => {
+                if (doc.data().status === 'pending') {
+                  setFriendStatus('pending');
+                } else if (doc.data().status === 'accepted') {
+                  setFriendStatus('accepted');
+                }
+              });
+            }
+          });
+
+        return unsubscribe;
+      } catch (error) {
+        addToast('error', error.message);
+      } finally {
+        hideLoader();
+      }
+    };
+
+    getUserByUid();
+    if (!isOwnProfile) {
+      getFriendStatus();
+    }
   }, [uid]);
 
   const togglePopUp = () => {
@@ -126,6 +164,71 @@ const Profile = () => {
     }
   };
 
+  const handleFriendAction = async (e) => {
+    e.preventDefault();
+
+    switch (friendStatus) {
+      case 'not-friends': {
+        try {
+          showLoader();
+          const friendRequestRef = db.collection('requests');
+          const friendRequest = {
+            sender: currentUser.uid,
+            receiver: uid,
+            status: 'pending',
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          };
+
+          // Check if friend request already exists
+          const friendRequestDoc = await friendRequestRef.where('sender', '==', currentUser.uid).where('receiver', '==', uid).where('status', '==', 'pending').get();
+          if (!friendRequestDoc.empty) {
+            addToast('error', 'Friend request already sent!');
+            return;
+          }
+
+          // Check if the user already sent a friend request
+          const friendRequestDoc2 = await friendRequestRef.where('sender', '==', uid).where('receiver', '==', currentUser.uid).where('status', '==', 'pending').get();
+          if (!friendRequestDoc2.empty) {
+            addToast('info', 'You already have a friend request from this user. See your requests page!');
+            navigate(`/profile/${currentUser.uid}/requests`);
+            return;
+          }
+
+          await friendRequestRef.add(friendRequest);
+          addToast('success', 'Friend request sent!');
+          setFriendStatus('pending');
+        } catch (error) {
+          addToast('error', error.message);
+        } finally {
+          hideLoader();
+        }
+
+        break;
+      }
+
+      case 'pending': {
+        try {
+          showLoader();
+          const friendRequestRef = db.collection('requests');
+          const friendRequestDoc = await friendRequestRef.where('sender', '==', currentUser.uid).where('receiver', '==', uid).where('status', '==', 'pending').get();
+
+          friendRequestDoc.forEach((doc) => {
+            doc.ref.delete();
+          });
+
+          addToast('success', 'Friend request cancelled!');
+          setFriendStatus('not-friends');
+        } catch (error) {
+          addToast('error', error.message);
+        } finally {
+          hideLoader();
+        }
+
+        break;
+      }
+    }
+  };
+
   return (
     <>
       {isOwnProfile && (
@@ -165,7 +268,24 @@ const Profile = () => {
                   <BiEdit /> Edit Profile
                 </button>
               ) : (
-                <span></span>
+                <button className="friend-action" onClick={handleFriendAction}>
+                  {friendStatus === 'not-friends' ? (
+                    <>
+                      <BiUserPlus />
+                      Add Friend
+                    </>
+                  ) : friendStatus === 'pending' ? (
+                    <>
+                      <MdOutlineCancel />
+                      Cancel Request
+                    </>
+                  ) : friendStatus === 'accepted' ? (
+                    <>
+                      <BiUserMinus />
+                      Remove Friend
+                    </>
+                  ) : null}
+                </button>
               )}
             </div>
           </div>
@@ -183,6 +303,11 @@ const Profile = () => {
               </li>
               {isOwnProfile ? (
                 <>
+                  <li className="user-nav-list-item">
+                    <NavLink to={`/profile/${uid}/requests`} className={`user-nav-link ${location === `/profile/${uid}/requests` ? 'active' : 'inactive'}`}>
+                      Requests
+                    </NavLink>
+                  </li>
                   <li className="user-nav-list-item">
                     <NavLink to={`/profile/${uid}/messages`} className={`user-nav-link ${location === `/profile/${uid}/messages` ? 'active' : 'inactive'}`}>
                       Messages

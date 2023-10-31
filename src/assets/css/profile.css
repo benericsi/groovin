@@ -99,7 +99,8 @@
   font-weight: 600;
   color: #121212;
 }
-.user-header .user-profile-details .user-profile-actions .user-profile-edit {
+.user-header .user-profile-details .user-profile-actions .user-profile-edit,
+.user-header .user-profile-details .user-profile-actions .friend-action {
   all: unset;
   cursor: pointer;
   align-self: flex-end;
@@ -111,9 +112,13 @@
   opacity: 0.8;
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-.user-header .user-profile-details .user-profile-actions .user-profile-edit:hover {
+.user-header .user-profile-details .user-profile-actions .user-profile-edit:hover,
+.user-header .user-profile-details .user-profile-actions .friend-action:hover {
   opacity: 1;
   color: #0C6DE2;
+}
+.user-header .user-profile-details .user-profile-actions .friend-action {
+  align-self: start;
 }
 .user-header .user-nav {
   background-color: #ffffff;
@@ -182,7 +187,8 @@
   .user-header .user-profile-details .user-profile-actions .user-profile-name {
     font-size: 2rem;
   }
-  .user-header .user-profile-details .user-profile-actions .user-profile-edit {
+  .user-header .user-profile-details .user-profile-actions .user-profile-edit,
+  .user-header .user-profile-details .user-profile-actions .friend-action {
     align-self: center;
   }
 }/*# sourceMappingURL=profile.css.map */
