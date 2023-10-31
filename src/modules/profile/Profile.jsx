@@ -65,8 +65,9 @@ const Profile = () => {
       try {
         const unsubscribe = db
           .collection('requests')
-          .where('sender', '==', currentUser.uid)
-          .where('receiver', '==', uid)
+          .where('sender', 'in', [currentUser.uid, uid])
+          .where('receiver', 'in', [currentUser.uid, uid])
+          .where('status', '==', 'accepted')
           .onSnapshot((doc) => {
             if (doc.empty) {
               setFriendStatus('not-friends');
@@ -169,14 +170,14 @@ const Profile = () => {
 
     switch (friendStatus) {
       case 'not-friends': {
+        showLoader();
         try {
-          showLoader();
           const friendRequestRef = db.collection('requests');
           const friendRequest = {
             sender: currentUser.uid,
             receiver: uid,
             status: 'pending',
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           };
 
           // Check if friend request already exists
@@ -207,8 +208,8 @@ const Profile = () => {
       }
 
       case 'pending': {
+        showLoader();
         try {
-          showLoader();
           const friendRequestRef = db.collection('requests');
           const friendRequestDoc = await friendRequestRef.where('sender', '==', currentUser.uid).where('receiver', '==', uid).where('status', '==', 'pending').get();
 
@@ -224,6 +225,40 @@ const Profile = () => {
           hideLoader();
         }
 
+        break;
+      }
+
+      case 'accepted': {
+        showLoader();
+        try {
+          const friendRequestRef = db.collection('requests');
+          const friendRequestDoc = await friendRequestRef.where('sender', 'in', [currentUser.uid, uid]).where('receiver', 'in', [currentUser.uid, uid]).where('status', '==', 'accepted').get();
+
+          friendRequestDoc.forEach((doc) => {
+            doc.ref.delete();
+          });
+
+          await db
+            .collection('users')
+            .doc(currentUser.uid)
+            .update({
+              friends: firebase.firestore.FieldValue.arrayRemove(uid),
+            });
+
+          await db
+            .collection('users')
+            .doc(uid)
+            .update({
+              friends: firebase.firestore.FieldValue.arrayRemove(currentUser.uid),
+            });
+
+          addToast('success', 'Friend removed.');
+          setFriendStatus('not-friends');
+        } catch (error) {
+          addToast('error', error.message);
+        } finally {
+          hideLoader();
+        }
         break;
       }
     }
