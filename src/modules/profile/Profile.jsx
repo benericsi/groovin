@@ -67,7 +67,7 @@ const Profile = () => {
           .collection('requests')
           .where('sender', 'in', [currentUser.uid, uid])
           .where('receiver', 'in', [currentUser.uid, uid])
-          .where('status', '==', 'accepted')
+          .where('status', 'in', ['accepted', 'pending'])
           .onSnapshot((doc) => {
             if (doc.empty) {
               setFriendStatus('not-friends');
