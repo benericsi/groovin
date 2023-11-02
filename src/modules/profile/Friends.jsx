@@ -17,11 +17,9 @@ const Friends = () => {
   const [friends, setFriends] = useState([]);
 
   useEffect(() => {
-    const getFriendsByUid = async () => {
+    const getFriendsByUid = () => {
       showLoader();
       try {
-        // get users from users collection whose id is in uid's friends array
-        // use onSnapshot to get realtime updates
         db.collection('users')
           .where('friends', 'array-contains', uid)
           .onSnapshot((snapshot) => {

@@ -30,26 +30,25 @@ const Profile = () => {
   const [userData, setUserData] = useState(null);
 
   const [isPopUpActive, setIsPopUpActive] = useState(false);
-  const [inputName, setInputName] = useState(currentUser.displayName);
+  const [inputName, setInputName] = useState(null);
   const [inputPhoto, setInputPhoto] = useState(null);
 
   const [friendStatus, setFriendStatus] = useState(null);
 
   useEffect(() => {
-    const getUserByUid = async () => {
+    const getUserByUid = () => {
       showLoader();
       try {
-        db.collection('users')
-          .doc(uid)
-          .onSnapshot((doc) => {
-            if (doc.exists) {
-              setUserData(doc.data());
-              setInputName(doc.data().displayName);
-            } else {
-              addToast('error', 'User was not found.');
-              setUserData(null);
-            }
-          });
+        const userRef = firebase.firestore().collection('users').doc(uid);
+        userRef.onSnapshot((doc) => {
+          if (doc.exists) {
+            setUserData(doc.data());
+            setInputName(doc.data().displayName);
+          } else {
+            setUserData(null);
+            addToast('error', 'User does not exist!');
+          }
+        });
       } catch (error) {
         addToast('error', error.message);
       } finally {
@@ -57,24 +56,32 @@ const Profile = () => {
       }
     };
 
+    getUserByUid();
+  }, [uid]);
+
+  useEffect(() => {
     const getFriendStatus = async () => {
       showLoader();
       try {
-        db.collection('requests')
-          .where('sender', 'in', [currentUser.uid, uid])
-          .where('receiver', 'in', [currentUser.uid, uid])
-          .where('status', '==', 'accepted')
+        const requestRef = db.collection('requests');
+
+        // Listen for pending requests
+        requestRef
+          .where('sender', '==', currentUser.uid)
+          .where('receiver', '==', uid)
+          .where('status', '==', 'pending')
           .onSnapshot((snapshot) => {
             if (!snapshot.empty) {
-              setFriendStatus('accepted');
+              setFriendStatus('pending');
             } else {
-              db.collection('requests')
-                .where('sender', '==', currentUser.uid)
-                .where('receiver', '==', uid)
-                .where('status', '==', 'pending')
+              // Listen for accepted requests
+              requestRef
+                .where('sender', 'in', [currentUser.uid, uid])
+                .where('receiver', 'in', [currentUser.uid, uid])
+                .where('status', '==', 'accepted')
                 .onSnapshot((snapshot) => {
                   if (!snapshot.empty) {
-                    setFriendStatus('pending');
+                    setFriendStatus('accepted');
                   } else {
                     setFriendStatus('not-friends');
                   }
@@ -88,7 +95,6 @@ const Profile = () => {
       }
     };
 
-    getUserByUid();
     if (!isOwnProfile) {
       getFriendStatus();
     }
@@ -195,7 +201,6 @@ const Profile = () => {
 
           await friendRequestRef.add(friendRequest);
           addToast('success', 'Friend request sent!');
-          setFriendStatus('pending');
         } catch (error) {
           addToast('error', error.message);
         } finally {
@@ -216,7 +221,6 @@ const Profile = () => {
           });
 
           addToast('success', 'Friend request cancelled!');
-          setFriendStatus('not-friends');
         } catch (error) {
           addToast('error', error.message);
         } finally {
@@ -251,7 +255,6 @@ const Profile = () => {
             });
 
           addToast('success', 'Friend removed.');
-          setFriendStatus('not-friends');
         } catch (error) {
           addToast('error', error.message);
         } finally {
@@ -302,22 +305,24 @@ const Profile = () => {
                 </button>
               ) : (
                 <button className="friend-action" onClick={handleFriendAction}>
-                  {friendStatus === 'not-friends' ? (
+                  {friendStatus === 'not-friends' && (
                     <>
                       <BiUserPlus />
                       Add Friend
                     </>
-                  ) : friendStatus === 'pending' ? (
+                  )}
+                  {friendStatus === 'pending' && (
                     <>
                       <MdOutlineCancel />
                       Cancel Request
                     </>
-                  ) : friendStatus === 'accepted' ? (
+                  )}
+                  {friendStatus === 'accepted' && (
                     <>
                       <BiUserMinus />
                       Remove Friend
                     </>
-                  ) : null}
+                  )}
                 </button>
               )}
             </div>
@@ -360,7 +365,7 @@ const Profile = () => {
       )}
 
       <div className="user-body">
-        <Outlet context={[uid, isOwnProfile]} />
+        <Outlet context={[uid]} />
       </div>
     </>
   );

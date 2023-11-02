@@ -25,8 +25,6 @@ const FriendRequests = () => {
     const getFriendRequests = async () => {
       showLoader();
       try {
-        // get documents from requests collection where reciever is current user uid and status is pending with onSnapshot
-        // use onSnapshot to get realtime updates
         db.collection('requests')
           .where('receiver', '==', currentUser.uid)
           .where('status', '==', 'pending')

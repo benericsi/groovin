@@ -1,26 +1,26 @@
 import {useEffect, useState} from 'react';
 import {useLoader} from '../hooks/useLoader';
 import {useToast} from '../hooks/useToast';
+import firebase from 'firebase/compat/app';
 import {db} from '../setup/Firebase';
-import {Link} from 'react-router-dom';
+import {Link, useOutletContext} from 'react-router-dom';
 
 const RequestCard = ({request}) => {
+  const [uid] = useOutletContext();
   const [senderData, setSenderData] = useState({});
-  const [recieverData, setRecieverData] = useState({});
   const {showLoader, hideLoader} = useLoader();
   const {addToast} = useToast();
 
   useEffect(() => {
-    const fetchSenderData = async () => {
+    const getSenderData = () => {
       showLoader();
-
       try {
-        const senderDoc = await db.collection('users').doc(request.sender).get();
-        const senderData = senderDoc.data();
-        const recieverDoc = await db.collection('users').doc(request.receiver).get();
-        const recieverData = recieverDoc.data();
-        setSenderData(senderData);
-        setRecieverData(recieverData);
+        db.collection('users')
+          .doc(request.sender)
+          .get()
+          .then((doc) => {
+            setSenderData(doc.data());
+          });
       } catch (error) {
         addToast('error', error.message);
       } finally {
@@ -28,30 +28,28 @@ const RequestCard = ({request}) => {
       }
     };
 
-    fetchSenderData();
-  }, [request]);
+    getSenderData();
+  }, [request.sender]);
 
-  const acceptFriendRequest = async (e) => {
+  const acceptFriendRequest = (e) => {
     e.preventDefault();
     showLoader();
 
     try {
-      await db.collection('requests').doc(request.id).update({
+      db.collection('requests').doc(request.id).update({
         status: 'accepted',
       });
 
-      await db
-        .collection('users')
+      db.collection('users')
         .doc(request.sender)
         .update({
-          friends: [...senderData.friends, request.receiver],
+          friends: firebase.firestore.FieldValue.arrayUnion(request.receiver),
         });
 
-      await db
-        .collection('users')
+      db.collection('users')
         .doc(request.receiver)
         .update({
-          friends: [...recieverData.friends, request.sender],
+          friends: firebase.firestore.FieldValue.arrayUnion(request.sender),
         });
 
       addToast('success', 'Friend request accepted.');
