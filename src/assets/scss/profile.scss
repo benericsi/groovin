@@ -150,6 +150,7 @@
         display: flex;
         align-items: center;
         max-width: $media-query-2xl;
+        margin: 0 auto;
 
         .user-nav-list {
             display: flex;
@@ -182,6 +183,7 @@
 
 .user-body {
     max-width: $media-query-2xl;
+    margin: 0 auto;
 }
 
 @keyframes bg-animation {

@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom';
 
 const RequestCard = ({request}) => {
   const [senderData, setSenderData] = useState({});
+  const [recieverData, setRecieverData] = useState({});
   const {showLoader, hideLoader} = useLoader();
   const {addToast} = useToast();
 
@@ -14,9 +15,12 @@ const RequestCard = ({request}) => {
       showLoader();
 
       try {
-        const doc = await db.collection('users').doc(request.sender).get();
-        const senderData = doc.data();
+        const senderDoc = await db.collection('users').doc(request.sender).get();
+        const senderData = senderDoc.data();
+        const recieverDoc = await db.collection('users').doc(request.receiver).get();
+        const recieverData = recieverDoc.data();
         setSenderData(senderData);
+        setRecieverData(recieverData);
       } catch (error) {
         addToast('error', error.message);
       } finally {
@@ -47,7 +51,7 @@ const RequestCard = ({request}) => {
         .collection('users')
         .doc(request.receiver)
         .update({
-          friends: [...senderData.friends, request.sender],
+          friends: [...recieverData.friends, request.sender],
         });
 
       addToast('success', 'Friend request accepted.');

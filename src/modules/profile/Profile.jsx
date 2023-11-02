@@ -39,8 +39,7 @@ const Profile = () => {
     const getUserByUid = async () => {
       showLoader();
       try {
-        const unsubscribe = db
-          .collection('users')
+        db.collection('users')
           .doc(uid)
           .onSnapshot((doc) => {
             if (doc.exists) {
@@ -51,8 +50,6 @@ const Profile = () => {
               setUserData(null);
             }
           });
-
-        return unsubscribe;
       } catch (error) {
         addToast('error', error.message);
       } finally {
@@ -63,26 +60,27 @@ const Profile = () => {
     const getFriendStatus = async () => {
       showLoader();
       try {
-        const unsubscribe = db
-          .collection('requests')
+        db.collection('requests')
           .where('sender', 'in', [currentUser.uid, uid])
           .where('receiver', 'in', [currentUser.uid, uid])
-          .where('status', 'in', ['accepted', 'pending'])
-          .onSnapshot((doc) => {
-            if (doc.empty) {
-              setFriendStatus('not-friends');
+          .where('status', '==', 'accepted')
+          .onSnapshot((snapshot) => {
+            if (!snapshot.empty) {
+              setFriendStatus('accepted');
             } else {
-              doc.forEach((doc) => {
-                if (doc.data().status === 'pending') {
-                  setFriendStatus('pending');
-                } else if (doc.data().status === 'accepted') {
-                  setFriendStatus('accepted');
-                }
-              });
+              db.collection('requests')
+                .where('sender', '==', currentUser.uid)
+                .where('receiver', '==', uid)
+                .where('status', '==', 'pending')
+                .onSnapshot((snapshot) => {
+                  if (!snapshot.empty) {
+                    setFriendStatus('pending');
+                  } else {
+                    setFriendStatus('not-friends');
+                  }
+                });
             }
           });
-
-        return unsubscribe;
       } catch (error) {
         addToast('error', error.message);
       } finally {

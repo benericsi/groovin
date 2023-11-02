@@ -1,0 +1,75 @@
+@import 'variables';
+
+.friends-section {
+    margin: 1rem;
+    padding: 1rem;
+
+    h2 {
+        font-size: 2rem;
+        font-weight: 600;
+        color: $clr-grey-600;
+        text-align: center;
+    }
+
+    .friends-container {
+        width: 100%;
+        height: auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+        grid-template-rows: 1fr;
+        gap: 1.5rem;
+
+        .friend-card {
+            background-color: $clr-white;
+            //border-radius: 12px;
+            //box-shadow: $panel-box-shadow;
+            border: 1px solid $clr-grey-400;
+            box-shadow: 8px 8px $clr-grey-400;
+            width: 100%;
+            height: auto;
+            transition: all .2s $animation-cubic;
+            cursor: pointer;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+
+            &:hover {
+                .friend-card-name {
+                    color: $clr-primary-600;
+                }
+            }
+
+            .friend-card-photo {
+                position: relative;
+                width: 100%;
+                padding-top: 100%;
+                /* 1:1 aspect ratio (height = width) */
+                border-radius: 50%;
+                background-color: $clr-grey-700;
+                overflow: hidden;
+                //box-shadow: 0 .5rem 1.5rem rgba($color: $clr-black, $alpha: .5);
+                margin: 0 auto;
+                margin-bottom: 1rem;
+
+                img {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    object-position: center center;
+                }
+            }
+
+            .friend-card-name {
+                font-size: 1.25rem;
+                font-weight: bold;
+                color: $clr-grey-900;
+                margin-bottom: .5rem;
+                transition: all .2s $animation-cubic;
+            }
+        }
+    }
+}

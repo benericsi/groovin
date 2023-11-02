@@ -7,7 +7,6 @@ import {useLoader} from '../../hooks/useLoader';
 import {useToast} from '../../hooks/useToast';
 import {db} from '../../setup/Firebase';
 import {useEffect, useState} from 'react';
-import {useOutletContext} from 'react-router-dom';
 
 import RequestCard from '../../ui/RequestCard';
 
@@ -52,7 +51,7 @@ const FriendRequests = () => {
   return (
     <section className="requests-section">
       {requests.length === 0 && <h2>There are no requests yet.</h2>}
-      <div className="requests-container">{requests && requests.map((request) => <RequestCard key={request} request={request} />)}</div>
+      <div className="requests-container">{requests && requests.map((request) => <RequestCard key={request.id} request={request} />)}</div>
     </section>
   );
 };
