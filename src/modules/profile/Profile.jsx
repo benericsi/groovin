@@ -115,6 +115,17 @@ const Profile = () => {
           })
           .then(() => {
             addToast('success', 'Friend request sent!');
+
+            // Send notification to the user
+            db.collection('notifications').add({
+              sender: currentUser.uid,
+              senderName: currentUser.displayName,
+              senderPhoto: currentUser.photoURL,
+              receiver: uid,
+              type: 'New Friend Request',
+              message: `${currentUser.displayName} sent you a friend request!`,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            });
           })
           .catch((error) => {
             addToast('error', error.message);
@@ -135,6 +146,18 @@ const Profile = () => {
           })
           .then(() => {
             addToast('success', 'Friend request cancelled!');
+
+            // Delete notification
+            db.collection('notifications')
+              .where('sender', '==', currentUser.uid)
+              .where('receiver', '==', uid)
+              .where('type', '==', 'New Friend Request')
+              .get()
+              .then((snapshot) => {
+                snapshot.docs.forEach((doc) => {
+                  doc.ref.delete();
+                });
+              });
           })
           .catch((error) => {
             addToast('error', error.message);
@@ -155,6 +178,17 @@ const Profile = () => {
           })
           .then(() => {
             addToast('success', 'Friend removed!');
+
+            // Send notification to the user
+            db.collection('notifications').add({
+              sender: currentUser.uid,
+              senderName: currentUser.displayName,
+              senderPhoto: currentUser.photoURL,
+              receiver: uid,
+              type: 'Friend Removed',
+              message: `${currentUser.displayName} removed you from their friend list!`,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            });
           })
           .catch((error) => {
             addToast('error', error.message);
@@ -192,6 +226,17 @@ const Profile = () => {
         user2: request.receiver,
       });
 
+      // Send notification to the user
+      db.collection('notifications').add({
+        sender: currentUser.uid,
+        senderName: currentUser.displayName,
+        senderPhoto: currentUser.photoURL,
+        receiver: request.sender,
+        type: 'Friend Request Accepted',
+        message: `${currentUser.displayName} accepted your friend request!`,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
       addToast('success', 'Friend request accepted!');
     } catch (error) {
       addToast('error', error.message);
@@ -206,6 +251,18 @@ const Profile = () => {
     try {
       showLoader();
       await db.collection('requests').doc(request.id).delete();
+
+      // Send notification to the user
+      db.collection('notifications').add({
+        sender: currentUser.uid,
+        senderName: currentUser.displayName,
+        senderPhoto: currentUser.photoURL,
+        receiver: request.sender,
+        type: 'Friend Request Declined',
+        message: `${currentUser.displayName} declined your friend request!`,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
       addToast('success', 'Friend request declined!');
     } catch (error) {
       addToast('error', error.message);

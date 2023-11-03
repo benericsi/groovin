@@ -1,6 +1,6 @@
 @import 'variables';
 
-.friends-section {
+.notifications-section {
     margin: 1rem;
     padding: 1rem;
 
@@ -11,15 +11,13 @@
         text-align: center;
     }
 
-    .friends-container {
+    .notifications-container {
         width: 100%;
-        height: auto;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
-        grid-template-rows: 1fr;
+        display: flex;
+        flex-direction: column;
         gap: 1.5rem;
 
-        .friend-card {
+        .notification-card {
             background-color: $clr-white;
             box-shadow: $panel-box-shadow;
             width: 100%;
@@ -28,29 +26,47 @@
             cursor: pointer;
             padding: 1rem;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             overflow: hidden;
+            position: relative;
+            gap: 1rem;
 
             &:hover {
                 border: 1px solid $clr-grey-400;
                 box-shadow: 8px 8px $clr-grey-400;
+            }
 
-                .friend-card-name {
+            .notification-remove {
+                position: absolute;
+                top: .25rem;
+                right: .25rem;
+                height: 1.5rem;
+                width: 1.5rem;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.75rem;
+                border-radius: 50%;
+                color: $clr-grey-800;
+                opacity: .8;
+                transition: all .2s $animation-cubic;
+
+                &:hover {
                     color: $clr-primary-600;
+                    opacity: 1;
                 }
             }
 
-            .friend-card-photo {
+            .notification-card-photo {
                 position: relative;
-                width: 100%;
-                padding-top: 100%;
-                /* 1:1 aspect ratio (height = width) */
+                width: 5rem;
+                height: 5rem;
+                aspect-ratio: 1/1;
                 border-radius: 50%;
                 background-color: $clr-grey-700;
                 overflow: hidden;
-                //box-shadow: 0 .5rem 1.5rem rgba($color: $clr-black, $alpha: .5);
-                margin: 0 auto;
-                margin-bottom: 1rem;
+                border: 1px solid $clr-grey-700;
 
                 img {
                     position: absolute;
@@ -61,25 +77,6 @@
                     object-fit: cover;
                     object-position: center center;
                 }
-            }
-
-            .friend-card-name {
-                font-size: 1.25rem;
-                font-weight: bold;
-                color: $clr-grey-900;
-                margin-bottom: .5rem;
-                transition: all .2s $animation-cubic;
-            }
-        }
-    }
-}
-
-@media only screen and (max-width: $media-query-md) {
-    .friends-section {
-        .friends-container {
-            .friend-card {
-                border: 1px solid $clr-grey-400;
-                box-shadow: 8px 8px $clr-grey-400;
             }
         }
     }

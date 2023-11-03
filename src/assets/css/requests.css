@@ -18,8 +18,7 @@
 }
 .requests-section .requests-container .request-card {
   background-color: #ffffff;
-  border: 1px solid #c4c4c4;
-  box-shadow: 8px 8px #c4c4c4;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 100%;
   height: auto;
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -28,6 +27,13 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+}
+.requests-section .requests-container .request-card:hover {
+  border: 1px solid #c4c4c4;
+  box-shadow: 8px 8px #c4c4c4;
+}
+.requests-section .requests-container .request-card:hover .sender-card-name {
+  color: #0C6DE2;
 }
 .requests-section .requests-container .request-card .sender-card-photo {
   position: relative;
@@ -72,4 +78,11 @@
 .requests-section .requests-container .request-card .sender-card-action span:hover {
   opacity: 1;
   color: #0C6DE2;
+}
+
+@media only screen and (max-width: 768px) {
+  .requests-section .requests-container .request-card {
+    border: 1px solid #c4c4c4;
+    box-shadow: 8px 8px #c4c4c4;
+  }
 }/*# sourceMappingURL=requests.css.map */

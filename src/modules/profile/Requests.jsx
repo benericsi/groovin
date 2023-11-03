@@ -27,6 +27,7 @@ const Requests = () => {
           id: doc.id,
           ...doc.data(),
         }));
+
         setRequests(requests);
       });
     return () => {

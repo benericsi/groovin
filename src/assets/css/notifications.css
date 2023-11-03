@@ -1,0 +1,75 @@
+.notifications-section {
+  margin: 1rem;
+  padding: 1rem;
+}
+.notifications-section h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #7e7e7e;
+  text-align: center;
+}
+.notifications-section .notifications-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.notifications-section .notifications-container .notification-card {
+  background-color: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: auto;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  position: relative;
+  gap: 1rem;
+}
+.notifications-section .notifications-container .notification-card:hover {
+  border: 1px solid #c4c4c4;
+  box-shadow: 8px 8px #c4c4c4;
+}
+.notifications-section .notifications-container .notification-card .notification-remove {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  height: 1.5rem;
+  width: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  border-radius: 50%;
+  color: #3f3f3f;
+  opacity: 0.8;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.notifications-section .notifications-container .notification-card .notification-remove:hover {
+  color: #0C6DE2;
+  opacity: 1;
+}
+.notifications-section .notifications-container .notification-card .notification-card-photo {
+  position: relative;
+  width: 5rem;
+  height: 5rem;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background-color: #5e5e5e;
+  overflow: hidden;
+  border: 1px solid #5e5e5e;
+}
+.notifications-section .notifications-container .notification-card .notification-card-photo img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center;
+}/*# sourceMappingURL=notifications.css.map */
