@@ -1,104 +1,218 @@
 import '../../assets/css/profile.css';
 
-import Button from '../../ui/Button';
-import Input from '../../ui/Input';
-import PopUp from '../../common/PopUp';
-
+import React, {useEffect, useState} from 'react';
+import {useParams} from 'react-router-dom';
+import {db, storage} from '../../setup/Firebase';
 import {useAuth} from '../../hooks/useAuth';
 import {useLoader} from '../../hooks/useLoader';
 import {useToast} from '../../hooks/useToast';
-import {Outlet, useParams, NavLink, useLocation, useNavigate} from 'react-router-dom';
-import {useEffect, useState} from 'react';
-import {db, storage} from '../../setup/Firebase';
+import {Outlet, useNavigate} from 'react-router-dom';
 import firebase from 'firebase/compat/app';
 
+import FriendButton from './FriendButton';
+import PopUp from '../../common/PopUp';
+import Input from '../../ui/Input';
+import Button from '../../ui/Button';
+
 import {RiAccountCircleFill} from 'react-icons/ri';
-import {BiEdit} from 'react-icons/bi';
 import {AiOutlinePlusCircle} from 'react-icons/ai';
-import {BiUserPlus, BiUserMinus} from 'react-icons/bi';
-import {MdOutlineCancel} from 'react-icons/md';
+import {BiEdit} from 'react-icons/bi';
+import ProfileSubNav from './ProfileSubNav';
 
 const Profile = () => {
+  const navigate = useNavigate();
+
   const {uid} = useParams();
   const {currentUser} = useAuth();
   const {showLoader, hideLoader} = useLoader();
   const {addToast} = useToast();
-  const navigate = useNavigate();
-  const location = useLocation().pathname;
 
-  const isOwnProfile = currentUser.uid === uid;
   const [userData, setUserData] = useState(null);
-
+  const [isOwnProfile, setIsOwnProfile] = useState(false);
   const [isPopUpActive, setIsPopUpActive] = useState(false);
-  const [inputName, setInputName] = useState(null);
+  const [inputName, setInputName] = useState('');
   const [inputPhoto, setInputPhoto] = useState(null);
-
   const [friendStatus, setFriendStatus] = useState(null);
 
   useEffect(() => {
-    const getUserByUid = () => {
-      showLoader();
-      try {
-        const userRef = firebase.firestore().collection('users').doc(uid);
-        userRef.onSnapshot((doc) => {
-          if (doc.exists) {
-            setUserData(doc.data());
-            setInputName(doc.data().displayName);
-          } else {
-            setUserData(null);
-            addToast('error', 'User does not exist!');
-          }
-        });
-      } catch (error) {
-        addToast('error', error.message);
-      } finally {
-        hideLoader();
-      }
-    };
+    setIsOwnProfile(uid === currentUser.uid);
+  }, [uid, currentUser]);
 
-    getUserByUid();
+  useEffect(() => {
+    // get user data real time with unsubscribe
+    const unsubscribe = db
+      .collection('users')
+      .doc(uid)
+      .onSnapshot((snapshot) => {
+        setUserData(snapshot.data());
+        setInputName(snapshot.data().displayName);
+
+        if (snapshot.id === currentUser.uid) {
+          currentUser.updateProfile({
+            firstName: snapshot.data().firstName,
+            lastName: snapshot.data().lastName,
+            displayName: snapshot.data().displayName,
+            photoURL: snapshot.data().photoURL,
+          });
+        }
+      });
+
+    return () => {
+      unsubscribe();
+    };
   }, [uid]);
 
   useEffect(() => {
-    const getFriendStatus = async () => {
-      showLoader();
-      try {
-        const requestRef = db.collection('requests');
+    const requestRef = db.collection('requests');
+    // Check if there's a friend request between the current user and the user being viewed
+    const unsubscribe = requestRef
+      .where('sender', '==', currentUser.uid)
+      .where('receiver', '==', uid)
+      .where('status', '==', 'pending')
+      .onSnapshot((snapshot) => {
+        if (!snapshot.empty) {
+          setFriendStatus('pending');
+        } else {
+          // Listen for accepted requests
+          requestRef
+            .where('sender', 'in', [currentUser.uid, uid])
+            .where('receiver', 'in', [currentUser.uid, uid])
+            .where('status', '==', 'accepted')
+            .onSnapshot((snapshot) => {
+              if (!snapshot.empty) {
+                setFriendStatus('friends');
+              } else {
+                setFriendStatus('none');
+              }
+            });
+        }
+      });
 
-        // Listen for pending requests
-        requestRef
+    return () => {
+      unsubscribe();
+    };
+  }, [currentUser.uid, uid]);
+
+  const onFriendButtonClick = async () => {
+    switch (friendStatus) {
+      case 'none': {
+        // Check if the user already sent you a friend request
+        const isRequestRecieved = await db.collection('requests').where('sender', '==', uid).where('receiver', '==', currentUser.uid).where('status', '==', 'pending').get();
+        if (!isRequestRecieved.empty) {
+          addToast('info', 'You already have a friend request from this user. See your requests page!');
+          navigate(`/profile/${currentUser.uid}/requests`);
+          return;
+        }
+
+        db.collection('requests')
+          .add({
+            sender: currentUser.uid,
+            senderName: currentUser.displayName,
+            senderPhoto: currentUser.photoURL,
+            receiver: uid,
+            status: 'pending',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          })
+          .then(() => {
+            addToast('success', 'Friend request sent!');
+          })
+          .catch((error) => {
+            addToast('error', error.message);
+          });
+        break;
+      }
+
+      case 'pending': {
+        db.collection('requests')
           .where('sender', '==', currentUser.uid)
           .where('receiver', '==', uid)
           .where('status', '==', 'pending')
-          .onSnapshot((snapshot) => {
-            if (!snapshot.empty) {
-              setFriendStatus('pending');
-            } else {
-              // Listen for accepted requests
-              requestRef
-                .where('sender', 'in', [currentUser.uid, uid])
-                .where('receiver', 'in', [currentUser.uid, uid])
-                .where('status', '==', 'accepted')
-                .onSnapshot((snapshot) => {
-                  if (!snapshot.empty) {
-                    setFriendStatus('accepted');
-                  } else {
-                    setFriendStatus('not-friends');
-                  }
-                });
-            }
+          .get()
+          .then((snapshot) => {
+            snapshot.docs.forEach((doc) => {
+              doc.ref.delete();
+            });
+          })
+          .then(() => {
+            addToast('success', 'Friend request cancelled!');
+          })
+          .catch((error) => {
+            addToast('error', error.message);
           });
-      } catch (error) {
-        addToast('error', error.message);
-      } finally {
-        hideLoader();
+        break;
       }
-    };
 
-    if (!isOwnProfile) {
-      getFriendStatus();
+      case 'friends': {
+        db.collection('requests')
+          .where('sender', 'in', [currentUser.uid, uid])
+          .where('receiver', 'in', [currentUser.uid, uid])
+          .where('status', '==', 'accepted')
+          .get()
+          .then((snapshot) => {
+            snapshot.docs.forEach((doc) => {
+              doc.ref.delete();
+            });
+          })
+          .then(() => {
+            addToast('success', 'Friend removed!');
+          })
+          .catch((error) => {
+            addToast('error', error.message);
+          });
+
+        db.collection('friends')
+          .where('user1', 'in', [currentUser.uid, uid])
+          .where('user2', 'in', [currentUser.uid, uid])
+          .get()
+          .then((snapshot) => {
+            snapshot.docs.forEach((doc) => {
+              doc.ref.delete();
+            });
+          });
+
+        break;
+      }
     }
-  }, [uid]);
+  };
+
+  const acceptRequest = async (e, request) => {
+    e.preventDefault();
+
+    try {
+      showLoader();
+
+      // Update requuest status to accepted
+      await db.collection('requests').doc(request.id).update({
+        status: 'accepted',
+      });
+
+      // Create friend relationship
+      await db.collection('friends').add({
+        user1: request.sender,
+        user2: request.receiver,
+      });
+
+      addToast('success', 'Friend request accepted!');
+    } catch (error) {
+      addToast('error', error.message);
+    } finally {
+      hideLoader();
+    }
+  };
+
+  const declineRequest = async (e, request) => {
+    e.preventDefault();
+
+    try {
+      showLoader();
+      await db.collection('requests').doc(request.id).delete();
+      addToast('success', 'Friend request declined!');
+    } catch (error) {
+      addToast('error', error.message);
+    } finally {
+      hideLoader();
+    }
+  };
 
   const togglePopUp = () => {
     setIsPopUpActive(!isPopUpActive);
@@ -169,102 +283,6 @@ const Profile = () => {
     }
   };
 
-  const handleFriendAction = async (e) => {
-    e.preventDefault();
-
-    switch (friendStatus) {
-      case 'not-friends': {
-        showLoader();
-        try {
-          const friendRequestRef = db.collection('requests');
-          const friendRequest = {
-            sender: currentUser.uid,
-            receiver: uid,
-            status: 'pending',
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          };
-
-          // Check if friend request already exists
-          const friendRequestDoc = await friendRequestRef.where('sender', '==', currentUser.uid).where('receiver', '==', uid).where('status', '==', 'pending').get();
-          if (!friendRequestDoc.empty) {
-            addToast('error', 'Friend request already sent!');
-            return;
-          }
-
-          // Check if the user already sent a friend request
-          const friendRequestDoc2 = await friendRequestRef.where('sender', '==', uid).where('receiver', '==', currentUser.uid).where('status', '==', 'pending').get();
-          if (!friendRequestDoc2.empty) {
-            addToast('info', 'You already have a friend request from this user. See your requests page!');
-            navigate(`/profile/${currentUser.uid}/requests`);
-            return;
-          }
-
-          await friendRequestRef.add(friendRequest);
-          addToast('success', 'Friend request sent!');
-        } catch (error) {
-          addToast('error', error.message);
-        } finally {
-          hideLoader();
-        }
-
-        break;
-      }
-
-      case 'pending': {
-        showLoader();
-        try {
-          const friendRequestRef = db.collection('requests');
-          const friendRequestDoc = await friendRequestRef.where('sender', '==', currentUser.uid).where('receiver', '==', uid).where('status', '==', 'pending').get();
-
-          friendRequestDoc.forEach((doc) => {
-            doc.ref.delete();
-          });
-
-          addToast('success', 'Friend request cancelled!');
-        } catch (error) {
-          addToast('error', error.message);
-        } finally {
-          hideLoader();
-        }
-
-        break;
-      }
-
-      case 'accepted': {
-        showLoader();
-        try {
-          const friendRequestRef = db.collection('requests');
-          const friendRequestDoc = await friendRequestRef.where('sender', 'in', [currentUser.uid, uid]).where('receiver', 'in', [currentUser.uid, uid]).where('status', '==', 'accepted').get();
-
-          friendRequestDoc.forEach((doc) => {
-            doc.ref.delete();
-          });
-
-          await db
-            .collection('users')
-            .doc(currentUser.uid)
-            .update({
-              friends: firebase.firestore.FieldValue.arrayRemove(uid),
-            });
-
-          await db
-            .collection('users')
-            .doc(uid)
-            .update({
-              friends: firebase.firestore.FieldValue.arrayRemove(currentUser.uid),
-            });
-
-          addToast('success', 'Friend removed.');
-        } catch (error) {
-          addToast('error', error.message);
-        } finally {
-          hideLoader();
-        }
-        break;
-      }
-    }
-  };
-
   return (
     <>
       {isOwnProfile && (
@@ -279,7 +297,7 @@ const Profile = () => {
             className="input-field"
           />
           <input type="file" accept="image/*" onChange={(e) => setInputPhoto(e.target.files[0])} className="input-field light" />
-          <Button type="button" text="Save" className="dark" onClick={handleModifyUser} />
+          <Button type="button" text="Save" className="dark" onClick={(e) => handleModifyUser(e)} />
         </PopUp>
       )}
       {userData && (
@@ -300,72 +318,21 @@ const Profile = () => {
             <div className="user-profile-actions">
               <span className="user-profile-name">{userData.displayName}</span>
               {isOwnProfile ? (
-                <button className="user-profile-edit" onClick={togglePopUp}>
+                <button className="user-profile-edit" onClick={() => togglePopUp()}>
                   <BiEdit /> Edit Profile
                 </button>
               ) : (
-                <button className="friend-action" onClick={handleFriendAction}>
-                  {friendStatus === 'not-friends' && (
-                    <>
-                      <BiUserPlus />
-                      Add Friend
-                    </>
-                  )}
-                  {friendStatus === 'pending' && (
-                    <>
-                      <MdOutlineCancel />
-                      Cancel Request
-                    </>
-                  )}
-                  {friendStatus === 'accepted' && (
-                    <>
-                      <BiUserMinus />
-                      Remove Friend
-                    </>
-                  )}
-                </button>
+                <FriendButton friendStatus={friendStatus} onFriendButtonClick={onFriendButtonClick} />
               )}
             </div>
           </div>
-          <nav className="user-nav">
-            <ul className="user-nav-list">
-              <li className="user-nav-list-item">
-                <NavLink to={`/profile/${uid}`} className={`user-nav-link ${location === `/profile/${uid}` ? 'active' : 'inactive'}`}>
-                  Profile
-                </NavLink>
-              </li>
-              <li className="user-nav-list-item">
-                <NavLink to={`/profile/${uid}/friends`} className={`user-nav-link ${location === `/profile/${uid}/friends` ? 'active' : 'inactive'}`}>
-                  Friends {userData.friends.length}
-                </NavLink>
-              </li>
-              {isOwnProfile ? (
-                <>
-                  <li className="user-nav-list-item">
-                    <NavLink to={`/profile/${uid}/requests`} className={`user-nav-link ${location === `/profile/${uid}/requests` ? 'active' : 'inactive'}`}>
-                      Requests
-                    </NavLink>
-                  </li>
-                  <li className="user-nav-list-item">
-                    <NavLink to={`/profile/${uid}/messages`} className={`user-nav-link ${location === `/profile/${uid}/messages` ? 'active' : 'inactive'}`}>
-                      Messages
-                    </NavLink>
-                  </li>
-                  <li className="user-nav-list-item">
-                    <NavLink to={`/profile/${uid}/notifications`} className={`user-nav-link ${location === `/profile/${uid}/notifications` ? 'active' : 'inactive'}`}>
-                      Notifications
-                    </NavLink>
-                  </li>
-                </>
-              ) : null}
-              <li className="user-nav-list-item"></li>
-            </ul>
-          </nav>
+
+          <ProfileSubNav uid={uid} isOwnProfile={isOwnProfile} />
         </div>
       )}
 
       <div className="user-body">
-        <Outlet context={[uid]} />
+        <Outlet context={{uid, acceptRequest, declineRequest}} />
       </div>
     </>
   );
