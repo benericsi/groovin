@@ -27,6 +27,7 @@
   overflow: hidden;
   position: relative;
   gap: 1rem;
+  color: #121212;
 }
 .notifications-section .notifications-container .notification-card:hover {
   border: 1px solid #c4c4c4;
@@ -72,4 +73,19 @@
      object-fit: cover;
   -o-object-position: center center;
      object-position: center center;
+}
+.notifications-section .notifications-container .notification-card .notification-text h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #121212;
+}
+.notifications-section .notifications-container .notification-card .notification-text p {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #3f3f3f;
+}
+.notifications-section .notifications-container .notification-card .notification-text p:last-child {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: #7e7e7e;
 }/*# sourceMappingURL=notifications.css.map */

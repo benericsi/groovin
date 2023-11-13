@@ -30,6 +30,7 @@
             overflow: hidden;
             position: relative;
             gap: 1rem;
+            color: $clr-grey-900;
 
             &:hover {
                 border: 1px solid $clr-grey-400;
@@ -77,6 +78,27 @@
                     object-fit: cover;
                     object-position: center center;
                 }
+            }
+
+            .notification-text {
+                h3 {
+                    font-size: 1.25rem;
+                    font-weight: 600;
+                    color: $clr-grey-900;
+                }
+
+                p {
+                    font-size: 1rem;
+                    font-weight: 400;
+                    color: $clr-grey-800;
+
+                    &:last-child {
+                        margin-top: .25rem;
+                        font-size: .875rem;
+                        color: $clr-grey-600;
+                    }
+                }
+
             }
         }
     }

@@ -6,12 +6,16 @@ import {useEffect, useState} from 'react';
 import {useAuth} from '../../hooks/useAuth';
 import {Link} from 'react-router-dom';
 import {db} from '../../setup/Firebase';
+import {useToast} from '../../hooks/useToast';
+import {useLoader} from '../../hooks/useLoader';
 
 const Notifications = () => {
   useAccessControl();
   useTitle('Notifications');
 
   const {currentUser} = useAuth();
+  const {addToast} = useToast();
+  const {showLoader, hideLoader} = useLoader();
 
   const [notifications, setNotifications] = useState([]);
 
@@ -53,6 +57,14 @@ const Notifications = () => {
 
   const removeNotification = (e, id) => {
     e.preventDefault();
+    try {
+      showLoader();
+      db.collection('notifications').doc(id).delete();
+    } catch (error) {
+      addToast('error', error.message);
+    } finally {
+      hideLoader();
+    }
   };
 
   return (
