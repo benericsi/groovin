@@ -13,7 +13,7 @@ const ErrorPage = lazy(() => import('./common/ErrorPage'));
 const ProfileMain = lazy(() => import('./modules/profile/ProfileMain'));
 const Friends = lazy(() => import('./modules/profile/Friends'));
 const Requests = lazy(() => import('./modules/profile/Requests'));
-const Messages = lazy(() => import('./modules/profile/Messages'));
+const Messages = lazy(() => import('./modules/messages/Messages'));
 const Notifications = lazy(() => import('./modules/profile/Notifications'));
 
 function App() {
