@@ -1,0 +1,1 @@
+{"version":3,"sources":["../scss/messages.scss","messages.css","../scss/_variables.scss"],"names":[],"mappings":"AAEA;EACI,YAAA;EACA,aAAA;EACA,aAAA;EACA,mBAAA;EACA,SAAA;ACDJ;ADGI;EACI,yBERI;EFUJ,aAAA;EACA,aAAA;EACA,uCEqCW;ADvCnB;ADKI;EACI,yBEhBI;EFiBJ,aAAA;EACA,aAAA;EACA,uCE8BW;ADjCnB","file":"messages.css"}

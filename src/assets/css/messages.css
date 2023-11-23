@@ -1,0 +1,19 @@
+.messages-section {
+  margin: 1rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+.messages-section .user-list {
+  background-color: #ffffff;
+  flex: 1 1 33%;
+  padding: 1rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.messages-section .chat-room {
+  background-color: #ffffff;
+  flex: 1 1 66%;
+  padding: 1rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}/*# sourceMappingURL=messages.css.map */
