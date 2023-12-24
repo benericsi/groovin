@@ -14,7 +14,7 @@ const Requests = () => {
   const {currentUser} = useAuth();
   const {acceptRequest, declineRequest} = useOutletContext();
 
-  const [requests, setRequests] = useState([]);
+  const [requests, setRequests] = useState(null);
 
   useEffect(() => {
     const unsubscribe = db
@@ -37,7 +37,7 @@ const Requests = () => {
 
   return (
     <section className="requests-section">
-      {requests.length === 0 && <h2>There are no requests yet.</h2>}
+      {requests !== null && requests.length === 0 && <h2>There are no requests yet.</h2>}
       <div className="requests-container">
         {requests &&
           requests.map((request, index) => (

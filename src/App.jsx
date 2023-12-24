@@ -14,6 +14,7 @@ const ProfileMain = lazy(() => import('./modules/profile/ProfileMain'));
 const Friends = lazy(() => import('./modules/profile/Friends'));
 const Requests = lazy(() => import('./modules/profile/Requests'));
 const Messages = lazy(() => import('./modules/messages/Messages'));
+const ChatRoom = lazy(() => import('./modules/messages/ChatRoom'));
 const Notifications = lazy(() => import('./modules/profile/Notifications'));
 
 function App() {
@@ -29,7 +30,9 @@ function App() {
               <Route index element={<ProfileMain />} />
               <Route path="friends" element={<Friends />} />
               <Route path="requests" element={<Requests />} />
-              <Route path="messages" element={<Messages />} />
+              <Route path="messages" element={<Messages />}>
+                <Route path=":partnerId" element={<ChatRoom />} />
+              </Route>
               <Route path="notifications" element={<Notifications />} />
             </Route>
           </Route>

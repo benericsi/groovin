@@ -8,12 +8,67 @@
     flex-direction: row;
     gap: 2rem;
 
-    .user-list {
+    .user-list-container {
         background-color: $clr-white;
         // 1/3 of the screen
         flex: 1 1 33%;
         padding: 1rem;
         box-shadow: $panel-box-shadow;
+        display: flex;
+        flex-direction: column;
+        gap: .25rem;
+
+        .user-list {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: .25rem;
+
+            .user-list-item {
+                cursor: pointer;
+                overflow: hidden;
+                position: relative;
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                padding: .5rem 1rem;
+                border-radius: 12px;
+                transition: background-color .2s $animation-cubic;
+
+                img {
+                    height: 4rem;
+                    width: 4rem;
+                    min-height: 4rem;
+                    min-width: 4rem;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    object-position: center center;
+                }
+
+                h4 {
+                    font-size: 1.25rem;
+                    font-weight: 500;
+                    color: $clr-grey-900;
+                    transition: color .2s $animation-cubic;
+                }
+
+                &:hover,
+                &.active {
+                    background-color: rgba($color: $clr-grey-800, $alpha: .05);
+
+                    h4 {
+                        color: $clr-primary-600;
+                    }
+                }
+            }
+
+            .text-empty {
+                text-align: center;
+                color: $clr-grey-500;
+                font-size: 1.25rem;
+                margin: 1rem;
+            }
+        }
     }
 
     .chat-room {

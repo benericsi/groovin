@@ -6,11 +6,60 @@
   flex-direction: row;
   gap: 2rem;
 }
-.messages-section .user-list {
+.messages-section .user-list-container {
   background-color: #ffffff;
   flex: 1 1 33%;
   padding: 1rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.messages-section .user-list-container .user-list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.messages-section .user-list-container .user-list .user-list-item {
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  transition: background-color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.messages-section .user-list-container .user-list .user-list-item img {
+  height: 4rem;
+  width: 4rem;
+  min-height: 4rem;
+  min-width: 4rem;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center;
+}
+.messages-section .user-list-container .user-list .user-list-item h4 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #121212;
+  transition: color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.messages-section .user-list-container .user-list .user-list-item:hover, .messages-section .user-list-container .user-list .user-list-item.active {
+  background-color: rgba(63, 63, 63, 0.05);
+}
+.messages-section .user-list-container .user-list .user-list-item:hover h4, .messages-section .user-list-container .user-list .user-list-item.active h4 {
+  color: #0C6DE2;
+}
+.messages-section .user-list-container .user-list .text-empty {
+  text-align: center;
+  color: #a6a6a6;
+  font-size: 1.25rem;
+  margin: 1rem;
 }
 .messages-section .chat-room {
   background-color: #ffffff;

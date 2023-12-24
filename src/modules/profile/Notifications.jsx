@@ -17,7 +17,7 @@ const Notifications = () => {
   const {addToast} = useToast();
   const {showLoader, hideLoader} = useLoader();
 
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState(null);
 
   useEffect(() => {
     // Get notifications where the reciever is the current user
@@ -69,8 +69,9 @@ const Notifications = () => {
 
   return (
     <section className="notifications-section">
+      {notifications !== null && notifications.length === 0 && <h2>There are no notifications yet.</h2>}
       <div className="notifications-container">
-        {notifications && notifications.length !== 0 ? (
+        {notifications &&
           notifications.map((notification, index) => (
             <Link to="" className="notification-card" key={index}>
               <div className="notification-remove" onClick={(e) => removeNotification(e, notification.id)}>
@@ -83,10 +84,7 @@ const Notifications = () => {
                 <p>{notification.createdAt}</p>
               </div>
             </Link>
-          ))
-        ) : (
-          <h2>There are no notifications yet.</h2>
-        )}
+          ))}
       </div>
     </section>
   );

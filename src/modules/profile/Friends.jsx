@@ -14,7 +14,7 @@ const Friends = () => {
   const {showLoader, hideLoader} = useLoader();
   const {addToast} = useToast();
 
-  const [friends, setFriends] = useState([]);
+  const [friends, setFriends] = useState(null);
 
   useEffect(() => {
     // Get the other id from a friends collection document where the uid is the user1 or user2 and then get the user document for that id using onSnapshot
@@ -75,7 +75,7 @@ const Friends = () => {
 
   return (
     <section className="friends-section">
-      {friends.length === 0 && <h2>There are no friends yet.</h2>}
+      {friends !== null && friends.length === 0 && <h2>There are no friends yet.</h2>}
       <div className="friends-container">
         {friends &&
           friends.map((friend, index) => (
