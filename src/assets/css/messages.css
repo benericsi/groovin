@@ -1,4 +1,5 @@
 .messages-section {
+  flex: 1;
   margin: 1rem;
   padding: 1rem;
   display: flex;

@@ -68,6 +68,8 @@
         .main-body {
             height: calc(100vh - 4rem);
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
             //padding: 1rem;
         }
     }
@@ -79,6 +81,10 @@
 
         .main-header {
             display: none !important;
+        }
+
+        .main-body {
+            height: calc(100vh - 2 * $mobile-header-height) !important;
         }
     }
 }

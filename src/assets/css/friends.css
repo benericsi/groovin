@@ -1,6 +1,7 @@
 .friends-section {
   margin: 1rem;
   padding: 1rem;
+  max-width: 1920px;
 }
 .friends-section h2 {
   font-size: 2rem;

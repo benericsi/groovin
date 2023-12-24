@@ -52,6 +52,8 @@
 .main-wrapper .main-content .main-body {
   height: calc(100vh - 4rem);
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 @media only screen and (max-width: 1200px) {
@@ -60,5 +62,8 @@
   }
   .main-content .main-header {
     display: none !important;
+  }
+  .main-content .main-body {
+    height: calc(100vh - 8rem) !important;
   }
 }/*# sourceMappingURL=main-page.css.map */
