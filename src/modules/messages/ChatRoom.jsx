@@ -36,7 +36,7 @@ const ChatRoom = () => {
 
         //Get messages order by timestamp
         const messagesRef = db.collection('messages');
-        const query = messagesRef.where('uid', 'in', [currentUser.uid, partnerId]).where('partnerId', 'in', [currentUser.uid, partnerId]).orderBy('createdAt', 'asc');
+        const query = messagesRef.where('uid', 'in', [currentUser.uid, partnerId]).where('partnerId', 'in', [currentUser.uid, partnerId]).orderBy('createdAt', 'asc').limit(25);
         const unsubscribe = query.onSnapshot((querySnapshot) => {
           const messages = querySnapshot.docs.map((doc) => {
             const data = doc.data();
@@ -56,6 +56,8 @@ const ChatRoom = () => {
 
     if (partnerId) {
       getPartner();
+    } else {
+      setPartner(null);
     }
   }, [partnerId]);
 
@@ -79,16 +81,20 @@ const ChatRoom = () => {
         partnerId: partnerId,
       });
 
-      //Send notification
-      await db.collection('notifications').add({
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        message: `${currentUser.displayName} sent you a message.`,
-        receiver: partnerId,
-        sender: currentUser.uid,
-        senderName: currentUser.displayName,
-        senderPhoto: currentUser.photoURL,
-        type: 'New Message',
-      });
+      //Send notification if there is no notification for New Message
+      const notificationRef = db.collection('notifications');
+      const notificationSnapshot = await notificationRef.where('type', '==', 'New Message').where('sender', '==', currentUser.uid).where('receiver', '==', partnerId).get();
+      if (notificationSnapshot.empty) {
+        await notificationRef.add({
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          message: `${currentUser.displayName} sent you a message.`,
+          receiver: partnerId,
+          sender: currentUser.uid,
+          senderName: currentUser.displayName,
+          senderPhoto: currentUser.photoURL,
+          type: 'New Message',
+        });
+      }
     } catch (error) {
       addToast('error', error.message);
     } finally {
@@ -98,6 +104,22 @@ const ChatRoom = () => {
       if (dummy.current) {
         dummy.current.scrollIntoView({behavior: 'smooth'});
       }
+    }
+  };
+
+  const deletChat = async () => {
+    showLoader();
+    try {
+      const messagesRef = db.collection('messages');
+      const query = messagesRef.where('uid', 'in', [currentUser.uid, partnerId]).where('partnerId', 'in', [currentUser.uid, partnerId]);
+      const querySnapshot = await query.get();
+      querySnapshot.forEach((doc) => {
+        doc.ref.delete();
+      });
+    } catch (error) {
+      addToast('error', error.message);
+    } finally {
+      hideLoader();
     }
   };
 
@@ -127,7 +149,7 @@ const ChatRoom = () => {
                 </li>
                 */}
                   <li className="message-actions-item">
-                    <button className="btn-message-action">
+                    <button className="btn-message-action" onClick={deletChat}>
                       <span>Delete Chat</span>
                     </button>
                   </li>

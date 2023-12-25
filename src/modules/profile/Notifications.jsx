@@ -25,7 +25,7 @@ const Notifications = () => {
       .collection('notifications')
       .where('receiver', '==', currentUser.uid)
       .orderBy('createdAt', 'desc')
-      .limit(20)
+      .limit(10)
       .onSnapshot((snapshot) => {
         const notifications = snapshot.docs.map((doc) => {
           const data = doc.data();
