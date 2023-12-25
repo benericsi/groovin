@@ -41,14 +41,14 @@ const UserList = () => {
 
         const allFriendIds = [...friendIds, ...friendsIdReverse];
         const allFriends = [...friendsData, ...friendsDataReverse];
-        const sortedFriends = allFriends.sort((a, b) => a.lastName.localeCompare(b.lastName));
+        const sortedFriends = allFriends.sort((a, b) => a.firstName.localeCompare(b.firstName));
         setFriends(sortedFriends);
 
         const allUsersRef = db.collection('users');
         const allUsersSnapshot = await allUsersRef.get();
 
         const allUsersData = allUsersSnapshot.docs.filter((doc) => doc.id !== currentUser.uid && !allFriendIds.includes(doc.id)).map((doc) => ({...doc.data(), uid: doc.id}));
-        const sortedOthers = allUsersData.sort((a, b) => a.lastName.localeCompare(b.lastName));
+        const sortedOthers = allUsersData.sort((a, b) => a.firstName.localeCompare(b.firstName));
         setOthers(sortedOthers);
       } catch (error) {
         addToast('error', error.message);
@@ -63,25 +63,25 @@ const UserList = () => {
   return (
     <div className="user-list-container">
       <h2>Friends</h2>
-      {friends !== null && friends.length == 0 && <h4 className="text-empty">No friends yet.</h4>}
+      {friends !== null && friends.length === 0 && <h4 className="text-empty">No friends yet.</h4>}
       <ul className="user-list">
         {friends &&
           friends.map((friend) => (
             <NavLink to={`/profile/${currentUser.uid}/messages/${friend.uid}`} className="user-list-item" key={friend.uid}>
               <img src={friend.photoURL} alt={friend.firstName} />
-              <h4>{friend.lastName + ' ' + friend.firstName}</h4>
+              <h4>{friend.firstName + ' ' + friend.lastName}</h4>
             </NavLink>
           ))}
       </ul>
 
       <h2>Others</h2>
-      {others !== null && others.length == 0 && <h4 className="text-empty">No other users.</h4>}
+      {others !== null && others.length === 0 && <h4 className="text-empty">No other users.</h4>}
       <ul className="user-list">
         {others &&
           others.map((user) => (
             <NavLink to={`/profile/${currentUser.uid}/messages/${user.uid}`} className="user-list-item" key={user.uid}>
               <img src={user.photoURL} alt={user.firstName} />
-              <h4>{user.lastName + ' ' + user.firstName}</h4>
+              <h4>{user.firstName + ' ' + user.lastName}</h4>
             </NavLink>
           ))}
       </ul>

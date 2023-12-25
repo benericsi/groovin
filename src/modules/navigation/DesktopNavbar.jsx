@@ -27,7 +27,7 @@ const JUMP_AT = 15;
 const MAX_WIDTH = 30;
 
 const DesktopNavbar = () => {
-  const {uid} = useParams();
+  const {partnerId} = useParams();
   const {currentUser, logout} = useAuth();
   const {showLoader, hideLoader} = useLoader();
   const {addToast} = useToast();
@@ -184,8 +184,8 @@ const DesktopNavbar = () => {
           </NavLink>
         </li>
         <li className={desktopNavStyle['nav-list-item']}>
-          <NavLink to={`/profile/${currentUser.uid}/messages`} className={`${desktopNavStyle['nav-link']} ${location === `/profile/${currentUser.uid}/messages` ? desktopNavStyle['active'] : ''}`}>
-            {location === `/profile/${currentUser.uid}/messages` ? <HiEnvelope className={desktopNavStyle['nav-svg']} /> : <HiOutlineEnvelope className={desktopNavStyle['nav-svg']} />}
+          <NavLink to={`/profile/${currentUser.uid}/messages`} className={`${desktopNavStyle['nav-link']} ${location === `/profile/${currentUser.uid}/messages` || location === `/profile/${currentUser.uid}/messages/${partnerId}` ? desktopNavStyle['active'] : ''}`}>
+            {location === `/profile/${currentUser.uid}/messages` || location === `/profile/${currentUser.uid}/messages/${partnerId}` ? <HiEnvelope className={desktopNavStyle['nav-svg']} /> : <HiOutlineEnvelope className={desktopNavStyle['nav-svg']} />}
             <span className={desktopNavStyle['nav-text']}>Messages</span>
           </NavLink>
         </li>

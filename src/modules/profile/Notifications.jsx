@@ -67,13 +67,29 @@ const Notifications = () => {
     }
   };
 
+  const linkTo = (notification) => {
+    let link = '';
+    switch (notification.type) {
+      case 'New Message':
+        link = `/profile/${notification.receiver}/messages/${notification.sender}`;
+        break;
+      case 'New Friend Request':
+        link = `/profile/${notification.receiver}/requests`;
+        break;
+      default:
+        link = `/profile/${notification.sender}`;
+        break;
+    }
+    return link;
+  };
+
   return (
     <section className="notifications-section">
       {notifications !== null && notifications.length === 0 && <h2>There are no notifications yet.</h2>}
       <div className="notifications-container">
         {notifications &&
           notifications.map((notification, index) => (
-            <Link to="" className="notification-card" key={index}>
+            <Link to={linkTo(notification)} className="notification-card" key={index}>
               <div className="notification-remove" onClick={(e) => removeNotification(e, notification.id)}>
                 &times;
               </div>

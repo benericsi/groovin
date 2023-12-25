@@ -1,5 +1,5 @@
 import React from 'react';
-import {NavLink, useNavigate, useLocation} from 'react-router-dom';
+import {NavLink, useNavigate, useLocation, useParams} from 'react-router-dom';
 import {useAuth} from '../../hooks/useAuth';
 import {useLoader} from '../../hooks/useLoader';
 import {useToast} from '../../hooks/useToast';
@@ -11,6 +11,7 @@ import {BiSolidBell, BiBell} from 'react-icons/bi';
 import {BiLogOut} from 'react-icons/bi';
 
 const MainHeader = () => {
+  const {partnerId} = useParams();
   const {currentUser, logout} = useAuth();
   const {showLoader, hideLoader} = useLoader();
   const {addToast} = useToast();
@@ -56,8 +57,8 @@ const MainHeader = () => {
         <NavLink to={`/profile/${currentUser.uid}/notifications`} className={`header-interaction-item ${location === `/profile/${currentUser.uid}/notifications` ? 'active' : 'inactive'}`} title="Notifications">
           {location === `/profile/${currentUser.uid}/notifications` ? <BiSolidBell className="header-interaction-img" /> : <BiBell className="header-interaction-img" />}
         </NavLink>
-        <NavLink to={`/profile/${currentUser.uid}/messages`} className={`header-interaction-item ${location === `/profile/${currentUser.uid}/messages` ? 'active' : 'inactive'}`} title="Messages">
-          {location === `/profile/${currentUser.uid}/messages` ? <HiEnvelope className="header-interaction-img" /> : <HiOutlineEnvelope className="header-interaction-img" />}
+        <NavLink to={`/profile/${currentUser.uid}/messages`} className={`header-interaction-item ${location === `/profile/${currentUser.uid}/messages` || location === `/profile/${currentUser.uid}/messages/${partnerId}` ? 'active' : 'inactive'}`} title="Messages">
+          {location === `/profile/${currentUser.uid}/messages` || location === `/profile/${currentUser.uid}/messages/${partnerId}` ? <HiEnvelope className="header-interaction-img" /> : <HiOutlineEnvelope className="header-interaction-img" />}
         </NavLink>
         <NavLink to={`/profile/${currentUser.uid}`} className={`header-interaction-item ${location === `/profile/${currentUser.uid}` ? 'active' : 'inactive'}`} title="Profile">
           {location === `/profile/${currentUser.uid}` ? <RiAccountCircleFill className="header-interaction-img" /> : <RiAccountCircleLine className="header-interaction-img" />}

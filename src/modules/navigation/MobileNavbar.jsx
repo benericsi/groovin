@@ -23,7 +23,7 @@ import {BiSolidBell, BiBell} from 'react-icons/bi';
 import {BiLogOut} from 'react-icons/bi';
 
 const MobileNavbar = () => {
-  const {uid} = useParams();
+  const {partnerId} = useParams();
   const {currentUser, logout} = useAuth();
   const location = useLocation().pathname;
   const navigate = useNavigate();
@@ -154,8 +154,8 @@ const MobileNavbar = () => {
           </li>
 
           <li className={mobileNavStyle['nav-list-item']}>
-            <NavLink to={`/profile/${currentUser.uid}/messages`} className={`${mobileNavStyle['nav-link']} ${location === `/profile/${currentUser.uid}/messages` ? mobileNavStyle['active'] : mobileNavStyle['inactive']}`}>
-              {location === `/profile/${currentUser.uid}/messages` ? <HiEnvelope className={mobileNavStyle['navbar-svg']} /> : <HiOutlineEnvelope className={mobileNavStyle['navbar-svg']} />}
+            <NavLink to={`/profile/${currentUser.uid}/messages`} className={`${mobileNavStyle['nav-link']} ${location === `/profile/${currentUser.uid}/messages` || location === `/profile/${currentUser.uid}/messages/${partnerId}` ? mobileNavStyle['active'] : mobileNavStyle['inactive']}`}>
+              {location === `/profile/${currentUser.uid}/messages` || location === `/profile/${currentUser.uid}/messages/${partnerId}` ? <HiEnvelope className={mobileNavStyle['navbar-svg']} /> : <HiOutlineEnvelope className={mobileNavStyle['navbar-svg']} />}
               <span className={mobileNavStyle['new-notification']}></span>
             </NavLink>
           </li>
