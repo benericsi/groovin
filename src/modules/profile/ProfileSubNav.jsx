@@ -13,6 +13,11 @@ const ProfileSubNav = ({uid, isOwnProfile}) => {
           </NavLink>
         </li>
         <li className="user-nav-list-item">
+          <NavLink to={`/profile/${uid}/playlists`} className={`user-nav-link ${location === `/profile/${uid}/playlists` ? 'active' : 'inactive'}`}>
+            Playlists
+          </NavLink>
+        </li>
+        <li className="user-nav-list-item">
           <NavLink to={`/profile/${uid}/friends`} className={`user-nav-link ${location === `/profile/${uid}/friends` ? 'active' : 'inactive'}`}>
             Friends
           </NavLink>

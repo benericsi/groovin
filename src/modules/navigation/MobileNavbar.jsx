@@ -117,8 +117,8 @@ const MobileNavbar = () => {
             </li>
 
             <li className={mobileNavStyle['side-list-item']}>
-              <NavLink to="/playlists" className={`${mobileNavStyle['side-link']} ${location === '/playlists' ? mobileNavStyle['active'] : mobileNavStyle['inactive']}`}>
-                {location === '/playlists' ? <PiPlaylistFill className={mobileNavStyle['side-svg']} /> : <PiPlaylistLight className={mobileNavStyle['side-svg']} />}
+              <NavLink to={`/profile/${currentUser.uid}/playlists`} className={`${mobileNavStyle['side-link']} ${location === `/profile/${currentUser.uid}/playlists` ? mobileNavStyle['active'] : mobileNavStyle['inactive']}`}>
+                {location === `/profile/${currentUser.uid}/playlists` ? <PiPlaylistFill className={mobileNavStyle['side-svg']} /> : <PiPlaylistLight className={mobileNavStyle['side-svg']} />}
                 <span className={mobileNavStyle['side-text']}>Playlists</span>
               </NavLink>
             </li>

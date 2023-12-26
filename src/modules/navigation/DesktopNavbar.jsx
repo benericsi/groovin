@@ -122,8 +122,8 @@ const DesktopNavbar = () => {
           <span className={desktopNavStyle['part-title']}>Library</span>
         </li>
         <li className={desktopNavStyle['nav-list-item']}>
-          <NavLink to="/playlists" className={`${desktopNavStyle['nav-link']} ${location === '/playlists' ? desktopNavStyle['active'] : ''}`}>
-            {location === '/playlists' ? <PiPlaylistFill className={desktopNavStyle['nav-svg']} /> : <PiPlaylistLight className={desktopNavStyle['nav-svg']} />}
+          <NavLink to={`/profile/${currentUser.uid}/playlists`} className={`${desktopNavStyle['nav-link']} ${location === `/profile/${currentUser.uid}/playlists` ? desktopNavStyle['active'] : ''}`}>
+            {location === `/profile/${currentUser.uid}/playlists` ? <PiPlaylistFill className={desktopNavStyle['nav-svg']} /> : <PiPlaylistLight className={desktopNavStyle['nav-svg']} />}
             <span className={desktopNavStyle['nav-text']}>Playlists</span>
           </NavLink>
         </li>

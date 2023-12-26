@@ -287,7 +287,7 @@ const Profile = () => {
     try {
       showLoader();
       const storageRef = storage.ref();
-      const fileRef = storageRef.child(`profile-images/${uid}`);
+      const fileRef = storageRef.child(`profile-pictures/${uid}`);
 
       if (!inputPhoto) {
         // Prevent user from changing photo
@@ -389,7 +389,7 @@ const Profile = () => {
       )}
 
       <div className="user-body">
-        <Outlet context={{uid, acceptRequest, declineRequest}} />
+        <Outlet context={{uid, acceptRequest, declineRequest, isOwnProfile}} />
       </div>
     </>
   );

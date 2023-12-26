@@ -11,6 +11,7 @@ const Dashboard = lazy(() => import('./modules/main/Dashboard'));
 const Profile = lazy(() => import('./modules/profile/Profile'));
 const ErrorPage = lazy(() => import('./common/ErrorPage'));
 const ProfileMain = lazy(() => import('./modules/profile/ProfileMain'));
+const Playlists = lazy(() => import('./modules/playlists/Playlists'));
 const Friends = lazy(() => import('./modules/profile/Friends'));
 const Requests = lazy(() => import('./modules/profile/Requests'));
 const Messages = lazy(() => import('./modules/messages/Messages'));
@@ -28,6 +29,7 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route exact path="/profile/:uid" element={<Profile />}>
               <Route index element={<ProfileMain />} />
+              <Route path="playlists" element={<Playlists />} />
               <Route path="friends" element={<Friends />} />
               <Route path="requests" element={<Requests />} />
               <Route path="messages" element={<Messages />}>
