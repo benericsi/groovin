@@ -83,7 +83,8 @@
   margin: 0 auto;
   margin-bottom: 1rem;
 }
-.playlists-section .playlists-container .playlist-card .playlist-card-photo svg {
+.playlists-section .playlists-container .playlist-card .playlist-card-photo svg,
+.playlists-section .playlists-container .playlist-card .playlist-card-photo img {
   position: absolute;
   top: 0;
   left: 0;

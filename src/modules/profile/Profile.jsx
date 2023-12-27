@@ -284,6 +284,12 @@ const Profile = () => {
       return;
     }
 
+    // validate file input to only accept images
+    if (inputPhoto && !inputPhoto.type.includes('image')) {
+      addToast('error', 'Profile photo must be an image.');
+      return;
+    }
+
     try {
       showLoader();
       const storageRef = storage.ref();
@@ -343,7 +349,7 @@ const Profile = () => {
   return (
     <>
       {isOwnProfile && (
-        <PopUp isPopUpActive={isPopUpActive} onClose={togglePopUp}>
+        <PopUp isPopUpActive={isPopUpActive} onClose={() => togglePopUp()}>
           <Input
             type="text"
             value={inputName}
@@ -353,7 +359,7 @@ const Profile = () => {
             }}
             className="input-field"
           />
-          <input type="file" accept="image/*" onChange={(e) => setInputPhoto(e.target.files[0])} className="input-field light" />
+          <Input type="file" accept="image/*" label="Profile Photo" onChange={(file) => setInputPhoto(file)} className="input-field light" />
           <Button type="button" text="Save" className="dark" onClick={(e) => handleModifyUser(e)} />
         </PopUp>
       )}

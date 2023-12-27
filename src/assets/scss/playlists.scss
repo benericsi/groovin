@@ -97,7 +97,8 @@
                 margin: 0 auto;
                 margin-bottom: 1rem;
 
-                svg {
+                svg,
+                img {
                     position: absolute;
                     top: 0;
                     left: 0;
@@ -106,6 +107,7 @@
                     object-fit: cover;
                     object-position: center center;
                 }
+
             }
 
             .playlist-card-name {

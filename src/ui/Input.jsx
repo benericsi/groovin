@@ -2,7 +2,7 @@ import '../assets/css/input.css';
 import {useState} from 'react';
 import {FaEye, FaEyeSlash} from 'react-icons/fa';
 
-const Input = ({type, label, error, success, value, name, onChange, className}) => {
+const Input = ({type, label, error, success, value, name, onChange, accept, className}) => {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
 
   const handleTogglePasswordVisibility = () => {
@@ -10,7 +10,11 @@ const Input = ({type, label, error, success, value, name, onChange, className}) 
   };
 
   const handleOnChange = (event) => {
-    onChange(event.target.value);
+    if (type === 'file') {
+      onChange(event.target.files && event.target.files[0]);
+    } else {
+      onChange(event.target.value);
+    }
   };
 
   const inputType = isPasswordVisible ? 'text' : type;
@@ -20,7 +24,7 @@ const Input = ({type, label, error, success, value, name, onChange, className}) 
     <>
       <div className="input-wrapper">
         <div className="input-group">
-          <input type={inputType} value={value} onChange={handleOnChange} name={name} className={inputClassName} placeholder=" " />
+          <input type={inputType} value={value} onChange={handleOnChange} name={name} accept={accept} className={inputClassName} placeholder=" " />
           <label>{label}</label>
           {type === 'password' && (isPasswordVisible ? <FaEye onClick={handleTogglePasswordVisibility} className="eye" /> : <FaEyeSlash onClick={handleTogglePasswordVisibility} className="eye" />)}
         </div>
