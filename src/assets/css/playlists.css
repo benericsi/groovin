@@ -77,7 +77,7 @@
   width: 100%;
   padding-top: 100%;
   /* 1:1 aspect ratio (height = width) */
-  border-radius: 50%;
+  border-radius: 12px;
   background-color: #5e5e5e;
   overflow: hidden;
   margin: 0 auto;
@@ -100,5 +100,11 @@
   font-weight: bold;
   color: #121212;
   margin-bottom: 0.5rem;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.playlists-section .playlists-container .playlist-card .playlist-card-length {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #7e7e7e;
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }/*# sourceMappingURL=playlists.css.map */

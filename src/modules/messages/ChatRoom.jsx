@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, useParams} from 'react-router-dom';
+import {Link, useParams, useLocation} from 'react-router-dom';
 import {useAuth} from '../../hooks/useAuth';
 import {useEffect, useState, useRef} from 'react';
 import {useLoader} from '../../hooks/useLoader';
@@ -14,6 +14,7 @@ import firebase from 'firebase/compat/app';
 const ChatRoom = () => {
   const {currentUser} = useAuth();
   const {partnerId} = useParams();
+  //const partner = useLocation().state.partner;
 
   const {addToast} = useToast();
   const {showLoader, hideLoader} = useLoader();

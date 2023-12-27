@@ -67,7 +67,7 @@ const UserList = () => {
       <ul className="user-list">
         {friends &&
           friends.map((friend) => (
-            <NavLink to={`/profile/${currentUser.uid}/messages/${friend.uid}`} className="user-list-item" key={friend.uid}>
+            <NavLink to={`/profile/${currentUser.uid}/messages/${friend.uid}`} state={{partner: friend}} className="user-list-item" key={friend.uid}>
               <img src={friend.photoURL} alt={friend.firstName} />
               <h4>{friend.firstName + ' ' + friend.lastName}</h4>
             </NavLink>
@@ -79,7 +79,7 @@ const UserList = () => {
       <ul className="user-list">
         {others &&
           others.map((user) => (
-            <NavLink to={`/profile/${currentUser.uid}/messages/${user.uid}`} className="user-list-item" key={user.uid}>
+            <NavLink to={`/profile/${currentUser.uid}/messages/${user.uid}`} state={{partner: user}} className="user-list-item" key={user.uid}>
               <img src={user.photoURL} alt={user.firstName} />
               <h4>{user.firstName + ' ' + user.lastName}</h4>
             </NavLink>

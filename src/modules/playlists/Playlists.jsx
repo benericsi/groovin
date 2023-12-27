@@ -17,7 +17,7 @@ import Button from '../../ui/Button';
 
 const Playlists = () => {
   const {currentUser} = useAuth();
-  const {isOwnProfile} = useOutletContext();
+  const {uid, isOwnProfile} = useOutletContext();
   const {showLoader, hideLoader} = useLoader();
   const {addToast} = useToast();
 
@@ -30,13 +30,15 @@ const Playlists = () => {
   const [isPopUpActive, setIsPopUpActive] = useState(false);
 
   useEffect(() => {
-    const fetchPlaylists = async () => {
-      // fetch playlists from firestore using onSnapshot, order by createdAt
+    const fetchPlaylists = () => {
+      // Unsubscribe from the previous listener
+      let unsubscribe = () => {};
+
+      // Set up a new listener
       const playlistRef = db.collection('playlists');
-      playlistRef
-        .where('uid', '==', currentUser.uid)
-        .orderBy('createdAt', 'desc')
-        .onSnapshot((snapshot) => {
+      if (uid) {
+        const query = playlistRef.where('uid', '==', uid).orderBy('createdAt', 'desc');
+        unsubscribe = query.onSnapshot((snapshot) => {
           const playlists = snapshot.docs.map((doc) => {
             const data = doc.data();
             return {
@@ -47,10 +49,16 @@ const Playlists = () => {
 
           setPlaylists(playlists);
         });
+      }
+
+      // Clean up the previous listener when component unmounts or user changes
+      return () => {
+        unsubscribe();
+      };
     };
 
     fetchPlaylists();
-  }, []);
+  }, [uid]);
 
   const togglePopUp = () => {
     if (!isPopUpActive) {
@@ -145,9 +153,10 @@ const Playlists = () => {
           )}
           {playlists &&
             playlists.map((playlist, index) => (
-              <Link to={`/profile/${currentUser.uid}/playlists/${playlist.id}`} className="playlist-card" key={index}>
+              <Link to={`/profile/${currentUser.uid}/playlists/${playlist.id}`} state={{playlist: playlist}} className="playlist-card" key={index}>
                 <div className="playlist-card-photo">{<img src={playlist.photoURL} alt="" />}</div>
                 <div className="playlist-card-name">{playlist.title}</div>
+                <div className="playlist-card-length">{playlist.songs.length} tracks</div>
               </Link>
             ))}
         </div>

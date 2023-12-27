@@ -18,6 +18,13 @@
         flex-direction: column;
         gap: .25rem;
 
+        .text-empty {
+            text-align: center;
+            color: $clr-grey-500;
+            font-size: 1.25rem;
+            margin: 1rem;
+        }
+
         .user-list {
             position: relative;
             display: flex;
@@ -62,12 +69,6 @@
                 }
             }
 
-            .text-empty {
-                text-align: center;
-                color: $clr-grey-500;
-                font-size: 1.25rem;
-                margin: 1rem;
-            }
         }
     }
 

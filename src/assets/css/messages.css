@@ -15,6 +15,12 @@
   flex-direction: column;
   gap: 0.25rem;
 }
+.messages-section .user-list-container .text-empty {
+  text-align: center;
+  color: #a6a6a6;
+  font-size: 1.25rem;
+  margin: 1rem;
+}
 .messages-section .user-list-container .user-list {
   position: relative;
   display: flex;
@@ -54,12 +60,6 @@
 }
 .messages-section .user-list-container .user-list .user-list-item:hover h4, .messages-section .user-list-container .user-list .user-list-item.active h4 {
   color: #0C6DE2;
-}
-.messages-section .user-list-container .user-list .text-empty {
-  text-align: center;
-  color: #a6a6a6;
-  font-size: 1.25rem;
-  margin: 1rem;
 }
 .messages-section .chatroom {
   background-color: #ffffff;
