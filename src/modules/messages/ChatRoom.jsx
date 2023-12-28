@@ -117,6 +117,7 @@ const ChatRoom = () => {
       querySnapshot.forEach((doc) => {
         doc.ref.delete();
       });
+      toggleMessageActions();
     } catch (error) {
       addToast('error', error.message);
     } finally {

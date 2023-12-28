@@ -1,8 +1,9 @@
 import React from 'react';
-import {NavLink, useLocation} from 'react-router-dom';
+import {NavLink, useLocation, useParams} from 'react-router-dom';
 
 const ProfileSubNav = ({uid, isOwnProfile}) => {
   const location = useLocation().pathname;
+  const {partnerId} = useParams();
 
   return (
     <nav className="user-nav">
@@ -30,7 +31,7 @@ const ProfileSubNav = ({uid, isOwnProfile}) => {
               </NavLink>
             </li>
             <li className="user-nav-list-item">
-              <NavLink to={`/profile/${uid}/messages`} className={`user-nav-link ${location === `/profile/${uid}/messages` ? 'active' : 'inactive'}`}>
+              <NavLink to={`/profile/${uid}/messages`} className={`user-nav-link ${location === `/profile/${uid}/messages` || location === `/profile/${uid}/messages/${partnerId}` ? 'active' : 'inactive'}`}>
                 Messages
               </NavLink>
             </li>

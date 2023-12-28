@@ -14,6 +14,7 @@ import {AiOutlinePlusCircle} from 'react-icons/ai';
 import PopUp from '../../common/PopUp';
 import Input from '../../ui/Input';
 import Button from '../../ui/Button';
+import {useTitle} from '../../hooks/useTitle';
 
 const Playlists = () => {
   const {currentUser} = useAuth();
@@ -28,6 +29,8 @@ const Playlists = () => {
   const [inputPhoto, setInputPhoto] = useState('');
 
   const [isPopUpActive, setIsPopUpActive] = useState(false);
+
+  useTitle('Playlists');
 
   useEffect(() => {
     const fetchPlaylists = () => {
