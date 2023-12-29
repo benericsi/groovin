@@ -11,6 +11,10 @@ import Button from '../../ui/Button';
 import ChatMessage from './ChatMessage';
 import firebase from 'firebase/compat/app';
 
+import {RiUserReceivedLine} from 'react-icons/ri';
+import {MdDeleteOutline} from 'react-icons/md';
+import {IoIosSend} from 'react-icons/io';
+
 const ChatRoom = () => {
   const {currentUser} = useAuth();
   const {partnerId} = useParams();
@@ -135,11 +139,12 @@ const ChatRoom = () => {
               <h4>{partner.firstName + ' ' + partner.lastName}</h4>
             </Link>
             <div className="chat-actions">
-              <FaEllipsisVertical className="ellipsis" onClick={toggleMessageActions} />
+              <FaEllipsisVertical className="ellipsis" onClick={() => toggleMessageActions()} />
               {isMessageActionsActive ? (
                 <ul className="message-action-list">
                   <li className="message-actions-item">
                     <Link to={`/profile/${partnerId}`} className="btn-message-action">
+                      <RiUserReceivedLine />
                       <span>Visit Profile</span>
                     </Link>
                   </li>
@@ -151,7 +156,8 @@ const ChatRoom = () => {
                 </li>
                 */}
                   <li className="message-actions-item">
-                    <button className="btn-message-action" onClick={deletChat}>
+                    <button className="btn-message-action" onClick={() => deletChat()}>
+                      <MdDeleteOutline />
                       <span>Delete Chat</span>
                     </button>
                   </li>
@@ -174,7 +180,9 @@ const ChatRoom = () => {
                 }}
                 className="input-field light"
               />
-              <Button type="submit" text="Send" className="dark" />
+              <Button type="submit" className="dark">
+                <IoIosSend />
+              </Button>
             </form>
           </section>
         </>

@@ -18,6 +18,7 @@ import {RiAccountCircleFill} from 'react-icons/ri';
 import {AiOutlinePlusCircle} from 'react-icons/ai';
 import {BiEdit} from 'react-icons/bi';
 import ProfileSubNav from './ProfileSubNav';
+import {FaRegSave} from 'react-icons/fa';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -360,7 +361,9 @@ const Profile = () => {
             className="input-field"
           />
           <Input type="file" accept="image/*" label="Profile Photo" onChange={(file) => setInputPhoto(file)} className="input-field light" />
-          <Button type="button" text="Save" className="dark" onClick={(e) => handleModifyUser(e)} />
+          <Button type="button" text="Save" className="dark" onClick={(e) => handleModifyUser(e)}>
+            <FaRegSave />
+          </Button>
         </PopUp>
       )}
       {userData && (

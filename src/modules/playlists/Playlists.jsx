@@ -1,7 +1,7 @@
 import '../../assets/css/playlists.css';
 
 import React, {useEffect} from 'react';
-import {useOutletContext} from 'react-router-dom';
+import {useNavigate, useOutletContext} from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import {useState} from 'react';
 import {useLoader} from '../../hooks/useLoader';
@@ -16,7 +16,10 @@ import Input from '../../ui/Input';
 import Button from '../../ui/Button';
 import {useTitle} from '../../hooks/useTitle';
 
+import {FaRegSave} from 'react-icons/fa';
+
 const Playlists = () => {
+  const navigate = useNavigate();
   const {currentUser} = useAuth();
   const {uid, isOwnProfile} = useOutletContext();
   const {showLoader, hideLoader} = useLoader();
@@ -34,30 +37,38 @@ const Playlists = () => {
 
   useEffect(() => {
     const fetchPlaylists = () => {
-      // Unsubscribe from the previous listener
-      let unsubscribe = () => {};
+      showLoader();
 
-      // Set up a new listener
-      const playlistRef = db.collection('playlists');
-      if (uid) {
-        const query = playlistRef.where('uid', '==', uid).orderBy('createdAt', 'desc');
-        unsubscribe = query.onSnapshot((snapshot) => {
-          const playlists = snapshot.docs.map((doc) => {
-            const data = doc.data();
-            return {
-              id: doc.id,
-              ...data,
-            };
+      try {
+        // Unsubscribe from the previous listener
+        let unsubscribe = () => {};
+
+        // Set up a new listener
+        const playlistRef = db.collection('playlists');
+        if (uid) {
+          const query = playlistRef.where('uid', '==', uid).orderBy('createdAt', 'desc');
+          unsubscribe = query.onSnapshot((snapshot) => {
+            const playlists = snapshot.docs.map((doc) => {
+              const data = doc.data();
+              return {
+                id: doc.id,
+                ...data,
+              };
+            });
+
+            setPlaylists(playlists);
           });
+        }
 
-          setPlaylists(playlists);
-        });
+        // Clean up the previous listener when component unmounts or user changes
+        return () => {
+          unsubscribe();
+        };
+      } catch (error) {
+        addToast('error', error.message);
+      } finally {
+        hideLoader();
       }
-
-      // Clean up the previous listener when component unmounts or user changes
-      return () => {
-        unsubscribe();
-      };
     };
 
     fetchPlaylists();
@@ -94,14 +105,13 @@ const Playlists = () => {
 
     showLoader();
     try {
-      // upload photo to storage: /playlists/{playlistId}
       const storageRef = storage.ref();
       const fileRef = storageRef.child(`playlists/${inputPhoto.name}`);
       await fileRef.put(inputPhoto);
 
       // create playlist in firestore
       const playlistRef = db.collection('playlists');
-      await playlistRef.add({
+      const docRef = await playlistRef.add({
         title: inputName,
         description: inputDescription,
         photoURL: await fileRef.getDownloadURL(),
@@ -111,7 +121,7 @@ const Playlists = () => {
       });
 
       addToast('success', 'Playlist created successfully.');
-      togglePopUp();
+      navigate(`/profile/${currentUser.uid}/playlists/${docRef.id}`);
     } catch (error) {
       addToast('error', error.message);
     } finally {
@@ -141,7 +151,9 @@ const Playlists = () => {
           className="input-field"
         />
         <Input type="file" accept="image/*" label="Playlist Photo" onChange={(file) => setInputPhoto(file)} className="input-field light" />
-        <Button type="button" text="Save" className="dark" onClick={(e) => createPlaylist(e)} />
+        <Button type="button" text="Save" className="dark" onClick={(e) => createPlaylist(e)}>
+          <FaRegSave />
+        </Button>
       </PopUp>
       <section className="playlists-section">
         {!isOwnProfile && playlists !== null && playlists.length === 0 && <h2>There are no playlists yet.</h2>}
@@ -156,7 +168,7 @@ const Playlists = () => {
           )}
           {playlists &&
             playlists.map((playlist, index) => (
-              <Link to={`/profile/${currentUser.uid}/playlists/${playlist.id}`} state={{playlist: playlist}} className="playlist-card" key={index}>
+              <Link to={`/profile/${currentUser.uid}/playlists/${playlist.id}`} className="playlist-card" key={index}>
                 <div className="playlist-card-photo">{<img src={playlist.photoURL} alt="" />}</div>
                 <div className="playlist-card-name">{playlist.title}</div>
                 <div className="playlist-card-length">{playlist.songs.length} tracks</div>
