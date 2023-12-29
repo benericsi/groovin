@@ -14,7 +14,7 @@ import {FaEllipsisVertical} from 'react-icons/fa6';
 import {BiEdit} from 'react-icons/bi';
 import {MdDeleteOutline} from 'react-icons/md';
 import {IoMdRefresh} from 'react-icons/io';
-import {FaRegSave} from 'react-icons/fa';
+import {MdOutlineSaveAlt} from 'react-icons/md';
 
 const Playlist = () => {
   const navigate = useNavigate();
@@ -210,7 +210,7 @@ const Playlist = () => {
         />
         <Input type="file" accept="image/*" label="Playlist Photo" onChange={(file) => setInputPhoto(file)} className="input-field light" />
         <Button type="button" text="Save" className="dark" onClick={(e) => editPlaylist(e)}>
-          <FaRegSave />
+          <MdOutlineSaveAlt />
         </Button>
       </PopUp>
       {playlist && (

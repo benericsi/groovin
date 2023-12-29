@@ -16,7 +16,7 @@ import Input from '../../ui/Input';
 import Button from '../../ui/Button';
 import {useTitle} from '../../hooks/useTitle';
 
-import {FaRegSave} from 'react-icons/fa';
+import {MdOutlineSaveAlt} from 'react-icons/md';
 
 const Playlists = () => {
   const navigate = useNavigate();
@@ -152,7 +152,7 @@ const Playlists = () => {
         />
         <Input type="file" accept="image/*" label="Playlist Photo" onChange={(file) => setInputPhoto(file)} className="input-field light" />
         <Button type="button" text="Save" className="dark" onClick={(e) => createPlaylist(e)}>
-          <FaRegSave />
+          <MdOutlineSaveAlt />
         </Button>
       </PopUp>
       <section className="playlists-section">
