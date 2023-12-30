@@ -69,17 +69,23 @@ const Notifications = () => {
 
   const linkTo = (notification) => {
     let link = '';
-    switch (notification.type) {
-      case 'New Message':
-        link = `/profile/${notification.receiver}/messages/${notification.sender}`;
-        break;
-      case 'New Friend Request':
-        link = `/profile/${notification.receiver}/requests`;
-        break;
-      default:
-        link = `/profile/${notification.sender}`;
-        break;
+
+    if (notification.type.startsWith('New Playlist')) {
+      link = `/profile/${notification.sender}/playlists`;
+    } else {
+      switch (notification.type) {
+        case 'New Message':
+          link = `/profile/${notification.receiver}/messages/${notification.sender}`;
+          break;
+        case 'New Friend Request':
+          link = `/profile/${notification.receiver}/requests`;
+          break;
+        default:
+          link = `/profile/${notification.sender}`;
+          break;
+      }
     }
+
     return link;
   };
 

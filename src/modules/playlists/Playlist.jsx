@@ -1,8 +1,9 @@
-import {useParams, useNavigate} from 'react-router-dom';
+import {useParams, useNavigate, Link} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import {useLoader} from '../../hooks/useLoader';
 import {useToast} from '../../hooks/useToast';
 import {db, storage} from '../../setup/Firebase';
+import firebase from 'firebase/compat/app';
 import {useAuth} from '../../hooks/useAuth';
 import PopUp from '../../common/PopUp';
 import Input from '../../ui/Input';
@@ -15,6 +16,9 @@ import {BiEdit} from 'react-icons/bi';
 import {MdDeleteOutline} from 'react-icons/md';
 import {IoMdRefresh} from 'react-icons/io';
 import {MdOutlineSaveAlt} from 'react-icons/md';
+import {IoShuffleOutline} from 'react-icons/io5';
+import {IoShareSocial} from 'react-icons/io5';
+import {IoIosSend} from 'react-icons/io';
 
 const Playlist = () => {
   const navigate = useNavigate();
@@ -26,9 +30,14 @@ const Playlist = () => {
   const {showLoader, hideLoader} = useLoader();
   const {addToast} = useToast();
 
+  const [friends, setFriends] = useState(null);
+
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isShuffle, setIsShuffle] = useState(false);
+
   const [isPlaylistActionsActive, setIsPlaylistActionsActive] = useState(false);
   const [isPopUpActive, setIsPopUpActive] = useState(false);
+  const [isShareActive, setIsShareActive] = useState(false);
 
   const [inputName, setInputName] = useState(null);
   const [inputDescription, setInputDescription] = useState(null);
@@ -173,6 +182,93 @@ const Playlist = () => {
     }
   };
 
+  const toggleSharePopUp = () => {
+    setIsShareActive(!isShareActive);
+
+    if (!isShareActive) {
+      // fetch friends
+      showLoader();
+      const unsubscribe = db
+        .collection('friends')
+        .where('user1', '==', currentUser.uid)
+        .onSnapshot(
+          (snapshot) => {
+            const friends = snapshot.docs.map((doc) => doc.data().user2);
+            db.collection('friends')
+              .where('user2', '==', currentUser.uid)
+              .onSnapshot(
+                (snapshot) => {
+                  const friends2 = snapshot.docs.map((doc) => doc.data().user1);
+                  const friendsCombined = [...friends, ...friends2];
+                  if (friendsCombined.length === 0) {
+                    setFriends([]);
+                    hideLoader();
+                    return;
+                  }
+
+                  db.collection('users')
+                    .where(firebase.firestore.FieldPath.documentId(), 'in', friendsCombined)
+                    .onSnapshot(
+                      (snapshot) => {
+                        const friends = snapshot.docs.map((doc) => {
+                          return {
+                            id: doc.id,
+                            ...doc.data(),
+                          };
+                        });
+                        setFriends(friends);
+                        hideLoader();
+                      },
+                      (error) => {
+                        addToast('error', error.message);
+                        hideLoader();
+                      }
+                    );
+                },
+                (error) => {
+                  addToast('error', error.message);
+                  hideLoader();
+                }
+              );
+          },
+          (error) => {
+            addToast('error', error.message);
+            hideLoader();
+          }
+        );
+
+      return () => {
+        unsubscribe();
+      };
+    }
+  };
+
+  const sharePlaylist = async (e, friendId) => {
+    e.preventDefault();
+    showLoader();
+    try {
+      // if friend has a notification for this playlist, return
+      const notificationRef = db.collection('notifications');
+      const notificationSnapshot = await notificationRef.where('type', '==', `New Playlist: ${playlist.title}`).where('sender', '==', currentUser.uid).where('receiver', '==', friendId).get();
+      if (notificationSnapshot.empty) {
+        await notificationRef.add({
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          message: `There is a new playlist from ${currentUser.displayName}. Go check it out!`,
+          receiver: friendId,
+          sender: currentUser.uid,
+          senderName: currentUser.displayName,
+          senderPhoto: currentUser.photoURL,
+          type: `New Playlist: ${playlist.title}`,
+        });
+      }
+      addToast('success', 'Playlist shared!');
+    } catch (error) {
+      addToast('error', error.message);
+    } finally {
+      hideLoader();
+    }
+  };
+
   const deletePlaylist = async () => {
     showLoader();
     try {
@@ -213,6 +309,33 @@ const Playlist = () => {
           <MdOutlineSaveAlt />
         </Button>
       </PopUp>
+
+      <PopUp isPopUpActive={isShareActive} onClose={() => toggleSharePopUp()}>
+        {friends !== null && friends.length === 0 && <h2>There are no friends yet.</h2>}
+        {friends && (
+          <>
+            <div className="share-friends-container">
+              {friends.map((friend) => (
+                <ul className="share-friend-list" key={friend.id}>
+                  <li className="share-friend-item">
+                    <div className="share-friend-photo">
+                      <img src={friend.photoURL} alt="" />
+                    </div>
+                    <div className="share-friend-info">
+                      <Link to={`/profile/${friend.id}`} className="share-friend-name">
+                        {friend.displayName}
+                      </Link>
+                    </div>
+                    <Button type="button" className="dark" onClick={(e) => sharePlaylist(e, friend.id)}>
+                      <IoIosSend />
+                    </Button>
+                  </li>
+                </ul>
+              ))}
+            </div>
+          </>
+        )}
+      </PopUp>
       {playlist && (
         <section className="playlist-section">
           <div className="playlist-container">
@@ -233,6 +356,9 @@ const Playlist = () => {
                 <li className="playlist-subnav-item" onClick={() => toggleMusic()}>
                   {isPlaying ? <FaCirclePause /> : <FaCirclePlay />}
                 </li>
+                <li className={`playlist-subnav-item shuffle ${isShuffle ? 'active' : ''}`} onClick={() => setIsShuffle(!isShuffle)}>
+                  <IoShuffleOutline />
+                </li>
                 <li className="playlist-subnav-item" onClick={() => togglePlaylistActions()}>
                   <FaEllipsisVertical />
                   {isPlaylistActionsActive ? (
@@ -247,6 +373,12 @@ const Playlist = () => {
                         <button className="btn-playlist-action" onClick={() => clearPlaylist()}>
                           <IoMdRefresh />
                           <span>Clear Songs</span>
+                        </button>
+                      </li>
+                      <li className="playlist-actions-item">
+                        <button className="btn-playlist-action" onClick={() => toggleSharePopUp()}>
+                          <IoShareSocial />
+                          <span>Share</span>
                         </button>
                       </li>
                       <li className="playlist-actions-item">
