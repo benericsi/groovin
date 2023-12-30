@@ -168,7 +168,7 @@ const Playlists = () => {
           )}
           {playlists &&
             playlists.map((playlist, index) => (
-              <Link to={`/profile/${currentUser.uid}/playlists/${playlist.id}`} className="playlist-card" key={index}>
+              <Link to={`/profile/${playlist.uid}/playlists/${playlist.id}`} className="playlist-card" key={index}>
                 <div className="playlist-card-photo">{<img src={playlist.photoURL} alt="" />}</div>
                 <div className="playlist-card-name">{playlist.title}</div>
                 <div className="playlist-card-length">{playlist.songs.length} tracks</div>

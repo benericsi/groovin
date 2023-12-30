@@ -19,6 +19,7 @@ import {MdOutlineSaveAlt} from 'react-icons/md';
 import {IoShuffleOutline} from 'react-icons/io5';
 import {IoShareSocial} from 'react-icons/io5';
 import {IoIosSend} from 'react-icons/io';
+import {AiOutlinePlusCircle} from 'react-icons/ai';
 
 const Playlist = () => {
   const navigate = useNavigate();
@@ -356,8 +357,11 @@ const Playlist = () => {
                 <li className="playlist-subnav-item" onClick={() => toggleMusic()}>
                   {isPlaying ? <FaCirclePause /> : <FaCirclePlay />}
                 </li>
-                <li className={`playlist-subnav-item shuffle ${isShuffle ? 'active' : ''}`} onClick={() => setIsShuffle(!isShuffle)}>
+                <li className={`playlist-subnav-item blue ${isShuffle ? 'active' : ''}`} onClick={() => setIsShuffle(!isShuffle)}>
                   <IoShuffleOutline />
+                </li>
+                <li className="playlist-subnav-item blue">
+                  <AiOutlinePlusCircle />
                 </li>
                 <li className="playlist-subnav-item" onClick={() => togglePlaylistActions()}>
                   <FaEllipsisVertical />
