@@ -18,6 +18,7 @@ const Requests = lazy(() => import('./modules/profile/Requests'));
 const Messages = lazy(() => import('./modules/messages/Messages'));
 const ChatRoom = lazy(() => import('./modules/messages/ChatRoom'));
 const Notifications = lazy(() => import('./modules/profile/Notifications'));
+const Search = lazy(() => import('./modules/search/Search'));
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
               </Route>
               <Route path="notifications" element={<Notifications />} />
             </Route>
+            <Route path="/search" element={<Search />} />
           </Route>
         </Route>
 
