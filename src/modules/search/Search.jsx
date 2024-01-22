@@ -79,7 +79,7 @@ const Search = () => {
         hideLoader();
       }
     },
-    880,
+    750,
     [searchString]
   );
 
