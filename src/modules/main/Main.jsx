@@ -6,7 +6,6 @@ import {Outlet} from 'react-router-dom';
 import DesktopNavbar from '../navigation/DesktopNavbar';
 import MobileNavbar from '../navigation/MobileNavbar';
 import MainHeader from './MainHeader';
-import useSpotifyAuth from '../../hooks/useSpotifyAuth';
 
 const Main = () => {
   const isMobile = useMediaQuery({query: '(max-width: 1200px)'});
@@ -14,9 +13,6 @@ const Main = () => {
   function renderSideBar() {
     return isMobile ? <MobileNavbar /> : <DesktopNavbar />;
   }
-
-  const accessToken = useSpotifyAuth();
-  localStorage.setItem('accessToken', accessToken);
 
   return (
     <div className="main-wrapper">

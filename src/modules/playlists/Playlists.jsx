@@ -116,6 +116,7 @@ const Playlists = () => {
         description: inputDescription,
         photoURL: await fileRef.getDownloadURL(),
         uid: currentUser.uid,
+        creator: currentUser.displayName,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         songs: [],
       });

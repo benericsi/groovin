@@ -42,6 +42,9 @@
                 .playlist-card-name {
                     text-align: center;
                     color: $clr-grey-600;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
 
                 .playlist-card-photo {

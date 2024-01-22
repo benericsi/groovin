@@ -68,6 +68,9 @@
                 font-weight: bold;
                 color: $clr-grey-900;
                 margin-bottom: .5rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
 
             .sender-card-action {

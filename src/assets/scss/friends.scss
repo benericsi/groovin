@@ -70,6 +70,9 @@
                 color: $clr-grey-900;
                 margin-bottom: .5rem;
                 transition: all .2s $animation-cubic;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
     }
