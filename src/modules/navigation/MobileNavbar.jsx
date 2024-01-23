@@ -68,7 +68,7 @@ const MobileNavbar = () => {
             <NavLink to="/" className={`${mobileNavStyle['logo']} `}>
               <h2>Groovin</h2>
             </NavLink>
-            <NavLink to="/search" className={`${mobileNavStyle['header-link']} ${location === '/seacrh' ? mobileNavStyle['active'] : ''}`}>
+            <NavLink to="/search" className={`${mobileNavStyle['header-link']} ${location === '/search' ? mobileNavStyle['active'] : ''}`}>
               {location === '/search' ? <BiSolidSearchAlt2 className={mobileNavStyle['header-svg']} /> : <BiSearchAlt className={mobileNavStyle['header-svg']} />}
             </NavLink>
             <NavLink to={`/profile/${currentUser.uid}`} className={`${mobileNavStyle['header-link']} ${location === `/profile/${currentUser.uid}` ? mobileNavStyle['active'] : ''}`}>

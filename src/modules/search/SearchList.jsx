@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import {MdAccountCircle} from 'react-icons/md';
 
 const SearchList = ({data}) => {
-  console.log(data);
+  //console.log(data);
 
   return (
     <div className="search-section-body">
@@ -43,7 +43,7 @@ const SearchList = ({data}) => {
           <h2>Artists</h2>
           <div className="search-list">
             {data.artists.map((artist) => (
-              <Link to="" className="search-card" key={artist.id}>
+              <Link to={`/artist/${artist.id}`} state={{artist: artist}} className="search-card" key={artist.id}>
                 {artist.images.length > 0 ? <img className="search-card-photo artist" src={artist.images[1].url} alt={artist.name} /> : <MdAccountCircle className="photo-alt artist" />}
                 <div className="search-card-name">{artist.name}</div>
                 <div className="search-card-info capitalize">{artist.type}</div>

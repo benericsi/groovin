@@ -13,6 +13,12 @@
   flex-direction: column;
   gap: 2rem;
 }
+.search-body .search-section .no-search-data {
+  text-align: center;
+  font-size: clamp(3rem, 5vw, 5rem);
+  font-weight: 600;
+  color: #a6a6a6;
+}
 .search-body .search-section .search-section-header {
   background-color: #ffffff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -87,10 +93,8 @@
   overflow: hidden;
   margin: 0 auto;
   margin-bottom: 1rem;
-  -o-object-fit: cover;
-     object-fit: cover;
-  -o-object-position: center center;
-     object-position: center center;
+  object-fit: cover;
+  object-position: center center;
 }
 .search-body .search-section .search-section-body .body-section .search-list .search-card .search-card-photo.album, .search-body .search-section .search-section-body .body-section .search-list .search-card .search-card-photo.playlist {
   border-radius: 12px;

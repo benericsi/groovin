@@ -48,17 +48,8 @@
   background-color: transparent;
   color: #000000;
 }
-.popup-container .popup .input-field:not(:-moz-placeholder-shown) {
-  border: 2px solid #000000;
-}
 .popup-container .popup .input-field:focus, .popup-container .popup .input-field:invalid, .popup-container .popup .input-field:not(:placeholder-shown) {
   border: 2px solid #000000;
-}
-.popup-container .popup .input-field:not(:-moz-placeholder-shown) ~ label {
-  top: 0;
-  color: #000000;
-  font-size: 1.1rem;
-  background-color: #ffffff;
 }
 .popup-container .popup .input-field:focus ~ label, .popup-container .popup .input-field:invalid ~ label, .popup-container .popup .input-field:not(:placeholder-shown) ~ label {
   top: 0;

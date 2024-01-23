@@ -46,17 +46,8 @@
 .input-wrapper .input-group .input-field.light ~ .eye {
   color: #5e5e5e;
 }
-.input-wrapper .input-group .input-field.light:not(:-moz-placeholder-shown) {
-  border: 2px solid #121212;
-}
 .input-wrapper .input-group .input-field.light:focus, .input-wrapper .input-group .input-field.light:invalid, .input-wrapper .input-group .input-field.light:not(:placeholder-shown) {
   border: 2px solid #121212;
-}
-.input-wrapper .input-group .input-field.light:not(:-moz-placeholder-shown) ~ label {
-  top: 0;
-  color: #121212;
-  font-size: 1.1rem;
-  background-color: #ffffff;
 }
 .input-wrapper .input-group .input-field.light:focus ~ label, .input-wrapper .input-group .input-field.light:invalid ~ label, .input-wrapper .input-group .input-field.light:not(:placeholder-shown) ~ label {
   top: 0;
@@ -77,17 +68,8 @@
   border: 2px solid #a6a6a6;
   color: #ffffff;
 }
-.input-wrapper .input-group .input-field.dark:not(:-moz-placeholder-shown) {
-  border: 2px solid #ffffff;
-}
 .input-wrapper .input-group .input-field.dark:focus, .input-wrapper .input-group .input-field.dark:invalid, .input-wrapper .input-group .input-field.dark:not(:placeholder-shown) {
   border: 2px solid #ffffff;
-}
-.input-wrapper .input-group .input-field.dark:not(:-moz-placeholder-shown) ~ label {
-  top: 0;
-  color: #ffffff;
-  font-size: 1.1rem;
-  background-color: #121212;
 }
 .input-wrapper .input-group .input-field.dark:focus ~ label, .input-wrapper .input-group .input-field.dark:invalid ~ label, .input-wrapper .input-group .input-field.dark:not(:placeholder-shown) ~ label {
   top: 0;

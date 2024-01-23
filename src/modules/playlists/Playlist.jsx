@@ -1,3 +1,4 @@
+import '../../assets/css/playlists.css';
 import {useParams, useNavigate, Link} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import {useLoader} from '../../hooks/useLoader';

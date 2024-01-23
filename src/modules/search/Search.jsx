@@ -10,8 +10,10 @@ import SearchList from './SearchList';
 import useSpotifyAuth from '../../hooks/useSpotifyAuth';
 
 import {db} from '../../setup/Firebase';
+import {useTitle} from '../../hooks/useTitle';
 
 const Search = () => {
+  useTitle('Search');
   const [searchString, setSearchString] = useState('');
   const [data, setData] = useState(null);
   const token = useSpotifyAuth();
@@ -52,19 +54,17 @@ const Search = () => {
         });
 
         const playlistsRef = db.collection('playlists');
-        const playlistsSnapshot = await playlistsRef
-          .where('title', '>=', searchString)
-          .where('title', '<=', searchString + '\uf8ff')
-          .orderBy('title')
-          .limit(6)
-          .get();
-        const playlistsData = playlistsSnapshot.docs.map((doc) => {
-          const data = doc.data();
-          return {
-            id: doc.id,
-            ...data,
-          };
-        });
+        // get all playlists and then filter by title
+        const playlistsSnapshot = await playlistsRef.get();
+        const playlistsData = playlistsSnapshot.docs
+          .map((doc) => {
+            const data = doc.data();
+            return {
+              id: doc.id,
+              ...data,
+            };
+          })
+          .filter((playlist) => playlist.title.toLowerCase().includes(searchString.toLowerCase()));
 
         setData({
           tracks: spotifyData.tracks.items,
@@ -99,7 +99,7 @@ const Search = () => {
           />
         </div>
 
-        {data && <SearchList data={data} />}
+        {data ? <SearchList data={data} /> : <h1 className="no-search-data">Start typing . . .</h1>}
       </section>
     </div>
   );

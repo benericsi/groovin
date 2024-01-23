@@ -207,6 +207,9 @@ const Profile = () => {
 
         break;
       }
+
+      default:
+        break;
     }
   };
 
