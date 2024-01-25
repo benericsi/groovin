@@ -28,7 +28,7 @@ const SearchList = ({data}) => {
           <h2>Albums</h2>
           <div className="search-list">
             {data.albums.map((album) => (
-              <Link to="" className="search-card" key={album.id}>
+              <Link to={`/albums/${album.id}`} state={{album}} className="search-card" key={album.id}>
                 <img className="search-card-photo album" src={album.images[1].url} alt={album.name} />
                 <div className="search-card-name">{album.name}</div>
                 <div className="search-card-info">{album.artists[0].name}</div>
@@ -43,7 +43,7 @@ const SearchList = ({data}) => {
           <h2>Artists</h2>
           <div className="search-list">
             {data.artists.map((artist) => (
-              <Link to={`/artist/${artist.id}`} state={{artist: artist}} className="search-card" key={artist.id}>
+              <Link to={`/artist/${artist.id}`} state={{artist}} className="search-card" key={artist.id}>
                 {artist.images.length > 0 ? <img className="search-card-photo artist" src={artist.images[1].url} alt={artist.name} /> : <MdAccountCircle className="photo-alt artist" />}
                 <div className="search-card-name">{artist.name}</div>
                 <div className="search-card-info capitalize">{artist.type}</div>

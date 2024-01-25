@@ -1,16 +1,34 @@
 import '../../assets/css/artist.css';
 
-import {Outlet, useLocation} from 'react-router-dom';
+import {Outlet, useLocation, useNavigate} from 'react-router-dom';
+import {useEffect} from 'react';
+import {useToast} from '../../hooks/useToast';
+
+import ArtistSubNav from './ArtistSubNav';
 
 import {RiAccountCircleFill} from 'react-icons/ri';
 
 const Artist = () => {
+  const navigate = useNavigate();
   const location = useLocation();
+
+  const {addToast} = useToast();
+
+  useEffect(() => {
+    if (location.state === null) {
+      addToast('info', 'Artist was not found.');
+      navigate('/search');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (!location.state) {
+    return null;
+  }
+
   const {artist} = location.state;
 
-  const readableFollowers = artist.followers.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
-  console.log(artist);
+  const readableFollowers = location.state ? artist.followers.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0;
 
   return (
     <>
@@ -27,10 +45,12 @@ const Artist = () => {
             </div>
           </div>
         </div>
+
+        <ArtistSubNav artist={artist} />
       </div>
 
       <div className="artist-body">
-        <Outlet context={artist} />
+        <Outlet context={{artist}} />
       </div>
     </>
   );

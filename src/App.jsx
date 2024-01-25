@@ -21,6 +21,8 @@ const Notifications = lazy(() => import('./modules/profile/Notifications'));
 const Search = lazy(() => import('./modules/search/Search'));
 const Artist = lazy(() => import('./modules/artist/Artist'));
 const ArtistMain = lazy(() => import('./modules/artist/ArtistMain'));
+const ArtistAlbums = lazy(() => import('./modules/artist/ArtistAlbums'));
+const ArtistRelated = lazy(() => import('./modules/artist/ArtistRelated'));
 
 function App() {
   return (
@@ -43,8 +45,10 @@ function App() {
               <Route path="notifications" element={<Notifications />} />
             </Route>
             <Route path="/search" element={<Search />} />
-            <Route exact path="/artist/:id" element={<Artist />}>
+            <Route exact path="/artist/:artistId" element={<Artist />}>
               <Route index element={<ArtistMain />} />
+              <Route path="albums" element={<ArtistAlbums />} />
+              <Route path="related" element={<ArtistRelated />} />
             </Route>
           </Route>
         </Route>

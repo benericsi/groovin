@@ -30,7 +30,7 @@ const Search = () => {
       }
       showLoader();
       try {
-        const response = await fetch(`https://api.spotify.com/v1/search?q=${searchString}&type=track,album,artist&limit=6&offset=0`, {
+        const response = await fetch(`https://api.spotify.com/v1/search?q=${searchString}&type=track,album,artist&limit=8&offset=0`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -43,7 +43,7 @@ const Search = () => {
           .where('displayName', '>=', searchString)
           .where('displayName', '<=', searchString + '\uf8ff')
           .orderBy('displayName')
-          .limit(6)
+          .limit(8)
           .get();
         const usersData = usersSnapshot.docs.map((doc) => {
           const data = doc.data();
