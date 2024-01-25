@@ -53,7 +53,7 @@ const ArtistAlbums = () => {
           <h2>Albums</h2>
           <div className="list">
             {albums.map((album) => (
-              <Link to={`/albums/${album.id}`} state={{album}} className="card" key={album.id}>
+              <Link to={`/album/${album.id}`} className="card" key={album.id}>
                 <img className="card-photo album" src={album.images[1].url} alt={album.name} />
                 <div className="card-name">{album.name}</div>
                 <div className="card-info">{album.artists[0].name}</div>
@@ -68,7 +68,7 @@ const ArtistAlbums = () => {
           <h2>Appears On</h2>
           <div className="list">
             {appearsOn.map((album) => (
-              <Link to={`/albums/${album.id}`} state={{album}} className="card" key={album.id}>
+              <Link to={`/album/${album.id}`} className="card" key={album.id}>
                 <img className="card-photo album" src={album.images[1].url} alt={album.name} />
                 <div className="card-name">{album.name}</div>
                 <div className="card-info">{album.artists[0].name}</div>

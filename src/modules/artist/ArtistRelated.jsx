@@ -53,7 +53,7 @@ const ArtistRelated = () => {
           <h2>Related Artists</h2>
           <div className="list">
             {relatedArtists.map((artist) => (
-              <Link to={`/artist/${artist.id}`} state={{artist}} className="card" key={artist.id}>
+              <Link to={`/artist/${artist.id}`} className="card" key={artist.id}>
                 {artist.images.length > 0 ? <img className="card-photo artist" src={artist.images[1].url} alt={artist.name} /> : <MdAccountCircle className="photo-alt artist" />}
                 <div className="card-name">{artist.name}</div>
                 <div className="card-info capitalize">{artist.type}</div>

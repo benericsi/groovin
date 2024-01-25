@@ -1,57 +1,82 @@
 import '../../assets/css/artist.css';
 
-import {Outlet, useLocation, useNavigate} from 'react-router-dom';
-import {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
+import {Outlet, useLocation, useParams} from 'react-router-dom';
 import {useToast} from '../../hooks/useToast';
+import {useLoader} from '../../hooks/useLoader';
+import useSpotifyAuth from '../../hooks/useSpotifyAuth';
 
 import ArtistSubNav from './ArtistSubNav';
-
 import {RiAccountCircleFill} from 'react-icons/ri';
 
 const Artist = () => {
-  const navigate = useNavigate();
   const location = useLocation();
-
   const {addToast} = useToast();
+  const {showLoader, hideLoader} = useLoader();
+
+  const {artistId} = useParams();
+  const token = useSpotifyAuth();
+
+  const [artist, setArtist] = useState(null);
+  const [readableFollowers, setReadableFollowers] = useState(0);
+
+  //const readableFollowers = artist.followers ? artist.followers.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0;
 
   useEffect(() => {
-    if (location.state === null) {
-      addToast('info', 'Artist was not found.');
-      navigate('/search');
+    const fetchArtist = async () => {
+      showLoader();
+      try {
+        const response = await fetch(`https://api.spotify.com/v1/artists/${artistId}`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        console.log(data);
+
+        setArtist(data);
+        setReadableFollowers(data.followers.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+      } catch (error) {
+        addToast('error', error.message);
+      } finally {
+        hideLoader();
+      }
+    };
+
+    if (token) {
+      fetchArtist();
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (!location.state) {
-    return null;
-  }
-
-  const {artist} = location.state;
-
-  const readableFollowers = location.state ? artist.followers.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0;
+  }, [artistId, token]);
 
   return (
     <>
-      <div className="artist-header">
-        <div className="header-pre">
-          <div className="artist-background"></div>
-        </div>
-        <div className="artist-profile-details">
-          <div className="artist-profile-image">{artist.images.length > 0 ? <img src={artist.images[2].url} alt={artist.name} /> : <RiAccountCircleFill className="default-photo" />}</div>
-          <div className="artist-profile-actions">
-            <span className="artist-profile-name">{artist.name}</span>
-            <div className="artist-info">
-              <span>Followers: {readableFollowers}</span>
+      {artist && (
+        <>
+          <div className="artist-header">
+            <div className="header-pre">
+              <div className="artist-background"></div>
             </div>
+            <div className="artist-profile-details">
+              <div className="artist-profile-image">{artist.images.length > 0 ? <img src={artist.images[2].url} alt={artist.name} /> : <RiAccountCircleFill className="default-photo" />}</div>
+              <div className="artist-profile-actions">
+                <span className="artist-profile-name">{artist.name}</span>
+                <div className="artist-info">
+                  <span>Followers: {readableFollowers}</span>
+                </div>
+              </div>
+            </div>
+
+            <ArtistSubNav artist={artist} />
           </div>
-        </div>
 
-        <ArtistSubNav artist={artist} />
-      </div>
-
-      <div className="artist-body">
-        <Outlet context={{artist}} />
-      </div>
+          <div className="artist-body">
+            <Outlet context={{artist}} />
+          </div>
+        </>
+      )}
     </>
   );
 };

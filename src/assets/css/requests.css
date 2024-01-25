@@ -3,10 +3,10 @@
   padding: 1rem;
 }
 .requests-section h2 {
-  font-size: 2rem;
-  font-weight: 600;
-  color: #7e7e7e;
   text-align: center;
+  font-size: clamp(3rem, 5vw, 5rem);
+  font-weight: 600;
+  color: #a6a6a6;
 }
 .requests-section .requests-container {
   width: 100%;

@@ -8,17 +8,17 @@ const ArtistSubNav = ({artist}) => {
     <nav className="artist-nav">
       <ul className="artist-nav-list">
         <li className="artist-nav-list-item">
-          <NavLink to={`/artist/${artist.id}`} state={{artist}} className={`artist-nav-link ${location === `/artist/${artist.id}` ? 'active' : 'inactive'}`}>
+          <NavLink to={`/artist/${artist.id}`} className={`artist-nav-link ${location === `/artist/${artist.id}` ? 'active' : 'inactive'}`}>
             About
           </NavLink>
         </li>
         <li className="artist-nav-list-item">
-          <NavLink to={`/artist/${artist.id}/albums`} state={{artist}} className={`artist-nav-link ${location === `/artist/${artist.id}/albums` ? 'active' : 'inactive'}`}>
+          <NavLink to={`/artist/${artist.id}/albums`} className={`artist-nav-link ${location === `/artist/${artist.id}/albums` ? 'active' : 'inactive'}`}>
             Albums
           </NavLink>
         </li>
         <li className="artist-nav-list-item">
-          <NavLink to={`/artist/${artist.id}/related`} state={{artist}} className={`artist-nav-link ${location === `/artist/${artist.id}/related` ? 'active' : 'inactive'}`}>
+          <NavLink to={`/artist/${artist.id}/related`} className={`artist-nav-link ${location === `/artist/${artist.id}/related` ? 'active' : 'inactive'}`}>
             Related
           </NavLink>
         </li>

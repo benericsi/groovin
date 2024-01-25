@@ -18,7 +18,7 @@ import {MdDeleteOutline} from 'react-icons/md';
 import {IoMdRefresh} from 'react-icons/io';
 import {MdOutlineSaveAlt} from 'react-icons/md';
 import {IoShuffleOutline} from 'react-icons/io5';
-import {IoShareSocial} from 'react-icons/io5';
+import {IoShareSocialOutline} from 'react-icons/io5';
 import {IoIosSend} from 'react-icons/io';
 
 const Playlist = () => {
@@ -378,7 +378,7 @@ const Playlist = () => {
                       </li>
                       <li className="playlist-actions-item">
                         <button className="btn-playlist-action" onClick={() => toggleSharePopUp()}>
-                          <IoShareSocial />
+                          <IoShareSocialOutline />
                           <span>Share</span>
                         </button>
                       </li>

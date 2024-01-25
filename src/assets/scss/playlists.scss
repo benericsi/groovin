@@ -6,10 +6,10 @@
     max-width: $media-query-2xl;
 
     h2 {
-        font-size: 2rem;
-        font-weight: 600;
-        color: $clr-grey-600;
         text-align: center;
+        font-size: clamp(3rem, 5vw, 5rem);
+        font-weight: 600;
+        color: $clr-grey-500;
     }
 
     .playlists-container {

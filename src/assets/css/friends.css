@@ -4,10 +4,10 @@
   max-width: 1920px;
 }
 .friends-section h2 {
-  font-size: 2rem;
-  font-weight: 600;
-  color: #7e7e7e;
   text-align: center;
+  font-size: clamp(3rem, 5vw, 5rem);
+  font-weight: 600;
+  color: #a6a6a6;
 }
 .friends-section .friends-container {
   width: 100%;
