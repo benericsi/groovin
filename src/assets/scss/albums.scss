@@ -1,0 +1,193 @@
+@import 'variables';
+
+.album-section {
+    margin: 1rem;
+    padding: 1rem;
+    max-width: $media-query-2xl;
+
+    .album-container {
+        width: 100%;
+        height: auto;
+        background-color: $clr-white;
+        box-shadow: $panel-box-shadow;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        padding: 1rem;
+
+        .album-header {
+            position: relative;
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+
+            .album-header-photo {
+                position: relative;
+                width: 10rem;
+                height: 10rem;
+                aspect-ratio: 1/1;
+                border-radius: 12px;
+                background-color: $clr-grey-700;
+                overflow: hidden;
+
+                img {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    object-position: center center;
+                }
+            }
+
+            .album-header-info {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                gap: .5rem;
+
+                .album-header-title {
+                    font-size: 2.5rem;
+                    font-weight: 600;
+                    color: $clr-grey-900;
+                }
+
+                .album-header-description {
+                    font-size: 1.2rem;
+                    font-weight: 400;
+                    color: $clr-grey-600;
+
+                    a {
+                        color: $clr-grey-600;
+                        text-decoration: none;
+                        transition: color .2s ease-in-out;
+
+                        &:hover {
+                            color: $clr-primary-600;
+                            text-decoration: underline;
+                        }
+                    }
+                }
+
+                .album-header-length {
+                    font-size: 1.2rem;
+                    font-weight: 400;
+                    color: $clr-grey-600;
+                }
+            }
+        }
+
+        .album-subnav {
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+
+            .album-subnav-list {
+                width: 100%;
+                height: auto;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 1rem;
+
+                .album-subnav-item {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 3rem;
+                    color: $clr-primary-600;
+                    transition: all .2s $animation-cubic;
+                    cursor: pointer;
+
+
+                    &.active,
+                    &:hover {
+                        color: $clr-primary-600;
+                        transform: scale(1.1);
+                    }
+
+                    &.blue {
+                        color: $clr-grey-600;
+                        transform: none;
+                        transition: all .2s $animation-cubic;
+
+                        &.active,
+                        &:hover {
+                            color: $clr-primary-600;
+                            transform: none;
+                        }
+                    }
+
+                    &:last-child {
+                        position: relative;
+                        margin-left: auto;
+                        color: $clr-grey-600;
+                        font-size: 1.25rem;
+                        transition: all .2s $animation-cubic;
+
+                        &:hover {
+                            color: $clr-grey-900;
+                            transform: none;
+                        }
+
+                        .album-action-list {
+                            font-size: 1rem;
+                            position: absolute;
+                            top: 100%;
+                            width: clamp(10rem, 100%, 15rem);
+                            right: 0;
+                            padding: .25rem;
+                            background-color: $clr-white;
+                            box-shadow: $panel-box-shadow;
+                            display: flex;
+                            flex-direction: column;
+                            list-style: none;
+                            gap: .25rem;
+                            border-radius: .25rem;
+                            z-index: 99999;
+
+                            .album-actions-item {
+                                width: 100%;
+                                cursor: pointer;
+                                height: 2.5rem;
+                                transition: background-color .2s $animation-cubic;
+
+                                &:hover {
+                                    background-color: rgba($color: $clr-black, $alpha: .1);
+
+                                    .btn-album-action {
+                                        color: $clr-primary-600;
+                                    }
+                                }
+
+                                .btn-album-action {
+                                    all: unset;
+                                    height: 2.5rem;
+                                    width: calc(100% - 1.5rem);
+                                    padding: 0 .75rem;
+                                    background: transparent;
+                                    color: $clr-grey-900;
+                                    font-size: auto;
+                                    border-radius: 12px;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: flex-start;
+                                    transition: color .2s $animation-cubic;
+                                    gap: .5rem;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

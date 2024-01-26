@@ -1,4 +1,5 @@
 import '../../assets/css/playlists.css';
+
 import {useParams, useNavigate, Link} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import {useLoader} from '../../hooks/useLoader';
@@ -68,14 +69,8 @@ const Playlist = () => {
               ...snapshot.data(),
             };
 
-            // Format the date
-            var date = new Date(data.createdAt.seconds * 1000).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-              hour: 'numeric',
-              minute: 'numeric',
-            });
+            // Format the date: yyyy-mm-dd
+            const date = new Date(data.createdAt.seconds * 1000).toISOString().split('T')[0];
 
             setPlaylist(data);
             setFormattedDate(date);
@@ -101,7 +96,7 @@ const Playlist = () => {
   }, []);
 
   const toggleMusic = () => {
-    if (playlist.songs.length === 0) {
+    if (playlist.tracks.length === 0) {
       addToast('info', 'This playlist is empty.');
       return;
     }
@@ -164,7 +159,7 @@ const Playlist = () => {
   };
 
   const clearPlaylist = async () => {
-    if (playlist.songs.length === 0) {
+    if (playlist.tracks.length === 0) {
       addToast('info', 'This playlist is empty.');
       return;
     }
@@ -172,7 +167,7 @@ const Playlist = () => {
     showLoader();
     try {
       await db.collection('playlists').doc(playlistId).update({
-        songs: [],
+        tracks: [],
       });
 
       addToast('success', 'Playlist cleared successfully.');
@@ -346,7 +341,7 @@ const Playlist = () => {
               </div>
               <div className="playlist-header-info">
                 <h2 className="playlist-header-title">{playlist.title}</h2>
-                <span className="playlist-header-length">{playlist.songs.length} tracks</span>
+                <span className="playlist-header-length">{playlist.tracks.length} tracks</span>
                 <p className="playlist-header-description">
                   {playlist.description ? `"${playlist.description}" - ` : ''} {formattedDate}
                 </p>
@@ -373,7 +368,7 @@ const Playlist = () => {
                       <li className="playlist-actions-item">
                         <button className="btn-playlist-action" onClick={() => clearPlaylist()}>
                           <IoMdRefresh />
-                          <span>Clear Songs</span>
+                          <span>Clear tracks</span>
                         </button>
                       </li>
                       <li className="playlist-actions-item">

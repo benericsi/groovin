@@ -1,7 +1,7 @@
 import '../../assets/css/artist.css';
 
 import React, {useEffect, useState} from 'react';
-import {Outlet, useLocation, useParams} from 'react-router-dom';
+import {Outlet, useParams} from 'react-router-dom';
 import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';
 import useSpotifyAuth from '../../hooks/useSpotifyAuth';
@@ -10,7 +10,6 @@ import ArtistSubNav from './ArtistSubNav';
 import {RiAccountCircleFill} from 'react-icons/ri';
 
 const Artist = () => {
-  const location = useLocation();
   const {addToast} = useToast();
   const {showLoader, hideLoader} = useLoader();
 

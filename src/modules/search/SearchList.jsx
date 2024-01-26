@@ -1,21 +1,122 @@
-import React from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {Link} from 'react-router-dom';
-import {useState} from 'react';
+import {useToast} from '../../hooks/useToast';
+import {useLoader} from '../../hooks/useLoader';
 
 import {MdAccountCircle} from 'react-icons/md';
+import {FaRegPlayCircle} from 'react-icons/fa';
 import {AiOutlinePlusCircle} from 'react-icons/ai';
 import {HiOutlineHeart} from 'react-icons/hi';
+import {IoHeartDislikeOutline} from 'react-icons/io5';
 import {MdOutlineQueue} from 'react-icons/md';
 import {IoPersonOutline} from 'react-icons/io5';
 import {PiVinylRecordLight} from 'react-icons/pi';
 import {IoShareSocialOutline} from 'react-icons/io5';
+import {useAuth} from '../../hooks/useAuth';
+import {db} from '../../setup/Firebase';
 
 const SearchList = ({data}) => {
   //console.log(data);
   const [openPlaylistIndex, setOpenPlaylistIndex] = useState(null);
+  const [userFavs, setUserFavs] = useState([]);
+  const {currentUser} = useAuth();
+
+  const {addToast} = useToast();
+  const {showLoader, hideLoader} = useLoader();
+
+  const trackActionsRef = useRef(null);
 
   const handleTogglePlaylist = (index) => {
     setOpenPlaylistIndex(index === openPlaylistIndex ? null : index);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (trackActionsRef.current && !trackActionsRef.current.contains(e.target)) {
+        setOpenPlaylistIndex(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    // get user favourites realtime
+    const unsubscribe = db
+      .collection('favourites')
+      .doc(currentUser.uid)
+      .onSnapshot((doc) => {
+        if (doc.exists) {
+          setUserFavs(doc.data().tracks);
+        }
+      });
+
+    return unsubscribe;
+  }, [currentUser]);
+
+  const saveToFavs = (e, trackId) => {
+    e.stopPropagation();
+
+    showLoader();
+    try {
+      const favsRef = db.collection('favourites').doc(currentUser.uid);
+
+      favsRef.get().then((doc) => {
+        if (doc.exists) {
+          if (doc.data().tracks.some((track) => track.id === trackId)) {
+            addToast('info', 'Track is already on your favourites list.');
+          } else {
+            favsRef.update({
+              tracks: [...doc.data().tracks, {id: trackId, createdAt: new Date()}],
+            });
+            addToast('success', 'Track added to your favourites!');
+          }
+        } else {
+          favsRef.set({
+            tracks: [{id: trackId, createdAt: new Date()}],
+          });
+          addToast('success', 'Track added to your favourites!');
+        }
+      });
+    } catch (error) {
+      addToast('error', error.message);
+    } finally {
+      hideLoader();
+    }
+  };
+
+  const removeFromFavs = (e, trackId) => {
+    e.stopPropagation();
+
+    showLoader();
+    try {
+      const favsRef = db.collection('favourites').doc(currentUser.uid);
+
+      favsRef.get().then((doc) => {
+        if (doc.exists) {
+          if (doc.data().tracks.some((track) => track.id === trackId)) {
+            favsRef.update({
+              tracks: doc.data().tracks.filter((track) => track.id !== trackId),
+            });
+            addToast('success', 'Track removed from your favourites!');
+          } else {
+            addToast('info', 'Track is not on your favourites list.');
+          }
+        } else {
+          addToast('info', 'Track is not on your favourites list.');
+        }
+      });
+    } catch (error) {
+      addToast('error', error.message);
+    } finally {
+      hideLoader();
+    }
   };
 
   return (
@@ -27,7 +128,13 @@ const SearchList = ({data}) => {
             {data.tracks.map((track, index) => (
               <div className="search-card" key={track.id} onClick={() => handleTogglePlaylist(index)}>
                 {openPlaylistIndex === index && (
-                  <ul className="track-actions-list">
+                  <ul className="track-actions-list" ref={trackActionsRef}>
+                    <li className="track-actions-item">
+                      <button className="btn-track-action">
+                        <FaRegPlayCircle />
+                        <span>Play Song</span>
+                      </button>
+                    </li>
                     <li className="track-actions-item">
                       <button className="btn-track-action">
                         <AiOutlinePlusCircle />
@@ -35,10 +142,17 @@ const SearchList = ({data}) => {
                       </button>
                     </li>
                     <li className="track-actions-item">
-                      <button className="btn-track-action">
-                        <HiOutlineHeart />
-                        <span>Save To Favourites</span>
-                      </button>
+                      {userFavs.some((fav) => fav.id === track.id) ? (
+                        <button className="btn-track-action" onClick={(e) => removeFromFavs(e, track.id)}>
+                          <IoHeartDislikeOutline />
+                          <span>Remove From Favs</span>
+                        </button>
+                      ) : (
+                        <button className="btn-track-action" onClick={(e) => saveToFavs(e, track.id)}>
+                          <HiOutlineHeart />
+                          <span>Add To Favourites</span>
+                        </button>
+                      )}
                     </li>
                     <li className="track-actions-item">
                       <button className="btn-track-action">

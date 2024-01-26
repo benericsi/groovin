@@ -118,7 +118,7 @@ const Playlists = () => {
         uid: currentUser.uid,
         creator: currentUser.displayName,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        songs: [],
+        tracks: [],
       });
 
       addToast('success', 'Playlist created successfully.');
@@ -172,7 +172,7 @@ const Playlists = () => {
               <Link to={`/profile/${playlist.uid}/playlists/${playlist.id}`} className="playlist-card" key={index}>
                 <div className="playlist-card-photo">{<img src={playlist.photoURL} alt="" />}</div>
                 <div className="playlist-card-name">{playlist.title}</div>
-                <div className="playlist-card-length">{playlist.songs.length} tracks</div>
+                <div className="playlist-card-length">{playlist.tracks.length} tracks</div>
               </Link>
             ))}
         </div>

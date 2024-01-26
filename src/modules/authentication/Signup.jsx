@@ -270,7 +270,7 @@ const Signup = () => {
             error={errors.passwordConfirmation}
           />
         </div>
-        <Input type="file" accept="image/*" onChange={(file) => setInputPhoto(file)} className="input-field light" />
+        <Input type="file" label="Profile Picture" accept="image/*" onChange={(file) => setInputPhoto(file)} className="input-field light" />
         <Button type="submit" text="Sign Up" className="dark">
           <HiPencilSquare />
         </Button>
