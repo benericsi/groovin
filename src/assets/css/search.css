@@ -74,7 +74,7 @@
   position: absolute;
   top: 25%;
   left: 25%;
-  width: clamp(10rem, 100%, 15rem);
+  width: clamp(11rem, 100%, 16rem);
   padding: 0.25rem;
   background-color: #ffffff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);

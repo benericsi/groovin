@@ -69,8 +69,11 @@ const Playlist = () => {
               ...snapshot.data(),
             };
 
-            // Format the date: yyyy-mm-dd
-            const date = new Date(data.createdAt.seconds * 1000).toISOString().split('T')[0];
+            // Format the data.createdAt if its not like yyyy-mm-dd
+            let date = data.createdAt;
+            if (typeof date === 'object') {
+              date = new Date(data.createdAt.seconds * 1000).toISOString().split('T')[0];
+            }
 
             setPlaylist(data);
             setFormattedDate(date);
@@ -93,6 +96,8 @@ const Playlist = () => {
     if (playlistId) {
       fetchPlaylist();
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const toggleMusic = () => {
@@ -129,6 +134,14 @@ const Playlist = () => {
 
     showLoader();
     try {
+      // Check if another playlist with the same name already exists
+      const playlistSnapshot = await db.collection('playlists').where('title', '==', inputName).get();
+
+      if (!playlistSnapshot.empty) {
+        addToast('error', 'A playlist with the same name already exists. Choose a different name.');
+        return;
+      }
+
       if (!inputPhoto) {
         await db.collection('playlists').doc(playlistId).update({
           title: inputName,

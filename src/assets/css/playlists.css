@@ -39,9 +39,7 @@
 .playlists-section .playlists-container .playlist-card.create .playlist-card-name {
   text-align: center;
   color: #7e7e7e;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal !important;
 }
 .playlists-section .playlists-container .playlist-card.create .playlist-card-photo {
   background-color: #f8f8f8;
@@ -102,6 +100,9 @@
   color: #121212;
   margin-bottom: 0.5rem;
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .playlists-section .playlists-container .playlist-card .playlist-card-length {
   font-size: 1rem;

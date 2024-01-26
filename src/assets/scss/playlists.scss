@@ -42,9 +42,8 @@
                 .playlist-card-name {
                     text-align: center;
                     color: $clr-grey-600;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
+                    // remove white space nowrap
+                    white-space: normal !important;
                 }
 
                 .playlist-card-photo {
@@ -118,6 +117,9 @@
                 color: $clr-grey-900;
                 margin-bottom: .5rem;
                 transition: all .2s $animation-cubic;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
 
             .playlist-card-length {

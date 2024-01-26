@@ -80,6 +80,9 @@ const Notifications = () => {
         case 'New Friend Request':
           link = `/profile/${notification.receiver}/requests`;
           break;
+        case 'New Album Recommendation':
+          link = `/album/${notification.album}`;
+          break;
         default:
           link = `/profile/${notification.sender}`;
           break;

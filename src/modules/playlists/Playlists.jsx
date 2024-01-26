@@ -105,6 +105,14 @@ const Playlists = () => {
 
     showLoader();
     try {
+      // Check if another playlist with the same name already exists
+      const playlistSnapshot = await db.collection('playlists').where('title', '==', inputName).get();
+
+      if (!playlistSnapshot.empty) {
+        addToast('error', 'A playlist with the same name already exists. Choose a different name.');
+        return;
+      }
+
       const storageRef = storage.ref();
       const fileRef = storageRef.child(`playlists/${inputPhoto.name}`);
       await fileRef.put(inputPhoto);
