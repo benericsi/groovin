@@ -12,12 +12,12 @@
 }
 .popup-container .popup {
   position: relative;
-  background-color: #ffffff;
+  background-color: #fff;
   padding: 2rem;
   box-shadow: 10px 10px #5e5e5e;
   display: flex;
   flex-direction: column;
-  color: #000000;
+  color: #000;
 }
 .popup-container .popup .popup-close {
   position: absolute;
@@ -46,14 +46,14 @@
   border: 2px solid #5e5e5e;
   font-size: 0.9rem;
   background-color: transparent;
-  color: #000000;
+  color: #000;
 }
 .popup-container .popup .input-field:focus, .popup-container .popup .input-field:invalid, .popup-container .popup .input-field:not(:placeholder-shown) {
-  border: 2px solid #000000;
+  border: 2px solid #000;
 }
 .popup-container .popup .input-field:focus ~ label, .popup-container .popup .input-field:invalid ~ label, .popup-container .popup .input-field:not(:placeholder-shown) ~ label {
   top: 0;
-  color: #000000;
+  color: #000;
   font-size: 1.1rem;
-  background-color: #ffffff;
+  background-color: #fff;
 }/*# sourceMappingURL=popup.css.map */

@@ -1,13 +1,13 @@
 import React from 'react';
-import {Link, useParams, useLocation} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import {useAuth} from '../../hooks/useAuth';
 import {useEffect, useState, useRef} from 'react';
 import {useLoader} from '../../hooks/useLoader';
 import {useToast} from '../../hooks/useToast';
 import {db} from '../../setup/Firebase';
 import {FaEllipsisVertical} from 'react-icons/fa6';
-import Input from '../../ui/Input';
-import Button from '../../ui/Button';
+import Input from '../form/Input';
+import Button from '../form/Button';
 import ChatMessage from './ChatMessage';
 import firebase from 'firebase/compat/app';
 

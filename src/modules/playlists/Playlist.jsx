@@ -7,9 +7,9 @@ import {useToast} from '../../hooks/useToast';
 import {db, storage} from '../../setup/Firebase';
 import firebase from 'firebase/compat/app';
 import {useAuth} from '../../hooks/useAuth';
-import PopUp from '../../common/PopUp';
-import Input from '../../ui/Input';
-import Button from '../../ui/Button';
+import PopUp from '../../component/PopUp';
+import Input from '../form/Input';
+import Button from '../form/Button';
 
 import {FaCirclePlay} from 'react-icons/fa6';
 import {FaCirclePause} from 'react-icons/fa6';

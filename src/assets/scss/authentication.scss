@@ -1,35 +1,35 @@
 @import 'variables';
 
-.auth-page {
+.auth_page {
     position: relative;
     height: 100svh;
     display: flex;
     flex-direction: row;
-    background-color: $clr-white;
     overflow: hidden;
 
     .hero {
         position: relative;
-        background-color: $clr-black;
         flex: 1;
         bottom: 0;
         left: 0;
-        overflow: hidden;
         transform: scale(1.175);
         display: grid;
         grid-template-columns: repeat(9, 1fr);
-        gap: 3rem;
+        gap: 2rem;
         isolation: isolate;
+        overflow: hidden;
+        background-color: color(neutral, 900);
 
-        .hero-content {
+        .hero_content {
             position: absolute;
             inset: 0;
             transform: scale(.8525);
-            padding: 1rem;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-
+            justify-content: center;
+            z-index: 100;
+            color: $clr-white;
 
             h1 {
                 color: $clr-white;
@@ -40,7 +40,7 @@
             }
         }
 
-        .image-column {
+        .image_column {
             position: relative;
             display: flex;
             flex-direction: column;
@@ -81,36 +81,37 @@
         }
     }
 
-    .auth-container {
+    .auth_container {
         position: relative;
-        top: 0;
         padding: 3rem;
-        width: clamp(40rem, 50%, 55rem);
-
+        width: clamp(40rem, 50%, 60rem);
+        overflow-y: auto;
         display: flex;
         flex-direction: column;
-        overflow-y: auto;
-        border-left: 1px solid $clr-grey-500;
+        align-items: center;
+        justify-content: center;
         background-color: $clr-white;
+        overflow-x: hidden;
 
-        .brand-title {
+        .brand_title {
             position: relative;
             font-size: clamp(5rem, 5vw, 7rem);
             margin-bottom: 1rem;
             text-align: center;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            color: $clr-primary-600;
-            //text-shadow: .25rem .25rem $clr-primary-900;
+            letter-spacing: 2px;
             font-family: $font-display;
             font-style: italic;
+            color: color(primary, 500);
         }
 
-
-        .tabs-wrapper {
+        .tabs_wrapper {
             position: relative;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 700px;
 
-            .tabs-header {
+            .tabs_header {
                 position: relative;
                 display: flex;
                 flex-direction: row;
@@ -118,7 +119,7 @@
                 justify-content: center;
                 cursor: pointer;
 
-                .tabs-header-item {
+                .tabs_header_item {
                     position: relative;
                     flex-grow: 1;
                     display: flex;
@@ -130,34 +131,35 @@
                     &::after {
                         content: '';
                         height: 1px;
-                        background-color: $clr-grey-400;
+                        background-color: color(secondary, 300);
                         position: absolute;
                         bottom: 0;
                         left: 0;
                         width: 100%;
-                        transition: height 0.1s $animation-cubic;
+                        transition: height 0.2s $animation-cubic;
                     }
 
                     &:hover {
                         h3 {
-                            color: $clr-black;
+                            color: color(secondary, 600);
                         }
                     }
 
                     h3 {
                         text-transform: uppercase;
-                        letter-spacing: 2px;
-                        font-size: 1rem;
-                        color: $clr-grey-400;
+                        letter-spacing: 1px;
+                        font-size: 1.2rem;
+                        color: color(secondary, 300);
                         transition: color 0.2s $animation-cubic;
                         margin: 0 1rem;
+                        font-weight: 500;
                     }
 
                     &.active-tab {
                         &::after {
                             content: '';
                             width: 100%;
-                            height: 4px;
+                            height: 3px;
                             background-color: $clr-black;
                             position: absolute;
                             bottom: 0;
@@ -165,54 +167,47 @@
                         }
 
                         h3 {
-                            color: $clr-grey-900;
+                            color: $clr-font;
                         }
                     }
                 }
             }
         }
 
-        .tabs-content {
-            .tabs-content-item {
+        .tabs_content {
+            .tabs_content_item {
                 display: none;
 
                 .social-signup {
                     width: 100%;
                     display: flex;
                     flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
                     position: relative;
 
                     h4 {
                         margin: 1rem 0;
-                        font-size: 1.175rem;
+                        font-size: 1.2rem;
                         font-weight: 400;
-                        color: $clr-black;
-                    }
-
-                    button {
-                        width: calc(100% - 2 * 1rem);
+                        text-align: center;
                     }
                 }
 
                 .bg-line {
                     width: 100%;
-                    margin: 2rem 0;
+                    margin: 2rem 0 2.5rem 0;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     position: relative;
 
                     h4 {
-                        color: $clr-black;
                         //text-transform: uppercase;
                         text-align: center;
                         background-color: $clr-white;
                         padding: 0 1rem;
                         z-index: 100;
                         font-weight: 400;
-                        font-size: 1.175rem;
+                        font-size: 1.2rem;
                     }
 
                     &::after {
@@ -220,7 +215,7 @@
                         width: 100%;
                         position: absolute;
                         height: 1px;
-                        background-color: $clr-grey-700;
+                        background-color: color(secondary, 400);
                     }
                 }
 
@@ -229,10 +224,11 @@
                     flex-direction: column;
                     align-items: center;
                     justify-content: center;
-                    color: $clr-black;
+                    color: $clr-font;
 
                     h1 {
                         margin: 2rem 0 1rem 0;
+                        font-size: 2rem;
                     }
 
                     form {
@@ -241,30 +237,9 @@
                         justify-content: center;
                         width: 100%;
 
-                        .field-wrapper {
-                            display: flex;
-                            flex-direction: row;
-                            column-gap: 0.5rem;
-
-                            .input-wrapper {
-                                width: 100%;
-                            }
-                        }
-
-                        .forgot-pass {
-                            font-size: .9rem;
-                            font-weight: 400;
-                            margin-bottom: 1rem;
-
-                            a {
-                                color: $clr-primary-600;
-                                text-decoration: none;
-                                font-style: italic;
-
-                                &:hover {
-                                    text-decoration: underline;
-                                }
-                            }
+                        .link {
+                            margin: 1rem 0;
+                            margin-left: auto;
                         }
                     }
                 }
@@ -274,12 +249,12 @@
 }
 
 @media only screen and (max-width: $media-query-3xl) {
-    .auth-page {
+    .auth_page {
         .hero {
             gap: 2rem;
             grid-template-columns: repeat(7, 1fr);
 
-            .image-column {
+            .image_column {
                 row-gap: 2rem;
             }
         }
@@ -287,12 +262,12 @@
 }
 
 @media only screen and (max-width: $media-query-2xl) {
-    .auth-page {
+    .auth_page {
         .hero {
             gap: 1.5rem;
             grid-template-columns: repeat(5, 1fr);
 
-            .image-column {
+            .image_column {
                 row-gap: 1.5rem;
             }
         }
@@ -300,95 +275,80 @@
 }
 
 @media only screen and (max-width: $media-query-xl) {
-    .auth-page {
+    .auth_page {
         .hero {
             gap: 1.5rem;
             grid-template-columns: repeat(4, 1fr);
 
-            .image-column {
+            .image_column {
                 row-gap: 1.5rem;
             }
         }
 
-        .auth-container {
+        .auth_container {
             padding: 2rem;
         }
     }
 }
 
 @media only screen and (max-width: $media-query-lg) {
-    .auth-page {
+    .auth_page {
         min-height: 100svh;
         height: auto;
         flex-direction: column-reverse;
         overflow: auto;
+        padding: 0 2rem;
+        justify-content: space-between;
+        align-items: center;
 
         .hero {
-            margin: 2rem;
+            border-radius: $border-radius-1;
+            max-width: 700px;
+            margin: 2rem auto;
             transform: scale(1);
             gap: .5rem;
             max-height: 40svh;
             grid-template-columns: repeat(5, 1fr);
 
-            .hero-content {
+            .hero_content {
                 transform: scale(1);
-
-                .hero-footer {
-                    padding: 1rem;
-
-                    .hero-links {
-                        gap: 1rem;
-
-                        h4,
-                        a {
-                            font-size: .8rem;
-                            opacity: 1;
-                        }
-                    }
-                }
+                padding: 0;
             }
 
-            .image-column {
+            .image_column {
                 row-gap: .5rem;
             }
         }
 
-        .auth-container {
+        .auth_container {
             width: 100%;
             box-shadow: none;
-            padding: 0rem 2rem;
+            padding: 0rem;
             border: none;
 
-            .brand-title {
-                font-size: 4rem;
+            .brand_title {
+                display: block;
                 margin: 2rem 0;
                 line-height: normal;
+                color: color(primary, 500)
             }
 
-            .tabs-wrapper {
-                .tabs-header {
-                    .tabs-header-item {
+            .tabs_wrapper {
+                .tabs_header {
+                    .tabs_header_item {
                         min-width: 10rem;
 
                         h3 {
-                            font-size: 0.9rem;
+                            font-size: 1.2rem;
                         }
                     }
                 }
 
-                .tabs-content {
-                    .tabs-content-item {
+                .tabs_content {
+                    .tabs_content_item {
                         &.active-content {
                             h1 {
-                                font-size: 1.5rem;
                                 line-height: normal;
-                            }
-
-                            form {
-                                .field-wrapper {
-                                    flex-direction: column;
-                                    row-gap: 0.25rem;
-                                }
                             }
                         }
                     }
@@ -399,14 +359,39 @@
 }
 
 @media only screen and (max-width: $media-query-sm) {
-    .auth-page {
+    .auth_page {
+        padding: 0;
+
+        .hero {
+            margin: 1rem !important;
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .auth_container {
+            padding: 0rem 1rem;
+        }
+    }
+}
+
+@media only screen and (max-width: $media-query-xsm) {
+    .auth_page {
         .hero {
             margin: 1rem;
             grid-template-columns: repeat(3, 1fr);
         }
 
-        .auth-container {
-            padding: 0rem 1rem;
+        .auth_container {
+            .tabs_wrapper {
+                .tabs_header {
+                    .tabs_header_item {
+                        min-width: 10rem;
+
+                        h3 {
+                            font-size: 1.1rem;
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -28,11 +28,40 @@
 
 html {
     scroll-behavior: smooth;
-    font-family: $font-content;
+    font-family: $font-primary;
     line-height: 1.6;
     font-size: 1rem; // 16px
     letter-spacing: normal;
-    overflow: hidden;
+    color: $clr-font;
+}
+
+.link {
+    position: relative;
+    width: fit-content;
+    color: color(primary, 500);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 400;
+
+    &::before {
+        content: '';
+        position: absolute;
+        bottom: 1px;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background-color: color(primary, 500);
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.2s $animation-cubic;
+    }
+
+    &:hover {
+        &::before {
+            transform-origin: left;
+            transform: scaleX(1);
+        }
+    }
 }
 
 a {
@@ -43,17 +72,40 @@ ul {
     list-style-type: none;
 }
 
+textarea {
+    resize: none;
+}
+
+form {
+    .field_wrapper {
+        display: flex;
+        flex-direction: row;
+        column-gap: 0.5rem;
+
+        .input_wrapper {
+            width: 100%;
+        }
+    }
+}
+
 
 @media only screen and (max-width: $media-query-lg) {
+    form {
+        .field_wrapper {
+            flex-direction: column;
+            row-gap: 0.25rem;
+        }
+    }
+}
+
+@media only screen and (max-width: $media-query-md) {
     html {
         font-size: 0.9rem;
-        //line-height: 1.4;
     }
 }
 
 @media only screen and (max-width: $media-query-sm) {
     html {
         font-size: 0.8rem;
-        //line-height: 1.2;
     }
 }

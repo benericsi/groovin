@@ -10,6 +10,10 @@
 
     &.resizing {
         transition: none;
+
+        .resize-handle {
+            background-color: color(secondary, 300);
+        }
     }
 
     @for $i from 1 through 19 {
@@ -31,7 +35,7 @@
         width: 2px;
         height: 100%;
         cursor: col-resize;
-        background-color: $clr-grey-300;
+        background-color: color(secondary, 100);
         transform: translateX(100%);
     }
 
@@ -51,7 +55,7 @@
                 }
 
                 &.last-in-group {
-                    margin-bottom: .75rem;
+                    margin-bottom: 1rem;
                 }
             }
         }
@@ -61,7 +65,7 @@
         width: 2rem;
         height: 2rem;
         background-color: $clr-white;
-        border: 2px solid $clr-grey-300;
+        border: 2px solid color(secondary, 100);
         border-radius: 50%;
         position: absolute;
         display: flex;
@@ -101,8 +105,8 @@
                 h4 {
                     text-transform: uppercase;
                     font-size: 1.5rem;
-                    font-family: $font-content;
-                    color: $clr-primary-600;
+                    font-family: $font-primary;
+                    color: color(primary, 500);
                 }
             }
         }
@@ -117,8 +121,31 @@
                 margin-left: 1.25rem;
                 opacity: 0;
                 transform: translateX(-100%);
-                color: $clr-grey-900;
+                color: color(secondary, 900);
                 transition: opacity 0.2s, transform 0.2s $animation-cubic;
+            }
+
+            &:last-of-type {
+                margin-top: auto;
+
+                .nav-link {
+
+                    .nav-svg {
+                        color: color(red, 500);
+                    }
+
+                    .nav-text {
+                        color: color(red, 500);
+                    }
+
+                    &:hover {
+
+                        .nav-svg,
+                        .nav-text {
+                            color: color(red, 600);
+                        }
+                    }
+                }
             }
 
             .nav-link {
@@ -134,16 +161,17 @@
                     min-width: 2.5rem;
                     font-size: 1.3rem;
                     margin: 0 1.25rem;
-                    color: $clr-grey-800;
+                    color: color(secondary, 700);
                     background-color: $clr-white;
                 }
 
                 .nav-text {
                     font-size: 1.3rem;
-                    color: $clr-grey-800;
+                    color: color(secondary, 700);
                     transform: translateX(-100%);
                     opacity: 0;
                     transition: opacity 0.2s, transform 0.2s $animation-cubic;
+                    white-space: nowrap;
                 }
 
                 &:hover,
@@ -153,7 +181,7 @@
 
                     .nav-svg,
                     .nav-text {
-                        color: $clr-primary-600;
+                        color: color(primary, 500)
                     }
                 }
 
@@ -162,14 +190,12 @@
                     position: absolute;
                     width: 3px;
                     height: 100%;
-                    background-color: $clr-primary-600;
+                    background-color: color(primary, 500);
                     right: 0px;
                     top: 0;
                     border-radius: 25px;
                 }
             }
         }
-
-
     }
 }

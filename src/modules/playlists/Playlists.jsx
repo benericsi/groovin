@@ -11,9 +11,9 @@ import {useAuth} from '../../hooks/useAuth';
 import firebase from 'firebase/compat/app';
 
 import {AiOutlinePlusCircle} from 'react-icons/ai';
-import PopUp from '../../common/PopUp';
-import Input from '../../ui/Input';
-import Button from '../../ui/Button';
+import PopUp from '../../component/PopUp';
+import Input from '../form/Input';
+import Button from '../form/Button';
 import {useTitle} from '../../hooks/useTitle';
 
 import {MdOutlineSaveAlt} from 'react-icons/md';

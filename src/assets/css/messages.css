@@ -7,7 +7,7 @@
   gap: 2rem;
 }
 .messages-section .user-list-container {
-  background-color: #ffffff;
+  background-color: #fff;
   flex: 1 1 33%;
   padding: 1rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -60,7 +60,7 @@
   color: #0C6DE2;
 }
 .messages-section .chatroom {
-  background-color: #ffffff;
+  background-color: #fff;
   flex: 1 1 66%;
   max-height: calc(100vh - 7rem);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -121,7 +121,7 @@
   width: clamp(10rem, 100%, 15rem);
   right: 0;
   padding: 0.25rem;
-  background-color: #ffffff;
+  background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
@@ -184,7 +184,7 @@
 }
 .messages-section .chatroom .chatroom-body .message-container .message.sent p {
   background-color: #0C6DE2;
-  color: #ffffff;
+  color: #fff;
 }
 .messages-section .chatroom .chatroom-body .message-container .message.received {
   justify-content: flex-start;
@@ -192,7 +192,7 @@
 }
 .messages-section .chatroom .chatroom-body .message-container .message.received p {
   background-color: #f8f8f8;
-  color: #000000;
+  color: #000;
 }
 .messages-section .chatroom .chatroom-body .message-container .message p {
   height: 100%;
@@ -219,7 +219,7 @@
 .messages-section .chatroom .chatroom-body .message-form {
   border-top: 1px solid #d9d9d9;
   padding: 1rem;
-  background-color: #ffffff;
+  background-color: #fff;
   display: flex;
   align-items: center;
   justify-content: space-between;

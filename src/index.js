@@ -4,10 +4,10 @@ import App from './App';
 import {QueryParamProvider} from 'use-query-params';
 import {ReactRouter6Adapter} from 'use-query-params/adapters/react-router-6';
 import {BrowserRouter as Router} from 'react-router-dom';
-import LoaderProvider from './setup/LoaderProvider';
-import ToastContainer from './common/ToastContainer';
-import ToastProvider from './setup/ToastProvider';
-import AuthProvider from './setup/AuthProvider';
+import LoaderProvider from './context/LoaderProvider';
+import ToastContainer from './component/ToastContainer';
+import ToastProvider from './context/ToastProvider';
+import AuthProvider from './context/AuthProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

@@ -1,8 +1,6 @@
 import React from 'react';
-import Input from '../../ui/Input';
-import Button from '../../ui/Button';
-
-import {Link} from 'react-router-dom';
+import Input from '../form/Input';
+import Button from '../form/Button';
 
 import {BiLogIn} from 'react-icons/bi';
 import {useState} from 'react';
@@ -13,7 +11,7 @@ import {useToast} from '../../hooks/useToast';
 import {useAuth} from '../../hooks/useAuth';
 import {db, storage} from '../../setup/Firebase';
 
-import {FaGoogle} from 'react-icons/fa';
+import {FcGoogle} from 'react-icons/fc';
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 
@@ -49,11 +47,24 @@ const Login = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    if (!email || !password) {
-      addToast('error', 'Please fill out all the fields!');
+    const inputFields = {
+      email,
+      password,
+    };
+
+    const emptyInputs = Object.keys(inputFields).filter((key) => inputFields[key] === '');
+
+    if (emptyInputs.length > 0) {
+      emptyInputs.forEach((input) => {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [input]: 'This field is required.',
+        }));
+      });
+
+      addToast('error', 'Please fill out all required fields!');
       return;
     }
-
     if (Object.values(errors).some((error) => error !== '')) {
       addToast('error', 'There is an error with at least one field!');
       return;
@@ -151,8 +162,8 @@ const Login = () => {
       <h1>Welcome Back!</h1>
       <div className="social-signup">
         <h4>Connect with</h4>
-        <Button text="Google" className="dark" onClick={handleLoginWithGoogle}>
-          <FaGoogle />
+        <Button text="Google" className="secondary" onClick={handleLoginWithGoogle}>
+          <FcGoogle />
         </Button>
       </div>
       <div className="bg-line">
@@ -166,9 +177,9 @@ const Login = () => {
           onChange={(value) => {
             setEmail(value);
           }}
-          className="input-field light"
-          name="lgn-email"
+          autoFocus={true}
           error={errors.email}
+          success={email && !errors.email}
         />
         <Input
           type="password"
@@ -177,18 +188,12 @@ const Login = () => {
           onChange={(value) => {
             setPassword(value);
           }}
-          className="input-field light"
-          name="lgn-pass"
           error={errors.password}
         />
-        <span className="forgot-pass">
-          Forgot password? Reset{' '}
-          <Link to="" onClick={handlePasswordReset}>
-            here
-          </Link>
-          .
-        </span>
-        <Button type="submit" text="Log In" className="dark">
+        <p className="link" onClick={handlePasswordReset}>
+          Forgot password?
+        </p>
+        <Button type="submit" text="Log In" className="primary">
           <BiLogIn />
         </Button>
       </form>

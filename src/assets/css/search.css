@@ -20,7 +20,7 @@
   color: #a6a6a6;
 }
 .search-body .search-section .search-section-header {
-  background-color: #ffffff;
+  background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   display: flex;
@@ -47,7 +47,7 @@
   font-size: 1.5rem;
   font-weight: 600;
   margin: 0;
-  color: #000000;
+  color: #000;
 }
 .search-body .search-section .search-section-body .body-section .search-list {
   width: 100%;
@@ -60,7 +60,7 @@
 }
 .search-body .search-section .search-section-body .body-section .search-list .search-card {
   position: relative;
-  background-color: #ffffff;
+  background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 100%;
   height: auto;
@@ -76,7 +76,7 @@
   left: 25%;
   width: clamp(11rem, 100%, 16rem);
   padding: 0.25rem;
-  background-color: #ffffff;
+  background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;

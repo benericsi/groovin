@@ -1,7 +1,8 @@
-import Input from '../../ui/Input';
-import Button from '../../ui/Button';
+import Input from '../form/Input';
+import Button from '../form/Button';
+import Dropzone from '../form/Dropzone';
 
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useDebounce} from '../../hooks/useDebounce';
 import {useToast} from '../../hooks/useToast';
@@ -136,12 +137,48 @@ const Signup = () => {
     [password, passwordConfirmation]
   );
 
+  const onDrop = useCallback((acceptedFiles) => {
+    acceptedFiles.map((file) => {
+      const reader = new FileReader();
+
+      reader.onload = function () {
+        setInputPhoto(file);
+      };
+
+      reader.readAsDataURL(file);
+      return file;
+    });
+  }, []);
+
+  const onDropRejected = (fileRejections) => {
+    if (fileRejections[0].errors[0].code === 'file-too-large') {
+      addToast('error', 'The file is too large. Maximum size is 1MB.');
+    } else {
+      addToast('error', 'The file is not an image. Please upload an image file.');
+    }
+  };
+
+  const onFileDialogCancel = useCallback(() => {
+    setInputPhoto('default');
+  }, []);
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     //Validation
-    if (!lastName.trim() || !firstName.trim() || !email.trim() || !password.trim() || !passwordConfirmation.trim()) {
-      addToast('error', 'Please fill out all the fields!');
+    const inputFields = {firstName, lastName, email, password, passwordConfirmation};
+
+    const emptyInputs = Object.keys(inputFields).filter((key) => inputFields[key] === '');
+
+    if (emptyInputs.length > 0) {
+      emptyInputs.forEach((input) => {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [input]: 'This field is required.',
+        }));
+      });
+
+      addToast('error', 'Please fill out all required fields!');
       return;
     }
 
@@ -158,15 +195,10 @@ const Signup = () => {
     showLoader();
     signup(email, password)
       .then(async (cred) => {
-        setEmail('');
-        setPassword('');
-        setPasswordConfirmation('');
-        setFirstName('');
-        setLastName('');
-
         const storageRef = storage.ref();
         const fileRef = storageRef.child(`profile-pictures/${cred.user.uid}`);
         var imageUrl = 'default';
+
         if (inputPhoto !== 'default') {
           await fileRef.put(inputPhoto);
           imageUrl = await fileRef.getDownloadURL();
@@ -185,54 +217,54 @@ const Signup = () => {
             friends: [],
           });
 
-        hideLoader();
+        setEmail('');
+        setPassword('');
+        setPasswordConfirmation('');
+        setFirstName('');
+        setLastName('');
+
         addToast('success', 'You have successfully signed up!');
         navigate('/');
       })
       .catch((error) => {
-        hideLoader(); // Ensure loader is hidden even in case of an error
         if (error.code === 'auth/email-already-in-use') {
           addToast('error', 'The email address is already in use.');
         } else if (error.code === 'auth/invalid-email') {
           addToast('error', 'The email address is not valid.');
-        } else if (error.code === 'auth/operation-not-allowed') {
-          addToast('error', 'Email/password accounts are not enabled.');
-        } else if (error.code === 'auth/weak-password') {
-          addToast('error', 'The password is not strong enough.');
         } else {
           addToast('error', error.message);
         }
+      })
+      .finally(() => {
+        hideLoader();
       });
   };
 
   return (
     <>
       <h1>First Time Here?</h1>
-
       <form onSubmit={handleFormSubmit}>
-        <div className="field-wrapper">
+        <div className="field_wrapper">
           <Input
             type="text"
             value={firstName}
-            label="Last Name * "
+            label="First Name * "
             onChange={(value) => {
               setFirstName(value);
             }}
-            className="input-field light"
-            name="reg-firstname"
+            autoFocus={true}
             error={errors.firstName}
+            success={firstName && !errors.firstName}
           />
           <Input
             type="text"
             value={lastName}
-            label="First Name * "
+            label="Last Name * "
             onChange={(value) => {
               setLastName(value);
             }}
-            className="input-field light"
-            name="reg-lastname"
             error={errors.lastName}
-            autoFocus
+            success={lastName && !errors.lastName}
           />
         </div>
         <Input
@@ -242,11 +274,10 @@ const Signup = () => {
           onChange={(value) => {
             setEmail(value);
           }}
-          className="input-field light"
-          name="reg-email"
           error={errors.email}
+          success={email && !errors.email}
         />
-        <div className="field-wrapper">
+        <div className="field_wrapper">
           <Input
             type="password"
             value={password}
@@ -254,8 +285,6 @@ const Signup = () => {
             onChange={(value) => {
               setPassword(value);
             }}
-            className="input-field light"
-            name="reg-password"
             error={errors.password}
           />
           <Input
@@ -265,13 +294,10 @@ const Signup = () => {
             onChange={(value) => {
               setPasswordConfirmation(value);
             }}
-            className="input-field light"
-            name="reg-password-again"
-            error={errors.passwordConfirmation}
           />
         </div>
-        <Input type="file" label="Profile Picture" accept="image/*" onChange={(file) => setInputPhoto(file)} className="input-field light" />
-        <Button type="submit" text="Sign Up" className="dark">
+        <Dropzone label="Upload a profile picture by dragging a file here or click to select" onDrop={onDrop} accept={'image/*'} multiple={false} maxFiles={1} maxSize={1048576} onDropRejected={onDropRejected} onFileDialogCancel={onFileDialogCancel} />
+        <Button type="submit" text="Sign Up" className="primary">
           <HiPencilSquare />
         </Button>
       </form>

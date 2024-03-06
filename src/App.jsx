@@ -3,12 +3,13 @@ import './assets/css/globals.css';
 import React, {lazy, Suspense} from 'react';
 import {Routes, Route} from 'react-router-dom';
 
-import Loader from './common/Loader';
+import Loader from './component/Loader';
 import PrivateRoute from './setup/PrivateRoute';
+
 const Authentication = lazy(() => import('./modules/authentication/Authentication'));
 const Main = lazy(() => import('./modules/main/Main'));
 const Dashboard = lazy(() => import('./modules/main/Dashboard'));
-const ErrorPage = lazy(() => import('./common/ErrorPage'));
+const ErrorPage = lazy(() => import('./component/ErrorPage'));
 
 const Playlists = lazy(() => import('./modules/playlists/Playlists'));
 const Playlist = lazy(() => import('./modules/playlists/Playlist'));

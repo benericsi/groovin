@@ -27,14 +27,18 @@ const ToastProvider = ({children}) => {
   const [timers, setTimers] = useState({}); // Store timers in state
 
   const addToast = (type, message) => {
-    const id = Date.now();
-    dispatch({type: ADD_TOAST, payload: {id, type, message}});
+    if (state.toasts.length < 5) {
+      const id = Date.now();
+      dispatch({type: ADD_TOAST, payload: {id, type, message}});
 
-    // Set a timer for this toast and store it in timers state
-    const timer = setTimeout(() => {
-      removeToast(id);
-    }, 4000);
-    setTimers((prevTimers) => ({...prevTimers, [id]: timer}));
+      // Set a timer for this toast and store it in timers state
+      const timer = setTimeout(() => {
+        removeToast(id);
+      }, 5000);
+      setTimers((prevTimers) => ({...prevTimers, [id]: timer}));
+    } else {
+      return;
+    }
   };
 
   const removeToast = (id) => {

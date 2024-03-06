@@ -1,5 +1,5 @@
 import '../../assets/css/search.css';
-import Input from '../../ui/Input';
+import Input from '../form/Input';
 
 import {useState} from 'react';
 import {useDebounce} from '../../hooks/useDebounce';

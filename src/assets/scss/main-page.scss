@@ -1,28 +1,26 @@
 @import 'variables';
 
 .main-wrapper {
-    background-color: $clr-grey-200;
+    background-color: color(secondary, 50);
     height: 100svh;
     width: 100vw;
     display: flex;
 
     .main-content {
         flex: 1;
-        background-color: $clr-grey-200;
+        background-color: color(secondary, 50);
 
         .main-header {
             position: sticky;
             top: 0;
             background-color: $clr-white;
             height: 4rem;
-            //border-bottom: 2px solid $clr-grey-300;
-            box-shadow: $panel-box-shadow;
-            //backdrop-filter: blur(10px);
             z-index: 100;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 1rem 2rem;
+            border-bottom: 1px solid color(secondary, 100);
 
             .header-interactions {
                 height: 100%;
@@ -43,20 +41,20 @@
                     &.active,
                     &:hover {
                         .header-interaction-img {
-                            color: $clr-primary-600;
+                            color: color(primary, 500);
                             opacity: 1;
                         }
                     }
 
                     &:not(:hover).inactive {
                         .header-interaction-img {
-                            color: $clr-grey-800 !important;
+                            color: color(secondary, 700) !important;
                             opacity: 0.8 !important;
                         }
                     }
 
                     .header-interaction-img {
-                        color: $clr-grey-800;
+                        color: color(secondary, 700);
                         opacity: 0.8;
                         font-size: 1.3rem;
                         transition: opacity .2s $animation-cubic;

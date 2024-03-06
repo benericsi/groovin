@@ -2,7 +2,7 @@
   position: relative;
   top: 0;
   left: 0;
-  background-color: #ffffff;
+  background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 100%;
 }
@@ -39,7 +39,7 @@
   gap: 1rem;
 }
 .user-header .user-profile-details .user-profile-image {
-  background-color: #ffffff;
+  background-color: #fff;
   border-radius: 50%;
   position: relative;
   width: 10rem;
@@ -64,22 +64,22 @@
   transform: translateX(100%);
   cursor: pointer;
   border-radius: 50%;
-  border: 5px solid #ffffff;
+  border: 5px solid #fff;
 }
 .user-header .user-profile-details .user-profile-image .story svg {
-  color: #ffffff;
+  color: #fff;
   font-size: 2.5rem;
 }
 .user-header .user-profile-details .user-profile-image .story span {
   font-size: 1.2rem;
-  color: #ffffff;
+  color: #fff;
 }
 .user-header .user-profile-details .user-profile-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
-  border: 5px solid #ffffff;
+  border: 5px solid #fff;
 }
 .user-header .user-profile-details .user-profile-image .default-photo {
   width: 100%;
@@ -119,7 +119,7 @@
   align-self: start;
 }
 .user-header .user-nav {
-  background-color: #ffffff;
+  background-color: #fff;
   position: relative;
   width: 100%;
   height: 3rem;

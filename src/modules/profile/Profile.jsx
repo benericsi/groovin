@@ -10,9 +10,9 @@ import {Outlet, useNavigate} from 'react-router-dom';
 import firebase from 'firebase/compat/app';
 
 import FriendButton from './FriendButton';
-import PopUp from '../../common/PopUp';
-import Input from '../../ui/Input';
-import Button from '../../ui/Button';
+import PopUp from '../../component/PopUp';
+import Input from '../form/Input';
+import Button from '../form/Button';
 
 import {RiAccountCircleFill} from 'react-icons/ri';
 import {AiOutlinePlusCircle} from 'react-icons/ai';

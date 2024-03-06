@@ -1,10 +1,10 @@
 @import 'variables';
 
-.toast-container {
+.toast_container {
     position: fixed;
     bottom: 0;
     right: 0;
-    z-index: 9999;
+    z-index: 999999;
     width: auto;
     height: auto;
     display: flex;
@@ -16,79 +16,134 @@
 
 .toast {
     position: relative;
-    right: 0;
+    right: 1rem;
     bottom: 1rem;
-    height: 3.5rem;
     min-width: 10rem;
     display: flex;
-    padding: 0 1rem;
-    z-index: 999999999999;
-    line-height: 1.5rem;
+    padding: 1rem 1.25rem;
+    gap: 1.25rem;
     cursor: pointer;
     display: flex;
     align-items: center;
-    column-gap: 1rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    background-color: $clr-white;
+    box-shadow: rgba(99, 99, 99, 0.4) 0px 2px 8px 0px;
+    border-radius: $border-radius-1;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 8px;
+        z-index: 100;
+        border-radius: $border-radius 0 0 $border-radius;
+    }
 
     &::after {
         content: '';
         position: absolute;
         bottom: 0;
         left: 0;
-        height: 2px;
-        background-color: $clr-white;
-        animation: toast 4s linear;
+        height: 3px;
+        background-color: $clr-black;
+        animation: toast 5s linear;
     }
 
-    p {
-        font-size: 1.1rem;
-        color: $clr-white;
-        letter-spacing: 1px;
-        display: flex;
-        align-items: center;
+    h3 {
+        font-size: 1.25rem;
+        font-weight: 500;
     }
 
-    .toast-icon {
-        width: auto;
+    .toast_icon {
+        width: 1.5rem;
         height: 1.5rem;
-        color: $clr-white
+        font-size: 1.75rem;
+        color: $clr-black;
     }
 
-    .toast-close {
+    .toast_close {
         all: unset;
-        color: $clr-white;
+        color: color(secondary, 200);
         cursor: pointer;
-        height: 1.7rem;
-        width: 1.7rem;
+        width: 1.5rem;
+        height: 1.5rem;
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 1.2rem;
+        font-size: 1.175rem;
+        border-radius: 50%;
+        transition: all .2s $animation-cubic;
+
+        &:hover {
+            background-color: color(secondary, 50);
+            color: color(secondary, 400);
+        }
     }
 
     &.success {
-        background-color: $clr-green;
-        border: 1px solid $clr-green-darker;
+        &::before {
+            background-color: color(green, 500);
+        }
+
+        &::after {
+            background-color: color(green, 200);
+        }
+
+        .toast_icon {
+            color: color(green, 500);
+        }
     }
 
     &.error {
-        background-color: $clr-red;
-        border: 1px solid $clr-red-darker;
+        &::before {
+            background-color: color(red, 500);
+        }
+
+        &::after {
+            background-color: color(red, 200);
+        }
+
+        .toast_icon {
+            color: color(red, 500);
+        }
     }
 
     &.warning {
-        background-color: $clr-yellow;
-        border: 1px solid $clr-yellow-darker;
+        &::before {
+            background-color: color(yellow, 500);
+        }
 
+        &::after {
+            background-color: color(yellow, 200);
+        }
+
+        .toast_icon {
+            color: color(yellow, 500);
+        }
     }
 
     &.info {
-        background-color: $clr-blue;
-        border: 1px solid $clr-blue-darker;
+        &::before {
+            background-color: color(blue, 500);
+        }
+
+        &::after {
+            background-color: color(blue, 200);
+        }
+
+        .toast_icon {
+            color: color(blue, 500);
+        }
     }
 }
 
 @media only screen and (max-width: $media-query-sm) {
-    .toast-container {
+    .toast_container {
         width: 100%;
         height: 0;
         padding: 0 1rem;
@@ -98,6 +153,7 @@
     }
 
     .toast {
+        right: 0;
         width: 100%;
         min-width: 100%;
         justify-content: space-between;
@@ -107,20 +163,20 @@
         height: auto;
         min-height: 3.5rem;
         padding: 1rem;
-        //border-radius: 5px;
+        border-radius: $border-radius-1;
         margin-bottom: .125rem;
 
-        p {
+        h3 {
             font-size: 1rem;
             text-align: center;
         }
 
-        .toast-icon {
+        .toast_icon {
             width: 1.5rem;
             height: 1.5rem;
         }
 
-        .toast-close {
+        .toast_close {
             height: 1.5rem;
             width: 1.5rem;
             font-size: 1rem;

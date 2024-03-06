@@ -1,7 +1,7 @@
-import '../assets/css/button.css';
+import '../../assets/css/button.css';
 
-const Button = ({children, className, text, ...attributes}) => {
-  const classN = className ? `btn-primary ${className}` : 'btn-primary';
+const Button = ({children, className, disabled, text, ...attributes}) => {
+  const classN = className ? `btn ${className}` : 'btn';
 
   return (
     <button type="button" className={classN} {...attributes}>

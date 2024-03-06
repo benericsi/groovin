@@ -9,20 +9,20 @@ const AuthTabs = () => {
 
   return (
     <>
-      <div className="tabs-wrapper">
-        <div className="tabs-header">
-          <span onClick={() => setTab('log')} className={tab === 'log' ? 'tabs-header-item active-tab' : 'tabs-header-item'}>
+      <div className="tabs_wrapper">
+        <div className="tabs_header">
+          <span onClick={() => setTab('log')} className={tab === 'log' ? 'tabs_header_item active-tab' : 'tabs_header_item'}>
             <h3>LogIn</h3>
           </span>
-          <span onClick={() => setTab('reg')} className={tab === 'reg' ? 'tabs-header-item active-tab' : 'tabs-header-item'}>
+          <span onClick={() => setTab('reg')} className={tab === 'reg' ? 'tabs_header_item active-tab' : 'tabs_header_item'}>
             <h3>SignUp</h3>
           </span>
         </div>
-        <div className="tabs-content">
-          <div className={tab === 'log' ? 'tabs-content-item active-content' : 'tabs-content-item'}>
+        <div className="tabs_content">
+          <div className={tab === 'log' ? 'tabs_content_item active-content' : 'tabs_content_item'}>
             <Login />
           </div>
-          <div className={tab === 'reg' ? 'tabs-content-item active-content' : 'tabs-content-item'}>
+          <div className={tab === 'reg' ? 'tabs_content_item active-content' : 'tabs_content_item'}>
             <Signup />
           </div>
         </div>
