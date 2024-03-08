@@ -3,7 +3,6 @@
 .album-section {
     margin: 1rem;
     padding: 1rem;
-    max-width: $media-query-2xl;
 
     .album-container {
         width: 100%;
@@ -14,6 +13,8 @@
         flex-direction: column;
         gap: 2rem;
         padding: 1rem;
+        max-width: $media-query-2xl;
+        margin: 0 auto;
 
         .album-header {
             position: relative;
@@ -28,8 +29,8 @@
                 width: 10rem;
                 height: 10rem;
                 aspect-ratio: 1/1;
-                border-radius: 12px;
-                background-color: $clr-grey-700;
+                border-radius: 1rem;
+                background-color: color(secondary, 700);
                 overflow: hidden;
 
                 img {
@@ -53,21 +54,21 @@
                 .album-header-title {
                     font-size: 2.5rem;
                     font-weight: 600;
-                    color: $clr-grey-900;
+                    color: color(secondary, 900);
                 }
 
                 .album-header-description {
                     font-size: 1.2rem;
                     font-weight: 400;
-                    color: $clr-grey-600;
+                    color: color(secondary, 600);
 
                     a {
-                        color: $clr-grey-600;
+                        color: color(secondary, 600);
                         text-decoration: none;
                         transition: color .2s ease-in-out;
 
                         &:hover {
-                            color: $clr-primary-600;
+                            color: color(primary, 500);
                             text-decoration: underline;
                         }
                     }
@@ -76,7 +77,7 @@
                 .album-header-length {
                     font-size: 1.2rem;
                     font-weight: 400;
-                    color: $clr-grey-600;
+                    color: color(secondary, 600);
                 }
             }
         }
@@ -103,25 +104,25 @@
                     align-items: center;
                     justify-content: center;
                     font-size: 3rem;
-                    color: $clr-primary-600;
+                    color: color(primary, 500);
                     transition: all .2s $animation-cubic;
                     cursor: pointer;
 
 
                     &.active,
                     &:hover {
-                        color: $clr-primary-600;
+                        color: color(primary, 500);
                         transform: scale(1.1);
                     }
 
                     &.blue {
-                        color: $clr-grey-600;
+                        color: color(secondary, 600);
                         transform: none;
                         transition: all .2s $animation-cubic;
 
                         &.active,
                         &:hover {
-                            color: $clr-primary-600;
+                            color: color(primary, 500);
                             transform: none;
                         }
                     }
@@ -129,12 +130,12 @@
                     &:last-child {
                         position: relative;
                         margin-left: auto;
-                        color: $clr-grey-600;
+                        color: color(secondary, 600);
                         font-size: 1.25rem;
                         transition: all .2s $animation-cubic;
 
                         &:hover {
-                            color: $clr-grey-900;
+                            color: color(secondary, 900);
                             transform: none;
                         }
 
@@ -164,7 +165,7 @@
                                     background-color: rgba($color: $clr-black, $alpha: .1);
 
                                     .btn-album-action {
-                                        color: $clr-primary-600;
+                                        color: color(primary, 500);
                                     }
                                 }
 
@@ -174,9 +175,9 @@
                                     width: calc(100% - 1.5rem);
                                     padding: 0 .75rem;
                                     background: transparent;
-                                    color: $clr-grey-900;
+                                    color: color(secondary, 900);
                                     font-size: auto;
-                                    border-radius: 12px;
+                                    border-radius: 1rem;
                                     display: flex;
                                     align-items: center;
                                     justify-content: flex-start;
@@ -192,77 +193,84 @@
     }
 }
 
-.popup-container {
-    .popup {
-
-        h2 {
-            font-size: 2rem;
-            font-weight: 600;
-            color: $clr-grey-600;
-            text-align: center;
-        }
-
-        .share-friends-container {
+.modal_wrapper {
+    .modal {
+        .friends-container {
             width: 100%;
             height: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+            grid-template-rows: 1fr;
+            gap: 1.5rem;
+            padding: 1rem 0;
 
-            .share-friend-list {
+            .friend-card {
+                background-color: $clr-white;
+                box-shadow: $panel-box-shadow;
                 width: 100%;
                 height: auto;
+                transition: all .2s $animation-cubic;
+                cursor: pointer;
+                padding: 1rem;
                 display: flex;
                 flex-direction: column;
-                gap: 1rem;
+                overflow: hidden;
 
-                .share-friend-item {
-                    width: 100%;
-                    height: auto;
-                    display: flex;
-                    flex-direction: row;
-                    align-items: center;
-                    gap: 1rem;
-                    transition: all .2s $animation-cubic;
+                &:hover {
+                    border: 1px solid color(secondary, 200);
 
-                    .share-friend-photo {
-                        position: relative;
-                        width: 4rem;
-                        height: 4rem;
-                        aspect-ratio: 1/1;
-                        border-radius: 50%;
-                        background-color: $clr-grey-700;
-                        overflow: hidden;
-
-                        img {
-                            position: absolute;
-                            top: 0;
-                            left: 0;
-                            width: 100%;
-                            height: 100%;
-                            object-fit: cover;
-                            object-position: center center;
-                        }
-                    }
-
-                    .share-friend-info {
-                        flex: 1;
-                        display: flex;
-                        flex-direction: row;
-                        gap: 1rem;
-
-                        .share-friend-name {
-                            font-size: 1.5rem;
-                            font-weight: 600;
-                            color: $clr-grey-900;
-                            transition: all .2s $animation-cubic;
-
-                            &:hover {
-                                color: $clr-primary-600;
-                            }
-                        }
+                    .friend-card-name {
+                        color: color(primary, 500)
                     }
                 }
+
+                &.selected {
+                    background-color: color(primary, 50);
+                    border: 2px solid color(primary, 500);
+                }
+
+                .friend-card-photo {
+                    position: relative;
+                    width: 100%;
+                    padding-top: 100%;
+                    /* 1:1 aspect ratio (height = width) */
+                    border-radius: 50%;
+                    background-color: color(secondary, 700);
+                    overflow: hidden;
+                    //box-shadow: 0 .5rem 1.5rem rgba($color: $clr-black, $alpha: .5);
+                    margin: 0 auto;
+                    margin-bottom: 1rem;
+
+                    img {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        object-position: center center;
+                    }
+                }
+
+                .friend-card-name {
+                    font-size: 1.25rem;
+                    font-weight: bold;
+                    color: color(secondary, 900);
+                    margin-bottom: .5rem;
+                    transition: all .2s $animation-cubic;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
+        }
+
+        .modal_content {
+            h2 {
+                text-align: center;
+                font-size: 2.5rem;
+                font-weight: 600;
+                color: color(secondary, 300);
             }
         }
     }

@@ -1,26 +1,376 @@
 import '../../assets/css/playlists.css';
 
 import {useParams, useNavigate, Link} from 'react-router-dom';
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useCallback} from 'react';
 import {useLoader} from '../../hooks/useLoader';
 import {useToast} from '../../hooks/useToast';
 import {db, storage} from '../../setup/Firebase';
 import firebase from 'firebase/compat/app';
 import {useAuth} from '../../hooks/useAuth';
-import PopUp from '../../component/PopUp';
+import {useDebounce} from '../../hooks/useDebounce';
+
+import Modal from '../../component/Modal';
 import Input from '../form/Input';
 import Button from '../form/Button';
+import Dropzone from '../form/Dropzone';
 
 import {FaCirclePlay} from 'react-icons/fa6';
 import {FaCirclePause} from 'react-icons/fa6';
 import {FaEllipsisVertical} from 'react-icons/fa6';
 import {BiEdit} from 'react-icons/bi';
-import {MdDeleteOutline} from 'react-icons/md';
+import {MdDeleteOutline, MdDelete} from 'react-icons/md';
 import {IoMdRefresh} from 'react-icons/io';
 import {MdOutlineSaveAlt} from 'react-icons/md';
 import {IoShuffleOutline} from 'react-icons/io5';
 import {IoShareSocialOutline} from 'react-icons/io5';
 import {IoIosSend} from 'react-icons/io';
+import {AiFillEdit} from 'react-icons/ai';
+import {TbCircleOff} from 'react-icons/tb';
+
+const ModifyPlaylistForm = ({toggleModify, playlist}) => {
+  const [name, setName] = useState(playlist.title);
+  const [description, setDescription] = useState(playlist.description);
+  const [image, setImage] = useState(null);
+  const [errors, setErrors] = useState({});
+
+  const {showLoader, hideLoader} = useLoader();
+  const {addToast} = useToast();
+
+  useDebounce(
+    () => {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        name: '',
+      }));
+    },
+    0,
+    [name]
+  );
+
+  const onDrop = useCallback((acceptedFiles) => {
+    acceptedFiles.map((file) => {
+      const reader = new FileReader();
+
+      reader.onload = function () {
+        setImage(file);
+      };
+
+      reader.readAsDataURL(file);
+      return file;
+    });
+  }, []);
+
+  const onDropRejected = (fileRejections) => {
+    if (fileRejections[0].errors[0].code === 'file-too-large') {
+      addToast('error', 'The file is too large. Maximum size is 1MB.');
+    } else {
+      addToast('error', 'The file is not an image. Please upload an image file.');
+    }
+  };
+
+  const onFileDialogCancel = useCallback(() => {
+    setImage('');
+  }, []);
+
+  const editPlaylist = async (e) => {
+    e.preventDefault();
+
+    const inputFields = {name};
+
+    const emptyInputs = Object.keys(inputFields).filter((key) => inputFields[key] === '');
+
+    if (emptyInputs.length > 0) {
+      emptyInputs.forEach((input) => {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [input]: 'This field is required.',
+        }));
+      });
+
+      addToast('error', 'Please fill in all required fields.');
+      return;
+    }
+
+    if (Object.values(errors).some((x) => x !== '')) {
+      addToast('error', 'Please fix all errors before submitting.');
+      return;
+    }
+
+    showLoader();
+    try {
+      // Check if another playlist with the same name already exists that is not the current playlist
+      const playlistSnapshot = await db.collection('playlists').where('title', '==', name).get();
+
+      if (!playlistSnapshot.empty) {
+        if (playlistSnapshot.docs[0].id !== playlist.id) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            name: 'A playlist with this name already exists.',
+          }));
+          return;
+        }
+      }
+
+      if (!image) {
+        await db.collection('playlists').doc(playlist.id).update({
+          title: name,
+          description: description,
+        });
+      } else {
+        // upload photo to storage: /playlists/{playlistId}
+        const storageRef = storage.ref();
+        const fileRef = storageRef.child(`playlists/${image.name}`);
+        await fileRef.put(image);
+
+        // create playlist in firestore
+        const playlistRef = db.collection('playlists');
+        await playlistRef.doc(playlist.id).update({
+          title: name,
+          description: description,
+          photoURL: await fileRef.getDownloadURL(),
+        });
+      }
+
+      addToast('success', 'Playlist updated successfully.');
+      toggleModify();
+    } catch (error) {
+      addToast('error', error.message);
+    } finally {
+      hideLoader();
+    }
+  };
+
+  return (
+    <>
+      <h1 className="modal_title">
+        <AiFillEdit />
+        Modify Playlist
+      </h1>
+      <div className="modal_content">
+        <form>
+          <Input
+            type="text"
+            value={name}
+            label="Playlist Name *"
+            autoFocus={true}
+            onChange={(value) => {
+              setName(value);
+            }}
+            error={errors.name}
+            success={name && !errors.name}
+          />
+          <Input
+            type="text"
+            value={description}
+            label="Playlist Description"
+            onChange={(value) => {
+              setDescription(value);
+            }}
+          />
+          <Dropzone label="Upload an image for the playlist by dragging a file here or click to select" onDrop={onDrop} accept={'image/*'} multiple={false} maxFiles={1} maxSize={1048576} onDropRejected={onDropRejected} onFileDialogCancel={onFileDialogCancel} />
+        </form>
+      </div>
+      <div className="modal_actions">
+        <Button className="secondary" text="Cancel" onClick={toggleModify}>
+          <TbCircleOff />
+        </Button>
+        <Button className="primary" text="Save" onClick={editPlaylist}>
+          <MdOutlineSaveAlt />
+        </Button>
+      </div>
+    </>
+  );
+};
+
+const SharePlaylistForm = ({toggleShare, playlist}) => {
+  const {currentUser} = useAuth();
+
+  const [friends, setFriends] = useState(null);
+  const [selectedFriends, setSelectedFriends] = useState([]);
+
+  const {showLoader, hideLoader} = useLoader();
+  const {addToast} = useToast();
+
+  useEffect(() => {
+    // fetch friends
+    showLoader();
+    const unsubscribe = db
+      .collection('friends')
+      .where('user1', '==', currentUser.uid)
+      .onSnapshot(
+        (snapshot) => {
+          const friends = snapshot.docs.map((doc) => doc.data().user2);
+          db.collection('friends')
+            .where('user2', '==', currentUser.uid)
+            .onSnapshot(
+              (snapshot) => {
+                const friends2 = snapshot.docs.map((doc) => doc.data().user1);
+                const friendsCombined = [...friends, ...friends2];
+                if (friendsCombined.length === 0) {
+                  setFriends([]);
+                  hideLoader();
+                  return;
+                }
+
+                db.collection('users')
+                  .where(firebase.firestore.FieldPath.documentId(), 'in', friendsCombined)
+                  .onSnapshot(
+                    (snapshot) => {
+                      const friends = snapshot.docs.map((doc) => {
+                        return {
+                          id: doc.id,
+                          ...doc.data(),
+                        };
+                      });
+                      setFriends(friends);
+
+                      hideLoader();
+                    },
+                    (error) => {
+                      addToast('error', error.message);
+                      hideLoader();
+                    }
+                  );
+              },
+              (error) => {
+                addToast('error', error.message);
+                hideLoader();
+              }
+            );
+        },
+        (error) => {
+          addToast('error', error.message);
+          hideLoader();
+        }
+      );
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  const toggleFriendSelection = (friendId) => {
+    setSelectedFriends((prevSelected) => {
+      if (prevSelected.includes(friendId)) {
+        return prevSelected.filter((id) => id !== friendId);
+      } else {
+        return [...prevSelected, friendId];
+      }
+    });
+  };
+
+  const sharePlaylist = async (e) => {
+    e.preventDefault();
+
+    if (selectedFriends.length === 0) {
+      addToast('info', 'Please select at least one friend to share the playlist with.');
+      return;
+    }
+
+    showLoader();
+    try {
+      // if friend has a notification for this playlist, return
+      const notificationRef = db.collection('notifications');
+      const promises = selectedFriends.map(async (friendId) => {
+        const notificationSnapshot = await notificationRef.where('type', '==', `New Playlist: ${playlist.title}`).where('sender', '==', currentUser.uid).where('receiver', '==', friendId).get();
+        if (notificationSnapshot.empty) {
+          await notificationRef.add({
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            message: `There is a new playlist from ${currentUser.displayName}. Go check it out!`,
+            receiver: friendId,
+            sender: currentUser.uid,
+            senderName: currentUser.displayName,
+            senderPhoto: currentUser.photoURL,
+            type: `New Playlist: ${playlist.title}`,
+          });
+        }
+      });
+
+      await Promise.all(promises);
+      setSelectedFriends([]);
+      addToast('success', 'Playlist shared!');
+    } catch (error) {
+      addToast('error', error.message);
+    } finally {
+      hideLoader();
+    }
+  };
+
+  return (
+    <>
+      <h1 className="modal_title">
+        <IoIosSend />
+        Share Playlist
+      </h1>
+      <div className="modal_content">
+        {friends !== null && friends.length === 0 && <h2>There are no friends yet.</h2>}
+        {friends && friends.length > 0 && (
+          <>
+            <p>You can send a notification for the selected friends. You can select a friend by clicking on them.</p>
+            <div className="friends-container">
+              {friends &&
+                friends.map((friend, index) => (
+                  <div className={`friend-card ${selectedFriends.includes(friend.id) ? 'selected' : ''}`} key={index} onClick={() => toggleFriendSelection(friend.id)}>
+                    <div className="friend-card-photo">{friend.photoURL !== 'default' ? <img src={friend.photoURL} alt="" /> : ''}</div>
+                    <div className="friend-card-name">{friend.displayName}</div>
+                  </div>
+                ))}
+            </div>
+          </>
+        )}
+      </div>
+      <div className="modal_actions">
+        <Button className="secondary" text="Cancel" onClick={toggleShare}>
+          <TbCircleOff />
+        </Button>
+        <Button className="primary" text="Share" onClick={sharePlaylist}>
+          <IoIosSend />
+        </Button>
+      </div>
+    </>
+  );
+};
+
+const DeletePlaylistForm = ({toggleDelete, playlist}) => {
+  const navigate = useNavigate();
+  const {currentUser} = useAuth();
+
+  const {showLoader, hideLoader} = useLoader();
+  const {addToast} = useToast();
+
+  const deletePlaylist = async () => {
+    showLoader();
+    try {
+      await db.collection('playlists').doc(playlist.id).delete();
+
+      addToast('success', 'Playlist deleted successfully.');
+      navigate(`/profile/${currentUser.uid}/playlists`);
+    } catch (error) {
+      addToast('error', error.message);
+    } finally {
+      hideLoader();
+    }
+  };
+
+  return (
+    <>
+      <h1 className="modal_title">
+        <MdDelete className="icon_red" /> Are you sure you want to delete '{playlist.title}'?
+      </h1>
+      <div className="modal_content">
+        <p>You cannot rewind this action.</p>
+      </div>
+      <div className="modal_actions">
+        <Button className="secondary" text="Cancel" onClick={toggleDelete}>
+          <TbCircleOff />
+        </Button>
+        <Button className="primary red" text="Delete" onClick={(e) => deletePlaylist(e)}>
+          <MdDeleteOutline />
+        </Button>
+      </div>
+    </>
+  );
+};
 
 const Playlist = () => {
   const navigate = useNavigate();
@@ -32,18 +382,13 @@ const Playlist = () => {
   const {showLoader, hideLoader} = useLoader();
   const {addToast} = useToast();
 
-  const [friends, setFriends] = useState(null);
-
   const [isPlaying, setIsPlaying] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
 
   const [isPlaylistActionsActive, setIsPlaylistActionsActive] = useState(false);
-  const [isPopUpActive, setIsPopUpActive] = useState(false);
+  const [isModifyActive, setIsModifyActive] = useState(false);
   const [isShareActive, setIsShareActive] = useState(false);
-
-  const [inputName, setInputName] = useState(null);
-  const [inputDescription, setInputDescription] = useState(null);
-  const [inputPhoto, setInputPhoto] = useState(null);
+  const [isDeleteActive, setIsDeleteActive] = useState(false);
   const [formattedDate, setFormattedDate] = useState(null);
 
   useEffect(() => {
@@ -77,8 +422,6 @@ const Playlist = () => {
 
             setPlaylist(data);
             setFormattedDate(date);
-            setInputName(data.title);
-            setInputDescription(data.description);
           });
         }
 
@@ -113,62 +456,16 @@ const Playlist = () => {
     setIsPlaylistActionsActive(!isPlaylistActionsActive);
   };
 
-  const togglePopUp = () => {
-    setIsPopUpActive(!isPopUpActive);
+  const toggleModify = () => {
+    setIsModifyActive(!isModifyActive);
   };
 
-  const editPlaylist = async (e) => {
-    e.preventDefault();
+  const toggleShare = () => {
+    setIsShareActive(!isShareActive);
+  };
 
-    if (inputName.trim() === '') {
-      setInputName(playlist.title);
-      addToast('error', 'Title cannot be empty!');
-      return;
-    }
-
-    // validate file input to only accept images
-    if (inputPhoto && !inputPhoto.type.includes('image')) {
-      addToast('error', 'Playlist photo must be an image.');
-      return;
-    }
-
-    showLoader();
-    try {
-      // Check if another playlist with the same name already exists
-      const playlistSnapshot = await db.collection('playlists').where('title', '==', inputName).get();
-
-      if (!playlistSnapshot.empty) {
-        addToast('error', 'A playlist with the same name already exists. Choose a different name.');
-        return;
-      }
-
-      if (!inputPhoto) {
-        await db.collection('playlists').doc(playlistId).update({
-          title: inputName,
-          description: inputDescription,
-        });
-      } else {
-        // upload photo to storage: /playlists/{playlistId}
-        const storageRef = storage.ref();
-        const fileRef = storageRef.child(`playlists/${inputPhoto.name}`);
-        await fileRef.put(inputPhoto);
-
-        // create playlist in firestore
-        const playlistRef = db.collection('playlists');
-        await playlistRef.doc(playlistId).update({
-          title: inputName,
-          description: inputDescription,
-          photoURL: await fileRef.getDownloadURL(),
-        });
-      }
-
-      addToast('success', 'Playlist updated successfully.');
-      togglePopUp();
-    } catch (error) {
-      addToast('error', error.message);
-    } finally {
-      hideLoader();
-    }
+  const toggleDelete = () => {
+    setIsDeleteActive(!isDeleteActive);
   };
 
   const clearPlaylist = async () => {
@@ -191,160 +488,20 @@ const Playlist = () => {
     }
   };
 
-  const toggleSharePopUp = () => {
-    setIsShareActive(!isShareActive);
-
-    if (!isShareActive) {
-      // fetch friends
-      showLoader();
-      const unsubscribe = db
-        .collection('friends')
-        .where('user1', '==', currentUser.uid)
-        .onSnapshot(
-          (snapshot) => {
-            const friends = snapshot.docs.map((doc) => doc.data().user2);
-            db.collection('friends')
-              .where('user2', '==', currentUser.uid)
-              .onSnapshot(
-                (snapshot) => {
-                  const friends2 = snapshot.docs.map((doc) => doc.data().user1);
-                  const friendsCombined = [...friends, ...friends2];
-                  if (friendsCombined.length === 0) {
-                    setFriends([]);
-                    hideLoader();
-                    return;
-                  }
-
-                  db.collection('users')
-                    .where(firebase.firestore.FieldPath.documentId(), 'in', friendsCombined)
-                    .onSnapshot(
-                      (snapshot) => {
-                        const friends = snapshot.docs.map((doc) => {
-                          return {
-                            id: doc.id,
-                            ...doc.data(),
-                          };
-                        });
-                        setFriends(friends);
-                        hideLoader();
-                      },
-                      (error) => {
-                        addToast('error', error.message);
-                        hideLoader();
-                      }
-                    );
-                },
-                (error) => {
-                  addToast('error', error.message);
-                  hideLoader();
-                }
-              );
-          },
-          (error) => {
-            addToast('error', error.message);
-            hideLoader();
-          }
-        );
-
-      return () => {
-        unsubscribe();
-      };
-    }
-  };
-
-  const sharePlaylist = async (e, friendId) => {
-    e.preventDefault();
-    showLoader();
-    try {
-      // if friend has a notification for this playlist, return
-      const notificationRef = db.collection('notifications');
-      const notificationSnapshot = await notificationRef.where('type', '==', `New Playlist: ${playlist.title}`).where('sender', '==', currentUser.uid).where('receiver', '==', friendId).get();
-      if (notificationSnapshot.empty) {
-        await notificationRef.add({
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          message: `There is a new playlist from ${currentUser.displayName}. Go check it out!`,
-          receiver: friendId,
-          sender: currentUser.uid,
-          senderName: currentUser.displayName,
-          senderPhoto: currentUser.photoURL,
-          type: `New Playlist: ${playlist.title}`,
-        });
-      }
-      addToast('success', 'Playlist shared!');
-    } catch (error) {
-      addToast('error', error.message);
-    } finally {
-      hideLoader();
-    }
-  };
-
-  const deletePlaylist = async () => {
-    showLoader();
-    try {
-      await db.collection('playlists').doc(playlistId).delete();
-
-      addToast('success', 'Playlist deleted successfully.');
-      navigate(`/profile/${currentUser.uid}/playlists`);
-    } catch (error) {
-      addToast('error', error.message);
-    } finally {
-      hideLoader();
-    }
-  };
-
   return (
     <>
-      <PopUp isPopUpActive={isPopUpActive} onClose={() => togglePopUp()}>
-        <Input
-          type="text"
-          value={inputName}
-          label="Playlist Name"
-          onChange={(value) => {
-            setInputName(value);
-          }}
-          className="input-field"
-        />
-        <Input
-          type="text"
-          value={inputDescription}
-          label="Playlist Description"
-          onChange={(value) => {
-            setInputDescription(value);
-          }}
-          className="input-field"
-        />
-        <Input type="file" accept="image/*" label="Playlist Photo" onChange={(file) => setInputPhoto(file)} className="input-field light" />
-        <Button type="button" text="Save" className="dark" onClick={(e) => editPlaylist(e)}>
-          <MdOutlineSaveAlt />
-        </Button>
-      </PopUp>
+      <Modal isOpen={isModifyActive} close={toggleModify}>
+        <ModifyPlaylistForm toggleModify={toggleModify} playlist={playlist} />
+      </Modal>
 
-      <PopUp isPopUpActive={isShareActive} onClose={() => toggleSharePopUp()}>
-        {friends !== null && friends.length === 0 && <h2>There are no friends yet.</h2>}
-        {friends && (
-          <>
-            <div className="share-friends-container">
-              {friends.map((friend) => (
-                <ul className="share-friend-list" key={friend.id}>
-                  <li className="share-friend-item">
-                    <div className="share-friend-photo">
-                      <img src={friend.photoURL} alt="" />
-                    </div>
-                    <div className="share-friend-info">
-                      <Link to={`/profile/${friend.id}`} className="share-friend-name">
-                        {friend.displayName}
-                      </Link>
-                    </div>
-                    <Button type="button" className="dark" onClick={(e) => sharePlaylist(e, friend.id)}>
-                      <IoIosSend />
-                    </Button>
-                  </li>
-                </ul>
-              ))}
-            </div>
-          </>
-        )}
-      </PopUp>
+      <Modal isOpen={isShareActive} close={toggleShare} className="md">
+        <SharePlaylistForm toggleShare={toggleShare} playlist={playlist} />
+      </Modal>
+
+      <Modal isOpen={isDeleteActive} close={toggleDelete}>
+        <DeletePlaylistForm toggleDelete={toggleDelete} playlist={playlist} />
+      </Modal>
+
       {playlist && (
         <section className="playlist-section">
           <div className="playlist-container">
@@ -373,7 +530,7 @@ const Playlist = () => {
                   {isPlaylistActionsActive ? (
                     <ul className="playlist-action-list">
                       <li className="playlist-actions-item">
-                        <button className="btn-playlist-action" onClick={() => togglePopUp()}>
+                        <button className="btn-playlist-action" onClick={toggleModify}>
                           <BiEdit />
                           <span>Edit Playlist</span>
                         </button>
@@ -385,13 +542,13 @@ const Playlist = () => {
                         </button>
                       </li>
                       <li className="playlist-actions-item">
-                        <button className="btn-playlist-action" onClick={() => toggleSharePopUp()}>
+                        <button className="btn-playlist-action" onClick={toggleShare}>
                           <IoShareSocialOutline />
                           <span>Share</span>
                         </button>
                       </li>
                       <li className="playlist-actions-item">
-                        <button className="btn-playlist-action" onClick={() => deletePlaylist()}>
+                        <button className="btn-playlist-action" onClick={toggleDelete}>
                           <MdDeleteOutline />
                           <span>Delete Playlist</span>
                         </button>

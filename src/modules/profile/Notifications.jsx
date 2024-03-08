@@ -9,6 +9,10 @@ import {db} from '../../setup/Firebase';
 import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';
 
+import Button from '../form/Button';
+
+import {MdClose} from 'react-icons/md';
+
 const Notifications = () => {
   useAccessControl();
   useTitle('Notifications');
@@ -99,9 +103,9 @@ const Notifications = () => {
         {notifications &&
           notifications.map((notification, index) => (
             <Link to={linkTo(notification)} className="notification-card" key={index}>
-              <div className="notification-remove" onClick={(e) => removeNotification(e, notification.id)}>
-                &times;
-              </div>
+              <Button className="secondary notification-remove" onClick={(e) => removeNotification(e, notification.id)}>
+                <MdClose />
+              </Button>
               <div className="notification-card-photo">{notification.senderPhoto !== 'default' ? <img src={notification.senderPhoto} alt="" /> : ''}</div>
               <div className="notification-text">
                 <h3>{notification.type}</h3>

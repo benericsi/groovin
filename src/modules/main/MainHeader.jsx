@@ -64,7 +64,7 @@ const MainHeader = () => {
           {location === `/profile/${currentUser.uid}` ? <RiAccountCircleFill className="header-interaction-img" /> : <RiAccountCircleLine className="header-interaction-img" />}
         </NavLink>
         <div className="header-interaction-item " onClick={handleLogOut} title="Log Out">
-          <BiLogOut className="header-interaction-img" />
+          <BiLogOut className="header-interaction-img logout" />
         </div>
       </div>
     </nav>

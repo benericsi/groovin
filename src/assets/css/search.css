@@ -17,7 +17,7 @@
   text-align: center;
   font-size: clamp(3rem, 5vw, 5rem);
   font-weight: 600;
-  color: #a6a6a6;
+  color: #B8BDC6;
 }
 .search-body .search-section .search-section-header {
   background-color: #fff;
@@ -47,7 +47,7 @@
   font-size: 1.5rem;
   font-weight: 600;
   margin: 0;
-  color: #000;
+  color: #242424;
 }
 .search-body .search-section .search-section-body .body-section .search-list {
   width: 100%;
@@ -95,7 +95,7 @@
   background-color: rgba(0, 0, 0, 0.1);
 }
 .search-body .search-section .search-section-body .body-section .search-list .search-card .track-actions-list .track-actions-item:hover .btn-track-action {
-  color: #0C6DE2;
+  color: #0c6fe9;
 }
 .search-body .search-section .search-section-body .body-section .search-list .search-card .track-actions-list .track-actions-item .btn-track-action {
   all: unset;
@@ -103,9 +103,9 @@
   width: calc(100% - 1.5rem);
   padding: 0 0.75rem;
   background: transparent;
-  color: #121212;
+  color: #2A2F37;
   font-size: auto;
-  border-radius: 12px;
+  border-radius: 1rem;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -113,17 +113,16 @@
   gap: 0.5rem;
 }
 .search-body .search-section .search-section-body .body-section .search-list .search-card:hover {
-  border: 1px solid #c4c4c4;
-  box-shadow: 8px 8px #c4c4c4;
+  border: 1px solid #B8BDC6;
 }
 .search-body .search-section .search-section-body .body-section .search-list .search-card:hover .search-card-name {
-  color: #0C6DE2;
+  color: #0c6fe9;
 }
 .search-body .search-section .search-section-body .body-section .search-list .search-card .photo-alt {
   position: relative;
   width: 100%;
   height: 75%;
-  color: #c4c4c4;
+  color: #989FAD;
   margin: 0 auto;
 }
 .search-body .search-section .search-section-body .body-section .search-list .search-card .search-card-photo {
@@ -133,11 +132,13 @@
   overflow: hidden;
   margin: 0 auto;
   margin-bottom: 1rem;
-  object-fit: cover;
-  object-position: center center;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center;
 }
 .search-body .search-section .search-section-body .body-section .search-list .search-card .search-card-photo.album, .search-body .search-section .search-section-body .body-section .search-list .search-card .search-card-photo.playlist {
-  border-radius: 12px;
+  border-radius: 1rem;
 }
 .search-body .search-section .search-section-body .body-section .search-list .search-card .search-card-photo.track {
   border-radius: 0;
@@ -148,7 +149,7 @@
 .search-body .search-section .search-section-body .body-section .search-list .search-card .search-card-name {
   font-size: 1.25rem;
   font-weight: bold;
-  color: #121212;
+  color: #2A2F37;
   margin-bottom: 0.5rem;
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   white-space: nowrap;
@@ -158,7 +159,7 @@
 .search-body .search-section .search-section-body .body-section .search-list .search-card .search-card-info {
   font-size: 1rem;
   font-weight: 400;
-  color: #7e7e7e;
+  color: #5C6678;
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   white-space: nowrap;
   overflow: hidden;

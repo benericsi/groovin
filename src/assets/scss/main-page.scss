@@ -27,10 +27,12 @@
                 display: flex;
                 gap: .5rem;
 
+
+
                 .header-interaction-item {
                     height: 100%;
                     min-width: 2rem;
-                    //background-color: rgb(0, 0, 0, 0.7);
+                    //background-color: color(secondary, 50);
                     border-radius: 50%;
                     cursor: pointer;
                     transition: all .2s ease-in-out;
@@ -58,6 +60,14 @@
                         opacity: 0.8;
                         font-size: 1.3rem;
                         transition: opacity .2s $animation-cubic;
+
+                        &.logout {
+                            color: color(red, 500);
+
+                            &:hover {
+                                color: color(red, 600);
+                            }
+                        }
                     }
                 }
             }

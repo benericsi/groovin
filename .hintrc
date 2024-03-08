@@ -3,16 +3,6 @@
     "development"
   ],
   "hints": {
-    "compat-api/css": [
-      "default",
-      {
-        "ignore": [
-          "inset",
-          "scroll-behavior",
-          "position: sticky",
-          "aspect-ratio"
-        ]
-      }
-    ]
+    "compat-api/css": "off"
   }
 }

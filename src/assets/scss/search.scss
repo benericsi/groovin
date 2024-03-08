@@ -19,7 +19,7 @@
             text-align: center;
             font-size: clamp(3rem, 5vw, 5rem);
             font-weight: 600;
-            color: $clr-grey-500;
+            color: color(secondary, 200);
         }
 
         .search-section-header {
@@ -54,7 +54,7 @@
                     font-size: 1.5rem;
                     font-weight: 600;
                     margin: 0;
-                    color: $clr-black;
+                    color: $clr-font;
                 }
 
                 .search-list {
@@ -103,7 +103,7 @@
                                     background-color: rgba($color: $clr-black, $alpha: .1);
 
                                     .btn-track-action {
-                                        color: $clr-primary-600;
+                                        color: color(primary, 500);
                                     }
                                 }
 
@@ -113,9 +113,9 @@
                                     width: calc(100% - 1.5rem);
                                     padding: 0 .75rem;
                                     background: transparent;
-                                    color: $clr-grey-900;
+                                    color: color(secondary, 900);
                                     font-size: auto;
-                                    border-radius: 12px;
+                                    border-radius: 1rem;
                                     display: flex;
                                     align-items: center;
                                     justify-content: flex-start;
@@ -127,11 +127,10 @@
                         }
 
                         &:hover {
-                            border: 1px solid $clr-grey-400;
-                            box-shadow: 8px 8px $clr-grey-400;
+                            border: 1px solid color(secondary, 200);
 
                             .search-card-name {
-                                color: $clr-primary-600;
+                                color: color(primary, 500);
                             }
                         }
 
@@ -139,7 +138,7 @@
                             position: relative;
                             width: 100%;
                             height: 75%;
-                            color: $clr-grey-400;
+                            color: color(secondary, 300);
                             margin: 0 auto;
                         }
 
@@ -155,7 +154,7 @@
 
                             &.album,
                             &.playlist {
-                                border-radius: 12px;
+                                border-radius: 1rem;
                             }
 
                             &.track {
@@ -171,7 +170,7 @@
                         .search-card-name {
                             font-size: 1.25rem;
                             font-weight: bold;
-                            color: $clr-grey-900;
+                            color: color(secondary, 900);
                             margin-bottom: .5rem;
                             transition: all .2s $animation-cubic;
                             white-space: nowrap;
@@ -182,7 +181,7 @@
                         .search-card-info {
                             font-size: 1rem;
                             font-weight: 400;
-                            color: $clr-grey-600;
+                            color: color(secondary, 600);
                             transition: all .2s $animation-cubic;
                             white-space: nowrap;
                             overflow: hidden;

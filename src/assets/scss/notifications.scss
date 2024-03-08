@@ -8,7 +8,7 @@
         text-align: center;
         font-size: clamp(3rem, 5vw, 5rem);
         font-weight: 600;
-        color: $clr-grey-500;
+        color: color(secondary, 200);
     }
 
     .notifications-container {
@@ -18,6 +18,7 @@
         gap: 1.5rem;
 
         .notification-card {
+            position: relative;
             background-color: $clr-white;
             box-shadow: $panel-box-shadow;
             width: 100%;
@@ -30,33 +31,19 @@
             overflow: hidden;
             position: relative;
             gap: 1rem;
-            color: $clr-grey-900;
+            color: color(secondary, 900);
 
             &:hover {
-                border: 1px solid $clr-grey-400;
-                box-shadow: 8px 8px $clr-grey-400;
+                border: 1px solid color(secondary, 200);
             }
 
             .notification-remove {
                 position: absolute;
-                top: .25rem;
-                right: .25rem;
-                height: 1.5rem;
-                width: 1.5rem;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 1.75rem;
-                border-radius: 50%;
-                color: $clr-grey-800;
-                opacity: .8;
-                transition: all .2s $animation-cubic;
-
-                &:hover {
-                    color: $clr-primary-600;
-                    opacity: 1;
-                }
+                top: .5rem;
+                right: 1rem;
+                border-radius: $border-radius-50;
+                padding: .5rem;
+                font-size: 1rem;
             }
 
             .notification-card-photo {
@@ -65,9 +52,9 @@
                 height: 5rem;
                 aspect-ratio: 1/1;
                 border-radius: 50%;
-                background-color: $clr-grey-700;
+                background-color: color(secondary, 700);
                 overflow: hidden;
-                border: 1px solid $clr-grey-700;
+                border: 1px solid color(secondary, 700);
 
                 img {
                     position: absolute;
@@ -84,18 +71,18 @@
                 h3 {
                     font-size: 1.25rem;
                     font-weight: 600;
-                    color: $clr-grey-900;
+                    color: color(secondary, 900);
                 }
 
                 p {
                     font-size: 1rem;
                     font-weight: 400;
-                    color: $clr-grey-800;
+                    color: color(secondary, 800);
 
                     &:last-child {
                         margin-top: .25rem;
                         font-size: .875rem;
-                        color: $clr-grey-600;
+                        color: color(secondary, 600);
                     }
                 }
 

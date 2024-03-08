@@ -76,7 +76,7 @@ const ChatRoom = () => {
     if (formValue.trim() === '') {
       return;
     }
-    showLoader();
+
     try {
       await db.collection('messages').add({
         text: formValue,
@@ -104,7 +104,6 @@ const ChatRoom = () => {
       addToast('error', error.message);
     } finally {
       setFormValue('');
-      hideLoader();
 
       if (dummy.current) {
         dummy.current.scrollIntoView({behavior: 'smooth'});
@@ -178,9 +177,8 @@ const ChatRoom = () => {
                 onChange={(value) => {
                   setFormValue(value);
                 }}
-                className="input-field light"
               />
-              <Button type="submit" className="dark">
+              <Button type="submit" className="primary">
                 <IoIosSend />
               </Button>
             </form>

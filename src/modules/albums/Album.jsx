@@ -6,8 +6,10 @@ import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';
 import {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
-import PopUp from '../../component/PopUp';
+
+import Modal from '../../component/Modal';
 import Button from '../form/Button';
+
 import {useAuth} from '../../hooks/useAuth';
 import {db} from '../../setup/Firebase';
 import firebase from 'firebase/compat/app';
@@ -16,10 +18,159 @@ import {FaCirclePlay, FaCirclePause, FaEllipsisVertical} from 'react-icons/fa6';
 import {IoShuffleOutline, IoShareSocialOutline, IoPersonOutline} from 'react-icons/io5';
 import {IoIosSend} from 'react-icons/io';
 import {AiOutlinePlusCircle} from 'react-icons/ai';
+import {TbCircleOff} from 'react-icons/tb';
+
+const ShareAlbumForm = ({toggleShare, album}) => {
+  const {currentUser} = useAuth();
+
+  const [friends, setFriends] = useState(null);
+  const [selectedFriends, setSelectedFriends] = useState([]);
+
+  const {showLoader, hideLoader} = useLoader();
+  const {addToast} = useToast();
+
+  useEffect(() => {
+    // fetch friends
+    showLoader();
+    const unsubscribe = db
+      .collection('friends')
+      .where('user1', '==', currentUser.uid)
+      .onSnapshot(
+        (snapshot) => {
+          const friends = snapshot.docs.map((doc) => doc.data().user2);
+          db.collection('friends')
+            .where('user2', '==', currentUser.uid)
+            .onSnapshot(
+              (snapshot) => {
+                const friends2 = snapshot.docs.map((doc) => doc.data().user1);
+                const friendsCombined = [...friends, ...friends2];
+                if (friendsCombined.length === 0) {
+                  setFriends([]);
+                  hideLoader();
+                  return;
+                }
+
+                db.collection('users')
+                  .where(firebase.firestore.FieldPath.documentId(), 'in', friendsCombined)
+                  .onSnapshot(
+                    (snapshot) => {
+                      const friends = snapshot.docs.map((doc) => {
+                        return {
+                          id: doc.id,
+                          ...doc.data(),
+                        };
+                      });
+                      setFriends(friends);
+
+                      hideLoader();
+                    },
+                    (error) => {
+                      addToast('error', error.message);
+                      hideLoader();
+                    }
+                  );
+              },
+              (error) => {
+                addToast('error', error.message);
+                hideLoader();
+              }
+            );
+        },
+        (error) => {
+          addToast('error', error.message);
+          hideLoader();
+        }
+      );
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  const toggleFriendSelection = (friendId) => {
+    setSelectedFriends((prevSelected) => {
+      if (prevSelected.includes(friendId)) {
+        return prevSelected.filter((id) => id !== friendId);
+      } else {
+        return [...prevSelected, friendId];
+      }
+    });
+  };
+
+  const shareAlbum = async (e) => {
+    e.preventDefault();
+
+    if (selectedFriends.length === 0) {
+      addToast('info', 'Please select at least one friend to share the album with.');
+      return;
+    }
+
+    showLoader();
+    try {
+      // if friend has a notification for this album, return
+      const notificationRef = db.collection('notifications');
+      const promises = selectedFriends.map(async (friendId) => {
+        const notificationSnapshot = await notificationRef.where('type', '==', 'New Album Recommendation').where('sender', '==', currentUser.uid).where('receiver', '==', friendId).get();
+        if (notificationSnapshot.empty) {
+          await notificationRef.add({
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            message: `${currentUser.displayName} wants you to listen to ${album.name} by ${album.artists[0].name}. Go check it out!`,
+            receiver: friendId,
+            sender: currentUser.uid,
+            senderName: currentUser.displayName,
+            senderPhoto: currentUser.photoURL,
+            type: `New Album Recommendation`,
+          });
+        }
+      });
+
+      await Promise.all(promises);
+      setSelectedFriends([]);
+      addToast('success', 'Album shared!');
+    } catch (error) {
+      addToast('error', error.message);
+    } finally {
+      hideLoader();
+    }
+  };
+
+  return (
+    <>
+      <h1 className="modal_title">
+        <IoIosSend />
+        Share Album
+      </h1>
+      <div className="modal_content">
+        {friends !== null && friends.length === 0 && <h2>There are no friends yet.</h2>}
+        {friends && friends.length > 0 && (
+          <>
+            <p>You can send a notification for the selected friends. You can select a friend by clicking on them.</p>
+            <div className="friends-container">
+              {friends &&
+                friends.map((friend, index) => (
+                  <div className={`friend-card ${selectedFriends.includes(friend.id) ? 'selected' : ''}`} key={index} onClick={() => toggleFriendSelection(friend.id)}>
+                    <div className="friend-card-photo">{friend.photoURL !== 'default' ? <img src={friend.photoURL} alt="" /> : ''}</div>
+                    <div className="friend-card-name">{friend.displayName}</div>
+                  </div>
+                ))}
+            </div>
+          </>
+        )}
+      </div>
+      <div className="modal_actions">
+        <Button className="secondary" text="Cancel" onClick={toggleShare}>
+          <TbCircleOff />
+        </Button>
+        <Button className="primary" text="Share" onClick={shareAlbum}>
+          <IoIosSend />
+        </Button>
+      </div>
+    </>
+  );
+};
 
 const Album = () => {
   const [album, setAlbum] = useState(null);
-  const [friends, setFriends] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
 
@@ -67,92 +218,8 @@ const Album = () => {
     setIsAlbumActionsOpen(!isAlbumActionsOpen);
   };
 
-  const toggleSharePopUp = () => {
+  const toggleShare = () => {
     setIsShareActive(!isShareActive);
-
-    if (!isShareActive) {
-      // fetch friends
-      showLoader();
-      const unsubscribe = db
-        .collection('friends')
-        .where('user1', '==', currentUser.uid)
-        .onSnapshot(
-          (snapshot) => {
-            const friends = snapshot.docs.map((doc) => doc.data().user2);
-            db.collection('friends')
-              .where('user2', '==', currentUser.uid)
-              .onSnapshot(
-                (snapshot) => {
-                  const friends2 = snapshot.docs.map((doc) => doc.data().user1);
-                  const friendsCombined = [...friends, ...friends2];
-                  if (friendsCombined.length === 0) {
-                    setFriends([]);
-                    hideLoader();
-                    return;
-                  }
-
-                  db.collection('users')
-                    .where(firebase.firestore.FieldPath.documentId(), 'in', friendsCombined)
-                    .onSnapshot(
-                      (snapshot) => {
-                        const friends = snapshot.docs.map((doc) => {
-                          return {
-                            id: doc.id,
-                            ...doc.data(),
-                          };
-                        });
-                        setFriends(friends);
-                        hideLoader();
-                      },
-                      (error) => {
-                        addToast('error', error.message);
-                        hideLoader();
-                      }
-                    );
-                },
-                (error) => {
-                  addToast('error', error.message);
-                  hideLoader();
-                }
-              );
-          },
-          (error) => {
-            addToast('error', error.message);
-            hideLoader();
-          }
-        );
-
-      return () => {
-        unsubscribe();
-      };
-    }
-  };
-
-  const shareAlbum = async (e, friendId) => {
-    e.preventDefault();
-    showLoader();
-    try {
-      // if friend has a notification for this playlist, return
-      const notificationRef = db.collection('notifications');
-      const notificationSnapshot = await notificationRef.where('type', '==', `New Album Recommendation`).where('sender', '==', currentUser.uid).where('receiver', '==', friendId).get();
-      if (notificationSnapshot.empty) {
-        await notificationRef.add({
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          message: `${currentUser.displayName} wants you to listen to ${album.name} by ${album.artists[0].name}. Go check it out!`,
-          receiver: friendId,
-          sender: currentUser.uid,
-          senderName: currentUser.displayName,
-          senderPhoto: currentUser.photoURL,
-          type: `New Album Recommendation`,
-          album: album.id,
-        });
-      }
-      addToast('success', 'Album shared!');
-    } catch (error) {
-      addToast('error', error.message);
-    } finally {
-      hideLoader();
-    }
   };
 
   const saveAsPlaylist = async () => {
@@ -196,32 +263,9 @@ const Album = () => {
 
   return (
     <>
-      <PopUp isPopUpActive={isShareActive} onClose={() => toggleSharePopUp()}>
-        {friends !== null && friends.length === 0 && <h2>There are no friends yet.</h2>}
-        {friends && (
-          <>
-            <div className="share-friends-container">
-              {friends.map((friend) => (
-                <ul className="share-friend-list" key={friend.id}>
-                  <li className="share-friend-item">
-                    <div className="share-friend-photo">
-                      <img src={friend.photoURL} alt="" />
-                    </div>
-                    <div className="share-friend-info">
-                      <Link to={`/profile/${friend.id}`} className="share-friend-name">
-                        {friend.displayName}
-                      </Link>
-                    </div>
-                    <Button type="button" className="dark" onClick={(e) => shareAlbum(e, friend.id)}>
-                      <IoIosSend />
-                    </Button>
-                  </li>
-                </ul>
-              ))}
-            </div>
-          </>
-        )}
-      </PopUp>
+      <Modal isOpen={isShareActive} close={toggleShare}>
+        <ShareAlbumForm toggleShare={toggleShare} album={album} />
+      </Modal>
 
       {album && (
         <section className="album-section">
@@ -240,13 +284,13 @@ const Album = () => {
             </header>
             <nav className="album-subnav">
               <ul className="album-subnav-list">
-                <li className="album-subnav-item" onClick={() => toggleMusic()}>
+                <li className="album-subnav-item" onClick={toggleMusic}>
                   {isPlaying ? <FaCirclePause /> : <FaCirclePlay />}
                 </li>
                 <li className={`album-subnav-item blue ${isShuffle ? 'active' : ''}`} onClick={() => setIsShuffle(!isShuffle)}>
                   <IoShuffleOutline />
                 </li>
-                <li className="album-subnav-item" onClick={() => toggleAlbumActions()}>
+                <li className="album-subnav-item" onClick={toggleAlbumActions}>
                   <FaEllipsisVertical />
                   {isAlbumActionsOpen ? (
                     <ul className="album-action-list">
@@ -263,7 +307,7 @@ const Album = () => {
                         </Link>
                       </li>
                       <li className="album-actions-item">
-                        <button className="btn-album-action" onClick={() => toggleSharePopUp()}>
+                        <button className="btn-album-action" onClick={toggleShare}>
                           <IoShareSocialOutline />
                           <span>Share</span>
                         </button>

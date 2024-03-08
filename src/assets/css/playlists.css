@@ -7,7 +7,7 @@
   text-align: center;
   font-size: clamp(3rem, 5vw, 5rem);
   font-weight: 600;
-  color: #a6a6a6;
+  color: #B8BDC6;
 }
 .playlists-section .playlists-container {
   width: 100%;
@@ -28,58 +28,57 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  border: none;
 }
 .playlists-section .playlists-container .playlist-card.create {
-  background-color: #f8f8f8;
-  border: 1px dashed #c4c4c4;
+  background-color: #F0F1F3;
+  border: 1px dashed #848D9D;
   box-shadow: none;
   justify-content: center;
   align-items: center;
 }
 .playlists-section .playlists-container .playlist-card.create .playlist-card-name {
   text-align: center;
-  color: #7e7e7e;
+  color: #848D9D;
   white-space: normal !important;
 }
 .playlists-section .playlists-container .playlist-card.create .playlist-card-photo {
-  background-color: #f8f8f8;
-  border: 1px dashed #c4c4c4;
+  background-color: #F0F1F3;
+  border: 1px dashed #848D9D;
   box-shadow: none;
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .playlists-section .playlists-container .playlist-card.create .playlist-card-photo svg {
-  color: #7e7e7e;
+  color: #848D9D;
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .playlists-section .playlists-container .playlist-card.create:hover {
-  border: 1px dashed #0C6DE2;
+  border: 1px dashed #0c6fe9;
   box-shadow: none;
 }
 .playlists-section .playlists-container .playlist-card.create:hover .playlist-card-name {
-  color: #0C6DE2;
+  color: #0c6fe9;
 }
 .playlists-section .playlists-container .playlist-card.create:hover .playlist-card-photo {
-  background-color: #f8f8f8;
-  border: 1px dashed #0C6DE2;
+  background-color: #F0F1F3;
+  border: 1px dashed #0c6fe9;
   box-shadow: none;
 }
 .playlists-section .playlists-container .playlist-card.create:hover .playlist-card-photo svg {
-  color: #0C6DE2;
+  color: #0c6fe9;
 }
 .playlists-section .playlists-container .playlist-card:hover {
-  border: 1px solid #c4c4c4;
-  box-shadow: 8px 8px #c4c4c4;
+  border: 1px solid #B8BDC6;
 }
 .playlists-section .playlists-container .playlist-card:hover .playlist-card-name {
-  color: #0C6DE2;
+  color: #0c6fe9;
 }
 .playlists-section .playlists-container .playlist-card .playlist-card-photo {
   position: relative;
   width: 100%;
   padding-top: 100%;
-  /* 1:1 aspect ratio (height = width) */
-  border-radius: 12px;
-  background-color: #5e5e5e;
+  border-radius: 1rem;
+  background-color: #48505E;
   overflow: hidden;
   margin: 0 auto;
   margin-bottom: 1rem;
@@ -91,13 +90,15 @@
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center center;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center;
 }
 .playlists-section .playlists-container .playlist-card .playlist-card-name {
   font-size: 1.25rem;
   font-weight: bold;
-  color: #121212;
+  color: #2A2F37;
   margin-bottom: 0.5rem;
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   white-space: nowrap;
@@ -107,7 +108,7 @@
 .playlists-section .playlists-container .playlist-card .playlist-card-length {
   font-size: 1rem;
   font-weight: 400;
-  color: #7e7e7e;
+  color: #5C6678;
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
@@ -139,8 +140,8 @@
   width: 10rem;
   height: 10rem;
   aspect-ratio: 1/1;
-  border-radius: 12px;
-  background-color: #5e5e5e;
+  border-radius: 1rem;
+  background-color: #48505E;
   overflow: hidden;
 }
 .playlist-section .playlist-container .playlist-header .playlist-header-photo img {
@@ -149,8 +150,10 @@
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center center;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center;
 }
 .playlist-section .playlist-container .playlist-header .playlist-header-info {
   flex: 1;
@@ -162,17 +165,17 @@
 .playlist-section .playlist-container .playlist-header .playlist-header-info .playlist-header-title {
   font-size: 2.5rem;
   font-weight: 600;
-  color: #121212;
+  color: #2A2F37;
 }
 .playlist-section .playlist-container .playlist-header .playlist-header-info .playlist-header-description {
   font-size: 1.2rem;
   font-weight: 400;
-  color: #7e7e7e;
+  color: #5C6678;
 }
 .playlist-section .playlist-container .playlist-header .playlist-header-info .playlist-header-length {
   font-size: 1.2rem;
   font-weight: 400;
-  color: #7e7e7e;
+  color: #5C6678;
 }
 .playlist-section .playlist-container .playlist-subnav {
   width: 100%;
@@ -196,32 +199,32 @@
   align-items: center;
   justify-content: center;
   font-size: 3rem;
-  color: #0C6DE2;
+  color: #0c6fe9;
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   cursor: pointer;
 }
 .playlist-section .playlist-container .playlist-subnav .playlist-subnav-list .playlist-subnav-item.active, .playlist-section .playlist-container .playlist-subnav .playlist-subnav-list .playlist-subnav-item:hover {
-  color: #0C6DE2;
+  color: #0c6fe9;
   transform: scale(1.1);
 }
 .playlist-section .playlist-container .playlist-subnav .playlist-subnav-list .playlist-subnav-item.blue {
-  color: #7e7e7e;
+  color: #5C6678;
   transform: none;
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .playlist-section .playlist-container .playlist-subnav .playlist-subnav-list .playlist-subnav-item.blue.active, .playlist-section .playlist-container .playlist-subnav .playlist-subnav-list .playlist-subnav-item.blue:hover {
-  color: #0C6DE2;
+  color: #0c6fe9;
   transform: none;
 }
 .playlist-section .playlist-container .playlist-subnav .playlist-subnav-list .playlist-subnav-item:last-child {
   position: relative;
   margin-left: auto;
-  color: #7e7e7e;
+  color: #5C6678;
   font-size: 1.25rem;
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .playlist-section .playlist-container .playlist-subnav .playlist-subnav-list .playlist-subnav-item:last-child:hover {
-  color: #121212;
+  color: #2A2F37;
   transform: none;
 }
 .playlist-section .playlist-container .playlist-subnav .playlist-subnav-list .playlist-subnav-item:last-child .playlist-action-list {
@@ -250,7 +253,7 @@
   background-color: rgba(0, 0, 0, 0.1);
 }
 .playlist-section .playlist-container .playlist-subnav .playlist-subnav-list .playlist-subnav-item:last-child .playlist-action-list .playlist-actions-item:hover .btn-playlist-action {
-  color: #0C6DE2;
+  color: #0c6fe9;
 }
 .playlist-section .playlist-container .playlist-subnav .playlist-subnav-list .playlist-subnav-item:last-child .playlist-action-list .playlist-actions-item .btn-playlist-action {
   all: unset;
@@ -258,9 +261,9 @@
   width: calc(100% - 1.5rem);
   padding: 0 0.75rem;
   background: transparent;
-  color: #121212;
+  color: #2A2F37;
   font-size: auto;
-  border-radius: 12px;
+  border-radius: 1rem;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -268,65 +271,72 @@
   gap: 0.5rem;
 }
 
-.popup-container .popup h2 {
-  font-size: 2rem;
-  font-weight: 600;
-  color: #7e7e7e;
-  text-align: center;
-}
-.popup-container .popup .share-friends-container {
+.modal_wrapper .modal .friends-container {
   width: 100%;
   height: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+  grid-template-rows: 1fr;
+  gap: 1.5rem;
+  padding: 1rem 0;
 }
-.popup-container .popup .share-friends-container .share-friend-list {
+.modal_wrapper .modal .friends-container .friend-card {
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 100%;
   height: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-.popup-container .popup .share-friends-container .share-friend-list .share-friend-item {
-  width: 100%;
-  height: auto;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 1rem;
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-.popup-container .popup .share-friends-container .share-friend-list .share-friend-item .share-friend-photo {
-  position: relative;
-  width: 4rem;
-  height: 4rem;
-  aspect-ratio: 1/1;
-  border-radius: 50%;
-  background-color: #5e5e5e;
+  cursor: pointer;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
-.popup-container .popup .share-friends-container .share-friend-list .share-friend-item .share-friend-photo img {
+.modal_wrapper .modal .friends-container .friend-card:hover {
+  border: 1px solid #B8BDC6;
+}
+.modal_wrapper .modal .friends-container .friend-card:hover .friend-card-name {
+  color: #0c6fe9;
+}
+.modal_wrapper .modal .friends-container .friend-card.selected {
+  background-color: #e7f1fd;
+  border: 2px solid #0c6fe9;
+}
+.modal_wrapper .modal .friends-container .friend-card .friend-card-photo {
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+  /* 1:1 aspect ratio (height = width) */
+  border-radius: 50%;
+  background-color: #48505E;
+  overflow: hidden;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+}
+.modal_wrapper .modal .friends-container .friend-card .friend-card-photo img {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center center;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center;
 }
-.popup-container .popup .share-friends-container .share-friend-list .share-friend-item .share-friend-info {
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-}
-.popup-container .popup .share-friends-container .share-friend-list .share-friend-item .share-friend-info .share-friend-name {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #121212;
+.modal_wrapper .modal .friends-container .friend-card .friend-card-name {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #2A2F37;
+  margin-bottom: 0.5rem;
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.popup-container .popup .share-friends-container .share-friend-list .share-friend-item .share-friend-info .share-friend-name:hover {
-  color: #0C6DE2;
+.modal_wrapper .modal .modal_content h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #989FAD;
 }/*# sourceMappingURL=playlists.css.map */

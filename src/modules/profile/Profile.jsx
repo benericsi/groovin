@@ -1,24 +1,187 @@
 import '../../assets/css/profile.css';
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {useParams} from 'react-router-dom';
 import {db, storage} from '../../setup/Firebase';
 import {useAuth} from '../../hooks/useAuth';
 import {useLoader} from '../../hooks/useLoader';
 import {useToast} from '../../hooks/useToast';
+import {useDebounce} from '../../hooks/useDebounce';
 import {Outlet, useNavigate} from 'react-router-dom';
 import firebase from 'firebase/compat/app';
 
 import FriendButton from './FriendButton';
-import PopUp from '../../component/PopUp';
+import Modal from '../../component/Modal';
 import Input from '../form/Input';
 import Button from '../form/Button';
+import Dropzone from '../form/Dropzone';
 
 import {RiAccountCircleFill} from 'react-icons/ri';
-import {AiOutlinePlusCircle} from 'react-icons/ai';
+import {AiOutlinePlusCircle, AiFillEdit} from 'react-icons/ai';
 import {BiEdit} from 'react-icons/bi';
 import ProfileSubNav from './ProfileSubNav';
 import {MdOutlineSaveAlt} from 'react-icons/md';
+import {TbCircleOff} from 'react-icons/tb';
+
+const ModifyProfileForm = ({userData, toggleModal}) => {
+  const [name, setName] = useState(userData.displayName);
+  const [image, setImage] = useState(null);
+  const [errors, setErrors] = useState({});
+
+  const {showLoader, hideLoader} = useLoader();
+  const {addToast} = useToast();
+
+  const {currentUser} = useAuth();
+  const {uid} = useParams();
+
+  useDebounce(
+    () => {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        name: '',
+      }));
+    },
+    0,
+    [name]
+  );
+
+  const onDrop = useCallback((acceptedFiles) => {
+    acceptedFiles.map((file) => {
+      const reader = new FileReader();
+
+      reader.onload = function () {
+        setImage(file);
+      };
+
+      reader.readAsDataURL(file);
+      return file;
+    });
+  }, []);
+
+  const onDropRejected = (fileRejections) => {
+    if (fileRejections[0].errors[0].code === 'file-too-large') {
+      addToast('error', 'The file is too large. Maximum size is 1MB.');
+    } else {
+      addToast('error', 'The file is not an image. Please upload an image file.');
+    }
+  };
+
+  const onFileDialogCancel = useCallback(() => {
+    setImage(null);
+  }, []);
+
+  const handleModifyUser = async (e) => {
+    e.preventDefault();
+    // Prevent user from changing their name to an empty string
+    const inputFields = {name};
+
+    const emptyInputs = Object.keys(inputFields).filter((key) => inputFields[key] === '');
+
+    if (emptyInputs.length > 0) {
+      emptyInputs.forEach((input) => {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [input]: 'This field is required.',
+        }));
+      });
+
+      addToast('error', 'Please fill in all required fields.');
+      return;
+    }
+
+    if (Object.values(errors).some((x) => x !== '')) {
+      addToast('error', 'Please fix all errors before submitting.');
+      return;
+    }
+
+    try {
+      showLoader();
+      const storageRef = storage.ref();
+      const fileRef = storageRef.child(`profile-pictures/${uid}`);
+
+      if (!image) {
+        // Prevent user from changing photo
+        await db
+          .collection('users')
+          .doc(uid)
+          .update({
+            firstName: name.split(' ')[0],
+            lastName: name.split(' ')[1],
+            displayName: name,
+          });
+
+        currentUser.updateProfile({
+          firstName: name.split(' ')[0],
+          lastName: name.split(' ')[1],
+          displayName: name,
+        });
+
+        addToast('success', 'Credentials successfully saved!');
+        toggleModal();
+      } else {
+        await fileRef.put(image);
+        const imageUrl = await fileRef.getDownloadURL();
+
+        await db
+          .collection('users')
+          .doc(uid)
+          .update({
+            firstName: name.split(' ')[0],
+            lastName: name.split(' ')[1],
+            displayName: name,
+            photoURL: image ? imageUrl : 'default',
+          });
+
+        currentUser.updateProfile({
+          firstName: name.split(' ')[0],
+          lastName: name.split(' ')[1],
+          displayName: name,
+          photoURL: image ? imageUrl : 'default',
+        });
+
+        addToast('success', 'Credentials successfully saved!');
+        toggleModal();
+      }
+    } catch (error) {
+      addToast('error', error.message);
+      return;
+    } finally {
+      hideLoader();
+    }
+  };
+
+  return (
+    <>
+      <h1 className="modal_title">
+        <AiFillEdit />
+        Modify Profile
+      </h1>
+      <div className="modal_content">
+        <form>
+          <Input
+            type="text"
+            value={name}
+            label="Full Name *"
+            onChange={(value) => {
+              setName(value);
+            }}
+            error={errors.name}
+            success={name && !errors.name}
+          />
+          <Dropzone label="Upload a profile picture by dragging a file here or click to select" onDrop={onDrop} accept={'image/*'} multiple={false} maxFiles={1} maxSize={1048576} onDropRejected={onDropRejected} onFileDialogCancel={onFileDialogCancel} />
+        </form>
+      </div>
+      <div className="modal_actions">
+        <Button className="secondary" text="Cancel" onClick={toggleModal}>
+          <TbCircleOff />
+        </Button>
+        <Button className="primary" text="Save" onClick={handleModifyUser}>
+          <MdOutlineSaveAlt />
+        </Button>
+      </div>
+    </>
+  );
+};
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -30,9 +193,7 @@ const Profile = () => {
 
   const [userData, setUserData] = useState(null);
   const [isOwnProfile, setIsOwnProfile] = useState(false);
-  const [isPopUpActive, setIsPopUpActive] = useState(false);
-  const [inputName, setInputName] = useState('');
-  const [inputPhoto, setInputPhoto] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [friendStatus, setFriendStatus] = useState(null);
 
   useEffect(() => {
@@ -46,7 +207,7 @@ const Profile = () => {
       .doc(uid)
       .onSnapshot((snapshot) => {
         setUserData(snapshot.data());
-        setInputName(snapshot.data().displayName);
+        // setInputName(snapshot.data().displayName);
 
         if (snapshot.id === currentUser.uid) {
           currentUser.updateProfile({
@@ -277,99 +438,16 @@ const Profile = () => {
     }
   };
 
-  const togglePopUp = () => {
-    setIsPopUpActive(!isPopUpActive);
-  };
-
-  const handleModifyUser = async (e) => {
-    e.preventDefault();
-    // Prevent user from changing their name to an empty string
-    if (inputName === '') {
-      setInputName(userData.displayName);
-      addToast('error', 'Name cannot be empty!');
-      return;
-    }
-
-    // validate file input to only accept images
-    if (inputPhoto && !inputPhoto.type.includes('image')) {
-      addToast('error', 'Profile photo must be an image.');
-      return;
-    }
-
-    try {
-      showLoader();
-      const storageRef = storage.ref();
-      const fileRef = storageRef.child(`profile-pictures/${uid}`);
-
-      if (!inputPhoto) {
-        // Prevent user from changing photo
-        await db
-          .collection('users')
-          .doc(uid)
-          .update({
-            firstName: inputName.split(' ')[0],
-            lastName: inputName.split(' ')[1],
-            displayName: inputName,
-          });
-
-        currentUser.updateProfile({
-          firstName: inputName.split(' ')[0],
-          lastName: inputName.split(' ')[1],
-          displayName: inputName,
-        });
-
-        addToast('success', 'Credentials successfully saved!');
-        togglePopUp();
-      } else {
-        await fileRef.put(inputPhoto);
-        const imageUrl = await fileRef.getDownloadURL();
-
-        await db
-          .collection('users')
-          .doc(uid)
-          .update({
-            firstName: inputName.split(' ')[0],
-            lastName: inputName.split(' ')[1],
-            displayName: inputName,
-            photoURL: inputPhoto ? imageUrl : 'default',
-          });
-
-        currentUser.updateProfile({
-          firstName: inputName.split(' ')[0],
-          lastName: inputName.split(' ')[1],
-          displayName: inputName,
-          photoURL: inputPhoto ? imageUrl : 'default',
-        });
-
-        addToast('success', 'Credentials successfully saved!');
-        togglePopUp();
-      }
-    } catch (error) {
-      addToast('error', error.message);
-      return;
-    } finally {
-      hideLoader();
-    }
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
   };
 
   return (
     <>
       {isOwnProfile && (
-        <PopUp isPopUpActive={isPopUpActive} onClose={() => togglePopUp()}>
-          <Input
-            type="text"
-            value={inputName}
-            label="Full Name"
-            onChange={(value) => {
-              setInputName(value);
-            }}
-            className="input-field"
-          />
-          <Input type="file" accept="image/*" label="Profile Photo" onChange={(file) => setInputPhoto(file)} className="input-field light" />
-          <Button type="button" text="Save" className="dark" onClick={(e) => handleModifyUser(e)}>
-            <MdOutlineSaveAlt />
-          </Button>
-        </PopUp>
+        <Modal isOpen={isModalOpen} close={toggleModal}>
+          <ModifyProfileForm currentUser={currentUser} userData={userData} toggleModal={toggleModal} />
+        </Modal>
       )}
       {userData && (
         <div className="user-header">
@@ -389,7 +467,7 @@ const Profile = () => {
             <div className="user-profile-actions">
               <span className="user-profile-name">{userData.displayName}</span>
               {isOwnProfile ? (
-                <button className="user-profile-edit" onClick={() => togglePopUp()}>
+                <button className="user-profile-edit" onClick={toggleModal}>
                   <BiEdit /> Edit Profile
                 </button>
               ) : (
