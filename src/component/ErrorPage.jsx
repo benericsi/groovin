@@ -9,7 +9,7 @@ import {IoMdArrowBack} from 'react-icons/io';
 import Reveal from './Reveal';
 
 const ErrorPage = () => {
-  useTitle(`Hiba`);
+  useTitle(`Error`);
   const navigate = useNavigate();
 
   const handleOnClick = () => {

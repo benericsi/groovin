@@ -14,6 +14,7 @@ import {HiPencilSquare} from 'react-icons/hi2';
 
 const NAME_REGEX = /^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+([ -][A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+)*$/;
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+const DEFAULT_PHOTO_URL = 'https://firebasestorage.googleapis.com/v0/b/groovin-redesign.appspot.com/o/profile-pictures%2F549507b290b7b3ee0626e5710a354f39.jpg?alt=media&token=e3b32a47-adec-4775-92ba-326f8f619823';
 
 const Signup = () => {
   const [errors, setErrors] = useState({}); // Store input errors
@@ -22,7 +23,7 @@ const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
-  const [inputPhoto, setInputPhoto] = useState('default');
+  const [inputPhoto, setInputPhoto] = useState(null);
 
   const navigate = useNavigate();
   const {signup} = useAuth();
@@ -159,7 +160,7 @@ const Signup = () => {
   };
 
   const onFileDialogCancel = useCallback(() => {
-    setInputPhoto('default');
+    setInputPhoto(null);
   }, []);
 
   const handleFormSubmit = async (e) => {
@@ -197,9 +198,9 @@ const Signup = () => {
       .then(async (cred) => {
         const storageRef = storage.ref();
         const fileRef = storageRef.child(`profile-pictures/${cred.user.uid}`);
-        var imageUrl = 'default';
+        var imageUrl = DEFAULT_PHOTO_URL;
 
-        if (inputPhoto !== 'default') {
+        if (inputPhoto) {
           await fileRef.put(inputPhoto);
           imageUrl = await fileRef.getDownloadURL();
         }

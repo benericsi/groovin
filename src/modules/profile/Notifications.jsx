@@ -106,7 +106,9 @@ const Notifications = () => {
               <Button className="secondary notification-remove" onClick={(e) => removeNotification(e, notification.id)}>
                 <MdClose />
               </Button>
-              <div className="notification-card-photo">{notification.senderPhoto !== 'default' ? <img src={notification.senderPhoto} alt="" /> : ''}</div>
+              <div className="notification-card-photo">
+                <img src={notification.senderPhoto} alt="" />
+              </div>
               <div className="notification-text">
                 <h3>{notification.type}</h3>
                 <p>{notification.message}</p>

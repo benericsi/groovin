@@ -23,6 +23,8 @@ import ProfileSubNav from './ProfileSubNav';
 import {MdOutlineSaveAlt} from 'react-icons/md';
 import {TbCircleOff} from 'react-icons/tb';
 
+const DEFAULT_PHOTO_URL = 'https://firebasestorage.googleapis.com/v0/b/groovin-redesign.appspot.com/o/profile-pictures%2F549507b290b7b3ee0626e5710a354f39.jpg?alt=media&token=e3b32a47-adec-4775-92ba-326f8f619823';
+
 const ModifyProfileForm = ({userData, toggleModal}) => {
   const [name, setName] = useState(userData.displayName);
   const [image, setImage] = useState(null);
@@ -129,14 +131,14 @@ const ModifyProfileForm = ({userData, toggleModal}) => {
             firstName: name.split(' ')[0],
             lastName: name.split(' ')[1],
             displayName: name,
-            photoURL: image ? imageUrl : 'default',
+            photoURL: image ? imageUrl : DEFAULT_PHOTO_URL,
           });
 
         currentUser.updateProfile({
           firstName: name.split(' ')[0],
           lastName: name.split(' ')[1],
           displayName: name,
-          photoURL: image ? imageUrl : 'default',
+          photoURL: image ? imageUrl : DEFAULT_PHOTO_URL,
         });
 
         addToast('success', 'Credentials successfully saved!');
@@ -456,7 +458,7 @@ const Profile = () => {
           </div>
           <div className="user-profile-details">
             <div className="user-profile-image">
-              {userData.photoURL !== 'default' ? <img src={userData.photoURL} alt="" /> : <RiAccountCircleFill className="default-photo" />}
+              <img src={userData.photoURL} alt="" />
               {isOwnProfile ? (
                 <div className="story">
                   <AiOutlinePlusCircle />

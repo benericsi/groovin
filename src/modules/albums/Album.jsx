@@ -149,7 +149,9 @@ const ShareAlbumForm = ({toggleShare, album}) => {
               {friends &&
                 friends.map((friend, index) => (
                   <div className={`friend-card ${selectedFriends.includes(friend.id) ? 'selected' : ''}`} key={index} onClick={() => toggleFriendSelection(friend.id)}>
-                    <div className="friend-card-photo">{friend.photoURL !== 'default' ? <img src={friend.photoURL} alt="" /> : ''}</div>
+                    <div className="friend-card-photo">
+                      <img src={friend.photoURL} alt="" />
+                    </div>
                     <div className="friend-card-name">{friend.displayName}</div>
                   </div>
                 ))}

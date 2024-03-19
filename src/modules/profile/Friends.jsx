@@ -80,7 +80,9 @@ const Friends = () => {
         {friends &&
           friends.map((friend, index) => (
             <Link to={`/profile/${friend.id}`} className="friend-card" key={index}>
-              <div className="friend-card-photo">{friend.photoURL !== 'default' ? <img src={friend.photoURL} alt="" /> : ''}</div>
+              <div className="friend-card-photo">
+                <img src={friend.photoURL} alt="" />
+              </div>
               <div className="friend-card-name">{friend.displayName}</div>
             </Link>
           ))}

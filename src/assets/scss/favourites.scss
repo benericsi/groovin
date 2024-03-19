@@ -1,0 +1,194 @@
+@import 'variables';
+
+.favourites-section {
+    margin: 1rem;
+    padding: 1rem;
+    max-width: $media-query-2xl;
+
+    .no-data {
+        text-align: center;
+        font-size: clamp(3rem, 5vw, 5rem);
+        font-weight: 600;
+        color: color(secondary, 200);
+        margin: 2rem 0;
+    }
+
+    .search-btn {
+        margin: 0 auto;
+        width: clamp(10rem, 20vw, 30rem);
+    }
+
+    .favourites-container {
+        width: 100%;
+        height: auto;
+        background-color: $clr-white;
+        box-shadow: $panel-box-shadow;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        padding: 1rem;
+
+        .favourites-header {
+            position: relative;
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+
+            .favourites-header-photo {
+                position: relative;
+                width: 10rem;
+                height: 10rem;
+                aspect-ratio: 1/1;
+                border-radius: 1rem;
+                overflow: hidden;
+
+                img {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    object-position: center center;
+                }
+            }
+
+            .favourites-header-info {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                gap: .5rem;
+
+                .favourites-header-title {
+                    font-size: 2.5rem;
+                    font-weight: 600;
+                    color: color(secondary, 900);
+                }
+
+                .favourites-header-description {
+                    font-size: 1.2rem;
+                    font-weight: 400;
+                    color: color(secondary, 600);
+                }
+
+                .favourites-header-length {
+                    font-size: 1.2rem;
+                    font-weight: 400;
+                    color: color(secondary, 600);
+                }
+            }
+        }
+
+        .favourites-subnav {
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+
+            .favourites-subnav-list {
+                width: 100%;
+                height: auto;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 1rem;
+
+                .favourites-subnav-item {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 3rem;
+                    color: color(primary, 500);
+                    transition: all .2s $animation-cubic;
+                    cursor: pointer;
+
+
+                    &.active,
+                    &:hover {
+                        color: color(primary, 500);
+                        transform: scale(1.1);
+                    }
+
+                    &.blue {
+                        color: color(secondary, 600);
+                        transform: none;
+                        transition: all .2s $animation-cubic;
+
+                        &.active,
+                        &:hover {
+                            color: color(primary, 500);
+                            transform: none;
+                        }
+                    }
+
+                    &:last-child {
+                        position: relative;
+                        margin-left: auto;
+                        color: color(secondary, 600);
+                        font-size: 1.25rem;
+                        transition: all .2s $animation-cubic;
+
+                        &:hover {
+                            color: color(secondary, 900);
+                            transform: none;
+                        }
+
+                        .favourites-action-list {
+                            font-size: 1rem;
+                            position: absolute;
+                            top: 100%;
+                            width: clamp(10rem, 100%, 15rem);
+                            right: 0;
+                            padding: .25rem;
+                            background-color: $clr-white;
+                            box-shadow: $panel-box-shadow;
+                            display: flex;
+                            flex-direction: column;
+                            list-style: none;
+                            gap: .25rem;
+                            border-radius: .25rem;
+                            z-index: 99999;
+
+                            .favourites-actions-item {
+                                width: 100%;
+                                cursor: pointer;
+                                height: 2.5rem;
+                                transition: background-color .2s $animation-cubic;
+
+                                &:hover {
+                                    background-color: rgba($color: $clr-black, $alpha: .1);
+
+                                    .btn-favourites-action {
+                                        color: color(primary, 500);
+                                    }
+                                }
+
+                                .btn-favourites-action {
+                                    all: unset;
+                                    height: 2.5rem;
+                                    width: calc(100% - 1.5rem);
+                                    padding: 0 .75rem;
+                                    background: transparent;
+                                    color: color(secondary, 900);
+                                    font-size: auto;
+                                    border-radius: 1rem;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: flex-start;
+                                    transition: color .2s $animation-cubic;
+                                    gap: .5rem;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -42,7 +42,9 @@ const Requests = () => {
         {requests &&
           requests.map((request, index) => (
             <Link to={`/profile/${request.sender}`} className="request-card" key={index}>
-              <div className="sender-card-photo">{request.senderPhoto !== 'default' ? <img src={request.senderPhoto} alt="" /> : ''}</div>
+              <div className="sender-card-photo">
+                <img src={request.senderPhoto} alt="" />
+              </div>
               <div className="sender-card-name">{request.senderName}</div>
               <div className="sender-card-action">
                 <span onClick={(e) => acceptRequest(e, request)}>Accept</span>

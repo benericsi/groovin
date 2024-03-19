@@ -14,6 +14,7 @@ import {db, storage} from '../../setup/Firebase';
 import {FcGoogle} from 'react-icons/fc';
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+const DEFAULT_PHOTO_URL = 'https://firebasestorage.googleapis.com/v0/b/groovin-redesign.appspot.com/o/profile-pictures%2F549507b290b7b3ee0626e5710a354f39.jpg?alt=media&token=e3b32a47-adec-4775-92ba-326f8f619823';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -77,7 +78,7 @@ const Login = () => {
         setPassword('');
 
         hideLoader();
-        addToast('success', 'You have successfully logged in!');
+        addToast('success', 'Welcome to Groovin, ' + cred.user.displayName.split(' ')[0] + '!');
         navigate('/');
       })
       .catch((error) => {
@@ -103,13 +104,13 @@ const Login = () => {
         if (cred.additionalUserInfo.isNewUser) {
           const storageRef = storage.ref();
           const pictureRef = storageRef.child(`profile-pictures/${cred.user.uid}`);
-          var pictureURL = 'default';
+          var imageUrl = DEFAULT_PHOTO_URL;
 
           if (cred.user.photoURL) {
             await fetch(cred.user.photoURL).then(async (response) => {
               const blob = await response.blob();
               await pictureRef.put(blob);
-              pictureURL = await pictureRef.getDownloadURL();
+              imageUrl = await pictureRef.getDownloadURL();
             });
           }
 
@@ -118,13 +119,13 @@ const Login = () => {
             lastName: cred.additionalUserInfo.profile.family_name,
             displayName: cred.user.displayName,
             email: cred.user.email,
-            photoURL: pictureURL,
+            photoURL: imageUrl,
             friends: [],
           });
         }
 
         // Signup was successful
-        addToast('success', 'You have successfully signed in!');
+        addToast('success', 'Welcome to Groovin, ' + cred.user.displayName.split(' ')[0] + '!');
         navigate('/');
       })
       .catch((error) => {

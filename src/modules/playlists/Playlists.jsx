@@ -187,7 +187,7 @@ const Playlists = () => {
   useTitle('Playlists');
 
   useEffect(() => {
-    const fetchPlaylists = () => {
+    const getPlaylists = () => {
       showLoader();
 
       try {
@@ -222,7 +222,7 @@ const Playlists = () => {
       }
     };
 
-    fetchPlaylists();
+    getPlaylists();
   }, [uid]);
 
   const toggleModal = () => {

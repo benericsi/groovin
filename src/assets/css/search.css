@@ -132,10 +132,8 @@
   overflow: hidden;
   margin: 0 auto;
   margin-bottom: 1rem;
-  -o-object-fit: cover;
-     object-fit: cover;
-  -o-object-position: center center;
-     object-position: center center;
+  object-fit: cover;
+  object-position: center center;
 }
 .search-body .search-section .search-section-body .body-section .search-list .search-card .search-card-photo.album, .search-body .search-section .search-section-body .body-section .search-list .search-card .search-card-photo.playlist {
   border-radius: 1rem;

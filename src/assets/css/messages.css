@@ -44,23 +44,19 @@
   min-height: 4rem;
   min-width: 4rem;
   border-radius: 50%;
-  -o-object-fit: cover;
   object-fit: cover;
-  -o-object-position: center center;
   object-position: center center;
 }
 .messages-section .user-list-container .user-list .user-list-item h4 {
   font-size: 1.25rem;
   font-weight: 500;
-  color: #2a2f37;
+  color: #2A2F37;
   transition: color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-.messages-section .user-list-container .user-list .user-list-item:hover,
-.messages-section .user-list-container .user-list .user-list-item.active {
+.messages-section .user-list-container .user-list .user-list-item:hover, .messages-section .user-list-container .user-list .user-list-item.active {
   background-color: rgba(72, 80, 94, 0.05);
 }
-.messages-section .user-list-container .user-list .user-list-item:hover h4,
-.messages-section .user-list-container .user-list .user-list-item.active h4 {
+.messages-section .user-list-container .user-list .user-list-item:hover h4, .messages-section .user-list-container .user-list .user-list-item.active h4 {
   color: #0c6fe9;
 }
 .messages-section .chatroom {
@@ -89,7 +85,7 @@
 .messages-section .chatroom .chatroom-header .chat-partner h4 {
   font-size: 1.25rem;
   font-weight: 500;
-  color: #2a2f37;
+  color: #2A2F37;
   transition: color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .messages-section .chatroom .chatroom-header .chat-partner:hover h4 {
@@ -101,9 +97,7 @@
   min-height: 4rem;
   min-width: 4rem;
   border-radius: 50%;
-  -o-object-fit: cover;
   object-fit: cover;
-  -o-object-position: center center;
   object-position: center center;
 }
 .messages-section .chatroom .chatroom-header .chat-actions {
@@ -154,7 +148,7 @@
   width: calc(100% - 1.5rem);
   padding: 0 0.75rem;
   background: transparent;
-  color: #2a2f37;
+  color: #2A2F37;
   font-size: auto;
   border-radius: 1rem;
   display: flex;
@@ -197,7 +191,7 @@
   flex-direction: row;
 }
 .messages-section .chatroom .chatroom-body .message-container .message.received p {
-  background-color: #f0f1f3;
+  background-color: #F0F1F3;
   color: #000;
 }
 .messages-section .chatroom .chatroom-body .message-container .message p {
@@ -214,9 +208,7 @@
   min-height: 2.5rem;
   min-width: 2.5rem;
   border-radius: 50%;
-  -o-object-fit: cover;
   object-fit: cover;
-  -o-object-position: center center;
   object-position: center center;
 }
 .messages-section .chatroom .chatroom-body .message-container .dummy {
@@ -225,7 +217,7 @@
   left: 0;
 }
 .messages-section .chatroom .chatroom-body .message-form {
-  border-top: 1px solid #cfd3d9;
+  border-top: 1px solid #CFD3D9;
   padding: 1rem;
   background-color: #fff;
   display: flex;
@@ -237,4 +229,4 @@
 }
 .messages-section .chatroom .chatroom-body .message-form button.primary {
   height: 1.5rem;
-} /*# sourceMappingURL=messages.css.map */
+}/*# sourceMappingURL=messages.css.map */

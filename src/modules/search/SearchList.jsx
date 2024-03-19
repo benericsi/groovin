@@ -60,8 +60,9 @@ const SearchList = ({data}) => {
     return unsubscribe;
   }, [currentUser]);
 
-  const saveToFavs = (e, trackId) => {
+  const saveToFavs = (e, track) => {
     e.stopPropagation();
+    console.log(track);
 
     showLoader();
     try {
@@ -69,17 +70,44 @@ const SearchList = ({data}) => {
 
       favsRef.get().then((doc) => {
         if (doc.exists) {
-          if (doc.data().tracks.some((track) => track.id === trackId)) {
+          if (doc.data().tracks.some((t) => t.id === track.id)) {
             addToast('info', 'Track is already on your favourites list.');
           } else {
             favsRef.update({
-              tracks: [...doc.data().tracks, {id: trackId, createdAt: new Date()}],
+              tracks: [
+                ...doc.data().tracks,
+                {
+                  id: track.id,
+                  createdAt: new Date(),
+                  album: track.album.name,
+                  artist: track.artists[0].name,
+                  name: track.name,
+                  image: track.album.images[1].url, // 300x300
+                  duration: track.duration_ms,
+                  uri: track.uri,
+                  preview_url: track.preview_url,
+                  explicit: track.explicit,
+                },
+              ],
             });
             addToast('success', 'Track added to your favourites!');
           }
         } else {
           favsRef.set({
-            tracks: [{id: trackId, createdAt: new Date()}],
+            tracks: [
+              {
+                id: track.id,
+                createdAt: new Date(),
+                album: track.album.name,
+                artist: track.artists[0].name,
+                name: track.name,
+                image: track.album.images[1].url, // 300x300
+                duration: track.duration_ms,
+                uri: track.uri,
+                preview_url: track.preview_url,
+                explicit: track.explicit,
+              },
+            ],
           });
           addToast('success', 'Track added to your favourites!');
         }
@@ -91,7 +119,7 @@ const SearchList = ({data}) => {
     }
   };
 
-  const removeFromFavs = (e, trackId) => {
+  const removeFromFavs = (e, track) => {
     e.stopPropagation();
 
     showLoader();
@@ -100,9 +128,9 @@ const SearchList = ({data}) => {
 
       favsRef.get().then((doc) => {
         if (doc.exists) {
-          if (doc.data().tracks.some((track) => track.id === trackId)) {
+          if (doc.data().tracks.some((t) => t.id === track.id)) {
             favsRef.update({
-              tracks: doc.data().tracks.filter((track) => track.id !== trackId),
+              tracks: doc.data().tracks.filter((t) => t.id !== track.id),
             });
             addToast('success', 'Track removed from your favourites!');
           } else {
@@ -143,12 +171,12 @@ const SearchList = ({data}) => {
                     </li>
                     <li className="track-actions-item">
                       {userFavs.some((fav) => fav.id === track.id) ? (
-                        <button className="btn-track-action" onClick={(e) => removeFromFavs(e, track.id)}>
+                        <button className="btn-track-action" onClick={(e) => removeFromFavs(e, track)}>
                           <IoHeartDislikeOutline />
                           <span>Remove From Favs</span>
                         </button>
                       ) : (
-                        <button className="btn-track-action" onClick={(e) => saveToFavs(e, track.id)}>
+                        <button className="btn-track-action" onClick={(e) => saveToFavs(e, track)}>
                           <HiOutlineHeart />
                           <span>Add To Favourites</span>
                         </button>
@@ -240,7 +268,7 @@ const SearchList = ({data}) => {
           <div className="search-list">
             {data.users.map((user) => (
               <Link to={`/profile/${user.id}`} className="search-card" key={user.id}>
-                {user.photoURL !== 'default' ? <img className="search-card-photo user" src={user.photoURL} alt={user.displayName} /> : <MdAccountCircle className="photo-alt user" />}
+                <img className="search-card-photo user" src={user.photoURL} alt={user.displayName} />
                 <div className="search-card-name">{user.displayName}</div>
                 <div className="search-card-info">{user.email}</div>
               </Link>
