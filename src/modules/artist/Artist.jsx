@@ -32,7 +32,7 @@ const Artist = () => {
           },
         });
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
 
         setArtist(data);
         setReadableFollowers(data.followers.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));

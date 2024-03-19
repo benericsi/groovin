@@ -4,6 +4,7 @@ import image from '../../assets/images/4ac8112badd8b745bc547f52c0ad4828.jpg';
 import {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {db} from '../../setup/Firebase';
+import {Reorder} from 'framer-motion';
 
 import {useAuth} from '../../hooks/useAuth';
 import {useLoader} from '../../hooks/useLoader';
@@ -17,10 +18,12 @@ import {BiSearchAlt} from 'react-icons/bi';
 import {FaCirclePlay, FaCirclePause, FaEllipsisVertical} from 'react-icons/fa6';
 import {IoMdRefresh} from 'react-icons/io';
 import {IoShuffleOutline} from 'react-icons/io5';
+import {IoIosTimer} from 'react-icons/io';
 
 const Favourites = () => {
   useTitle('Favourites');
   const [tracks, setTracks] = useState([]);
+  const [isDragging, setIsDragging] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
 
@@ -44,9 +47,8 @@ const Favourites = () => {
           unsubscribe = favsRef.doc(currentUser.uid).onSnapshot((doc) => {
             const data = doc.data();
             if (data) {
-              console.log(data.tracks);
-              let sortedTracks = data.tracks.sort((a, b) => b.createdAt - a.createdAt); // Sort the tracks
-              setTracks(sortedTracks);
+              //let sortedTracks = data.tracks.sort((a, b) => b.createdAt - a.createdAt); // Sort the tracks
+              setTracks(data.tracks);
             }
           });
         }
@@ -64,6 +66,16 @@ const Favourites = () => {
 
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    // Update the track order in the database
+    if (!isDragging && tracks.length > 0) {
+      db.collection('favourites').doc(currentUser.uid).update({
+        tracks: tracks,
+      });
+    }
+    // eslint-disable-next-line
+  }, [isDragging]);
 
   const navigateToSearch = () => {
     navigate('/search');
@@ -99,6 +111,19 @@ const Favourites = () => {
       addToast('error', error.message);
     } finally {
       hideLoader();
+    }
+  };
+
+  const removeTrack = async (trackId) => {
+    try {
+      const newTracks = tracks.filter((track) => track.id !== trackId);
+      await db.collection('favourites').doc(currentUser.uid).update({
+        tracks: newTracks,
+      });
+
+      addToast('success', 'Track removed from favourites.');
+    } catch (error) {
+      addToast('error', error.message);
     }
   };
 
@@ -139,14 +164,43 @@ const Favourites = () => {
               </li>
             </ul>
           </nav>
+          {tracks.length > 0 && (
+            <div className="favourites-list">
+              <div className="table-header">
+                <div className="table-header-item">
+                  <span>#</span>
+                </div>
+                <div className="table-header-item">
+                  <span>Title</span>
+                </div>
+                <div className="table-header-item">
+                  <span>Album</span>
+                </div>
+                <div className="table-header-item">
+                  <span>Added at</span>
+                </div>
+                <div className="table-header-item"></div>
+                <div className="table-header-item">
+                  <span>
+                    <IoIosTimer />
+                  </span>
+                </div>
+              </div>
+              <Reorder.Group
+                values={tracks}
+                onReorder={(newTracks) => {
+                  setTracks(newTracks);
+                }}>
+                {tracks.map((track, index) => (
+                  <Reorder.Item key={track.id} value={track} onDragStart={() => setIsDragging(true)} onDragEnd={() => setIsDragging(false)}>
+                    <Favourite track={track} index={index} removeTrack={removeTrack} />
+                  </Reorder.Item>
+                ))}
+              </Reorder.Group>
+            </div>
+          )}
         </div>
-        {tracks.length > 0 ? (
-          <div className="favourites">
-            {tracks.map((track, index) => (
-              <Favourite key={track.id} track={track} index={index} />
-            ))}
-          </div>
-        ) : (
+        {tracks.length === 0 && (
           <>
             <h2 className="no-data">There are no favourites yet.</h2>
             <Button className="primary search-btn" text="Search songs" onClick={() => navigateToSearch()}>

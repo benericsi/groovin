@@ -80,9 +80,11 @@ const SearchList = ({data}) => {
                   id: track.id,
                   createdAt: new Date(),
                   album: track.album.name,
+                  albumId: track.album.id,
                   artist: track.artists[0].name,
+                  artistId: track.artists[0].id,
                   name: track.name,
-                  image: track.album.images[1].url, // 300x300
+                  image: track.album.images[0].url,
                   duration: track.duration_ms,
                   uri: track.uri,
                   preview_url: track.preview_url,
@@ -99,9 +101,11 @@ const SearchList = ({data}) => {
                 id: track.id,
                 createdAt: new Date(),
                 album: track.album.name,
+                albumId: track.album.id,
                 artist: track.artists[0].name,
+                artistId: track.artists[0].id,
                 name: track.name,
-                image: track.album.images[1].url, // 300x300
+                image: track.album.images[0].url, // 64x64
                 duration: track.duration_ms,
                 uri: track.uri,
                 preview_url: track.preview_url,
