@@ -295,6 +295,7 @@ const Signup = () => {
             onChange={(value) => {
               setPasswordConfirmation(value);
             }}
+            error={errors.passwordConfirmation}
           />
         </div>
         <Dropzone label="Upload a profile picture by dragging a file here or click to select" onDrop={onDrop} accept={'image/*'} multiple={false} maxFiles={1} maxSize={1048576} onDropRejected={onDropRejected} onFileDialogCancel={onFileDialogCancel} />

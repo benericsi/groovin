@@ -1,6 +1,6 @@
 import '../../assets/css/playlists.css';
 
-import {useParams, useNavigate, Link} from 'react-router-dom';
+import {useParams, useNavigate} from 'react-router-dom';
 import {useEffect, useState, useCallback} from 'react';
 import {useLoader} from '../../hooks/useLoader';
 import {useToast} from '../../hooks/useToast';
@@ -13,6 +13,7 @@ import Modal from '../../component/Modal';
 import Input from '../form/Input';
 import Button from '../form/Button';
 import Dropzone from '../form/Dropzone';
+import PlaylistTrackList from './PlaylistTrackList';
 
 import {FaCirclePlay} from 'react-icons/fa6';
 import {FaCirclePause} from 'react-icons/fa6';
@@ -26,6 +27,7 @@ import {IoShareSocialOutline} from 'react-icons/io5';
 import {IoIosSend} from 'react-icons/io';
 import {AiFillEdit} from 'react-icons/ai';
 import {TbCircleOff} from 'react-icons/tb';
+import {BiSearchAlt} from 'react-icons/bi';
 
 const ModifyPlaylistForm = ({toggleModify, playlist}) => {
   const [name, setName] = useState(playlist.title);
@@ -490,6 +492,10 @@ const Playlist = () => {
     }
   };
 
+  const navigateToSearch = () => {
+    navigate('/search');
+  };
+
   return (
     <>
       <Modal isOpen={isModifyActive} close={toggleModify}>
@@ -560,7 +566,16 @@ const Playlist = () => {
                 </li>
               </ul>
             </nav>
+            {playlist.tracks.length > 0 && <PlaylistTrackList playlist={playlist} setPlaylist={setPlaylist} />}
           </div>
+          {playlist.tracks.length === 0 && (
+            <>
+              <h2 className="no-data">There are no songs yet.</h2>
+              <Button className="primary search-btn" text="Search songs" onClick={() => navigateToSearch()}>
+                <BiSearchAlt />
+              </Button>
+            </>
+          )}
         </section>
       )}
     </>

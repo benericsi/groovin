@@ -1,7 +1,7 @@
 import '../../assets/css/albums.css';
 
 import {useParams} from 'react-router-dom';
-import useSpotifyAuth from '../../hooks/useSpotifyAuth';
+import {useSpotifyAuth} from '../../hooks/useSpotifyAuth';
 import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';
 import {useEffect, useState} from 'react';
@@ -9,6 +9,7 @@ import {Link} from 'react-router-dom';
 
 import Modal from '../../component/Modal';
 import Button from '../form/Button';
+import TrackList from './TrackList';
 
 import {useAuth} from '../../hooks/useAuth';
 import {db} from '../../setup/Firebase';
@@ -196,7 +197,6 @@ const Album = () => {
           },
         });
         const data = await response.json();
-        //console.log(data);
         setAlbum(data);
       } catch (error) {
         addToast('error', error.message);
@@ -241,12 +241,17 @@ const Album = () => {
           tracks: album.tracks.items.map((track) => {
             return {
               id: track.id,
-              name: track.name,
-              artist: track.artists[0].name,
+              createdAt: new Date(),
               album: album.name,
-              track_number: track.track_number,
+              albumId: album.id,
+              artist: track.artists[0].name,
+              artistId: track.artists[0].id,
+              name: track.name,
+              image: album.images[1].url,
               duration: track.duration_ms,
               uri: track.uri,
+              preview_url: track.preview_url,
+              explicit: track.explicit,
             };
           }),
         });
@@ -319,6 +324,7 @@ const Album = () => {
                 </li>
               </ul>
             </nav>
+            <TrackList album={album} />
           </div>
         </section>
       )}

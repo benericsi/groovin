@@ -164,6 +164,155 @@
   transition: color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   gap: 0.5rem;
 }
+.album-section .album-container .album-list {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+}
+.album-section .album-container .album-list .table-header {
+  position: sticky;
+  z-index: 99;
+  top: 0;
+  width: 100%;
+  height: 4rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 1rem 0 2rem;
+  background-color: #fff;
+  border-bottom: 1px solid #CFD3D9;
+  margin-bottom: 0.5rem;
+}
+.album-section .album-container .album-list .table-header .table-header-item {
+  height: 100%;
+  font-size: 1rem;
+  font-weight: 500;
+}
+.album-section .album-container .album-list .table-header .table-header-item span {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.album-section .album-container .album-list .table-header .table-header-item:first-child {
+  width: 2rem;
+}
+.album-section .album-container .album-list .table-header .table-header-item:nth-child(2) {
+  flex: 1;
+  min-width: 8rem;
+}
+.album-section .album-container .album-list .table-header .table-header-item:nth-child(3) {
+  width: 2rem;
+}
+.album-section .album-container .album-list .table-header .table-header-item:last-child {
+  width: 4rem;
+}
+.album-section .album-container .album-list .table-header .table-header-item:last-child span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.album-section .album-container .album-list .table-header .table-header-item:last-child span svg {
+  font-size: 1rem;
+}
+.album-section .album-container .album-list .track {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  padding-right: 2rem;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  transition: background-color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.album-section .album-container .album-list .track:hover {
+  background-color: #F0F1F3;
+}
+.album-section .album-container .album-list .track .track-field {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #2A2F37;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.album-section .album-container .album-list .track .track-field a {
+  color: #5C6678;
+  transition: color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.album-section .album-container .album-list .track .track-field a:hover {
+  color: #0c6fe9;
+  text-decoration: underline;
+}
+.album-section .album-container .album-list .track .track-field:first-child {
+  width: 2rem;
+}
+.album-section .album-container .album-list .track .track-field:nth-child(2) {
+  flex: 1;
+  min-width: 8rem;
+  display: flex;
+  gap: 0.75rem;
+}
+.album-section .album-container .album-list .track .track-field:nth-child(2) div {
+  width: 100%;
+}
+.album-section .album-container .album-list .track .track-field:nth-child(2) div h3,
+.album-section .album-container .album-list .track .track-field:nth-child(2) div a {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 90%;
+}
+.album-section .album-container .album-list .track .track-field:nth-child(2) div a {
+  width: fit-content !important;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.album-section .album-container .album-list .track .track-field:nth-child(2) div a svg {
+  font-size: 1rem;
+  color: #000;
+}
+.album-section .album-container .album-list .track .track-field:nth-child(3) {
+  width: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.album-section .album-container .album-list .track .track-field:nth-child(3) svg {
+  color: #db1828;
+  transition: color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.album-section .album-container .album-list .track .track-field:nth-child(3):hover svg {
+  color: #9b111c;
+}
+.album-section .album-container .album-list .track .track-field:last-child {
+  width: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5C6678;
+}
+.album-section .album-container .album-list .track img {
+  width: 3rem;
+  height: 3rem;
+  aspect-ratio: 1/1;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  object-position: center center;
+}
 
 .modal_wrapper .modal .friends-container {
   width: 100%;

@@ -16,7 +16,6 @@ import Input from '../form/Input';
 import Button from '../form/Button';
 import Dropzone from '../form/Dropzone';
 
-import {RiAccountCircleFill} from 'react-icons/ri';
 import {AiOutlinePlusCircle, AiFillEdit} from 'react-icons/ai';
 import {BiEdit} from 'react-icons/bi';
 import ProfileSubNav from './ProfileSubNav';

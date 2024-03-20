@@ -23,9 +23,9 @@
             height: 100%;
             object-fit: cover;
             z-index: 1;
-            background-image: linear-gradient(to right bottom, color(primary, 900), color(primary, 400));
-            background-size: 200% 200%;
-            animation: bg-animation 20s ease infinite;
+            //background-image: linear-gradient(to right bottom, color(primary, 900), color(primary, 400));
+            //background-size: 200% 200%;
+            //animation: bg-animation 20s ease infinite;
             border-radius: 0 0 $border-radius-1 $border-radius-1;
         }
     }

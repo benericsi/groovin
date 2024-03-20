@@ -2,7 +2,7 @@ import {useOutletContext, Link} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';
-import useSpotifyAuth from '../../hooks/useSpotifyAuth';
+import {useSpotifyAuth} from '../../hooks/useSpotifyAuth';
 
 const ArtistAlbums = () => {
   const {artist} = useOutletContext();

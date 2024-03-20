@@ -3,7 +3,7 @@ import {useState, useEffect} from 'react';
 
 import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';
-import useSpotifyAuth from '../../hooks/useSpotifyAuth';
+import {useSpotifyAuth} from '../../hooks/useSpotifyAuth';
 
 import {MdAccountCircle} from 'react-icons/md';
 

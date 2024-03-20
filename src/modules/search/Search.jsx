@@ -1,30 +1,31 @@
 import '../../assets/css/search.css';
 import Input from '../form/Input';
 
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useDebounce} from '../../hooks/useDebounce';
 import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';
 
 import SearchList from './SearchList';
-import useSpotifyAuth from '../../hooks/useSpotifyAuth';
+import {useSpotifyAuth} from '../../hooks/useSpotifyAuth';
 
 import {db} from '../../setup/Firebase';
 import {useTitle} from '../../hooks/useTitle';
+import {useQueryParam} from 'use-query-params';
 
 const Search = () => {
   useTitle('Search');
-  const [searchString, setSearchString] = useState('');
+  const [searchString, setSearchString] = useQueryParam('q', '') || '';
   const [data, setData] = useState(null);
   const token = useSpotifyAuth();
 
   const {addToast} = useToast();
   const {showLoader, hideLoader} = useLoader();
 
-  useDebounce(
+  const debouncedSearch = useDebounce(
     async () => {
       if (!token) return;
-      if (searchString === '') {
+      if (searchString === '' || searchString === null || searchString === undefined) {
         setData(null);
         return;
       }
@@ -82,6 +83,10 @@ const Search = () => {
     750,
     [searchString]
   );
+
+  useEffect(() => {
+    debouncedSearch();
+  }, [searchString, debouncedSearch]);
 
   return (
     <div className="search-body">

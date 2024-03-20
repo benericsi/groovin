@@ -4,7 +4,7 @@ import {useAuth} from './useAuth';
 const CLIENT_ID = 'b8e2f2f4c7fb47d28a9bb1a0884127c9';
 const CLIENT_SECRET = '135fac7fb4dd448b828a8f494bcc0dc5';
 
-const useSpotifyAuth = () => {
+export const useSpotifyAuth = () => {
   const [token, setToken] = useState(null);
   const {currentUser} = useAuth();
 
@@ -28,5 +28,3 @@ const useSpotifyAuth = () => {
 
   return token;
 };
-
-export default useSpotifyAuth;

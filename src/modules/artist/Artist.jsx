@@ -4,12 +4,14 @@ import React, {useEffect, useState} from 'react';
 import {Outlet, useParams} from 'react-router-dom';
 import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';
-import useSpotifyAuth from '../../hooks/useSpotifyAuth';
+import {useSpotifyAuth} from '../../hooks/useSpotifyAuth';
+import ColorThief from 'colorthief';
 
 import ArtistSubNav from './ArtistSubNav';
 import {RiAccountCircleFill} from 'react-icons/ri';
 
 const Artist = () => {
+  const [dominantColor, setDominantColor] = useState('');
   const {addToast} = useToast();
   const {showLoader, hideLoader} = useLoader();
 
@@ -34,6 +36,17 @@ const Artist = () => {
         const data = await response.json();
         // console.log(data);
 
+        if (data.images.length > 0) {
+          const colorThief = new ColorThief();
+          const img = new Image();
+          img.crossOrigin = 'Anonymous';
+          img.src = data.images[2].url;
+          img.onload = () => {
+            const color = colorThief.getColor(img);
+            setDominantColor(`rgb(${color[0]}, ${color[1]}, ${color[2]})`);
+          };
+        }
+
         setArtist(data);
         setReadableFollowers(data.followers.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
       } catch (error) {
@@ -56,7 +69,7 @@ const Artist = () => {
         <>
           <div className="artist-header">
             <div className="header-pre">
-              <div className="artist-background"></div>
+              <div className="artist-background" style={{backgroundColor: dominantColor}}></div>
             </div>
             <div className="artist-profile-details">
               <div className="artist-profile-image">{artist.images.length > 0 ? <img src={artist.images[2].url} alt={artist.name} /> : <RiAccountCircleFill className="default-photo" />}</div>
