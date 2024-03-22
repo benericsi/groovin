@@ -8,14 +8,12 @@ import {useToast} from '../../hooks/useToast';
 import Modal from '../../component/Modal';
 import Button from '../form/Button';
 
-import {MdExplicit} from 'react-icons/md';
 import {HiHeart} from 'react-icons/hi';
 import {HiOutlineHeart} from 'react-icons/hi';
 import {FaEllipsisVertical} from 'react-icons/fa6';
 import {FaRegPlayCircle} from 'react-icons/fa';
-import {MdOutlineQueue} from 'react-icons/md';
 import {AiOutlinePlusCircle} from 'react-icons/ai';
-import {MdAddCircle, MdAddCircleOutline} from 'react-icons/md';
+import {MdAddCircle, MdAddCircleOutline, MdDeleteOutline, MdExplicit, MdOutlineQueue} from 'react-icons/md';
 import {TbCircleOff} from 'react-icons/tb';
 
 const AddToPlaylistForm = ({toggleForm, currentPlaylist, track}) => {
@@ -155,7 +153,7 @@ const AddToPlaylistForm = ({toggleForm, currentPlaylist, track}) => {
   );
 };
 
-const PlaylistTrack = ({index, playlist, track, userFavs, updateUserFavourites, activeTrack, setActiveTrack, actionListIndex, setActionListIndex}) => {
+const PlaylistTrack = ({index, playlist, track, userFavs, updateUserFavourites, activeTrack, setActiveTrack, actionListIndex, setActionListIndex, removeTrack}) => {
   const isFavourite = userFavs.some((favTrack) => favTrack.id === track.id);
   const [addToPlaylist, setAddToPlaylist] = useState(false);
 
@@ -261,6 +259,12 @@ const PlaylistTrack = ({index, playlist, track, userFavs, updateUserFavourites, 
                 <button className="btn-track-action">
                   <AiOutlinePlusCircle />
                   <span>Add To Playlist</span>
+                </button>
+              </li>
+              <li className="track-actions-item" onClick={() => removeTrack(track.id)}>
+                <button className="btn-track-action">
+                  <MdDeleteOutline />
+                  <span>Remove Track</span>
                 </button>
               </li>
             </ul>

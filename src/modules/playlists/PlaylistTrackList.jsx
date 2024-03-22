@@ -58,6 +58,15 @@ const PlaylistTrackList = ({playlist, setPlaylist}) => {
     db.collection('favourites').doc(currentUser.uid).set({tracks: newFavs});
   };
 
+  const removeTrack = async (trackId) => {
+    await db
+      .collection('playlists')
+      .doc(playlist.id)
+      .update({
+        tracks: playlist.tracks.filter((track) => track.id !== trackId),
+      });
+  };
+
   return (
     <div className="playlist-list">
       <div className="table-header">
@@ -88,7 +97,7 @@ const PlaylistTrackList = ({playlist, setPlaylist}) => {
         }}>
         {playlist.tracks.map((track, index) => (
           <Reorder.Item key={track.id} value={track} onDragStart={() => setIsDragging(true)} onDragEnd={() => setIsDragging(false)}>
-            <PlaylistTrack key={track.id} playlist={playlist} track={track} index={index} userFavs={userFavs} updateUserFavourites={updateUserFavourites} activeTrack={activeTrack} setActiveTrack={setActiveTrack} actionListIndex={actionListIndex} setActionListIndex={setActionListIndex} />
+            <PlaylistTrack key={track.id} playlist={playlist} track={track} index={index} userFavs={userFavs} updateUserFavourites={updateUserFavourites} activeTrack={activeTrack} setActiveTrack={setActiveTrack} actionListIndex={actionListIndex} setActionListIndex={setActionListIndex} removeTrack={removeTrack} />
           </Reorder.Item>
         ))}
       </Reorder.Group>

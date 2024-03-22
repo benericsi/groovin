@@ -376,6 +376,52 @@ const DeletePlaylistForm = ({toggleDelete, playlist}) => {
   );
 };
 
+const ClearPlaylistForm = ({toggleClear, playlist}) => {
+  const {showLoader, hideLoader} = useLoader();
+  const {addToast} = useToast();
+
+  const clearPlaylist = async () => {
+    if (playlist.tracks.length === 0) {
+      addToast('info', 'This playlist is empty.');
+      toggleClear();
+      return;
+    }
+
+    showLoader();
+    try {
+      await db.collection('playlists').doc(playlist.id).update({
+        tracks: [],
+      });
+
+      addToast('success', 'Playlist cleared successfully.');
+      toggleClear();
+    } catch (error) {
+      addToast('error', error.message);
+    } finally {
+      hideLoader();
+    }
+  };
+
+  return (
+    <>
+      <h1 className="modal_title">
+        <IoMdRefresh className="icon_red" /> Are you sure you want to clear '{playlist.title}'?
+      </h1>
+      <div className="modal_content">
+        <p>You cannot rewind this action.</p>
+      </div>
+      <div className="modal_actions">
+        <Button className="secondary" text="Cancel" onClick={toggleClear}>
+          <TbCircleOff />
+        </Button>
+        <Button className="primary red" text="Clear" onClick={(e) => clearPlaylist(e)}>
+          <IoMdRefresh />
+        </Button>
+      </div>
+    </>
+  );
+};
+
 const Playlist = () => {
   const navigate = useNavigate();
   const {currentUser} = useAuth();
@@ -393,6 +439,7 @@ const Playlist = () => {
   const [isModifyActive, setIsModifyActive] = useState(false);
   const [isShareActive, setIsShareActive] = useState(false);
   const [isDeleteActive, setIsDeleteActive] = useState(false);
+  const [isClearActive, setIsClearActive] = useState(false);
   const [formattedDate, setFormattedDate] = useState(null);
 
   useEffect(() => {
@@ -472,24 +519,8 @@ const Playlist = () => {
     setIsDeleteActive(!isDeleteActive);
   };
 
-  const clearPlaylist = async () => {
-    if (playlist.tracks.length === 0) {
-      addToast('info', 'This playlist is empty.');
-      return;
-    }
-
-    showLoader();
-    try {
-      await db.collection('playlists').doc(playlistId).update({
-        tracks: [],
-      });
-
-      addToast('success', 'Playlist cleared successfully.');
-    } catch (error) {
-      addToast('error', error.message);
-    } finally {
-      hideLoader();
-    }
+  const toggleClear = () => {
+    setIsClearActive(!isClearActive);
   };
 
   const navigateToSearch = () => {
@@ -508,6 +539,10 @@ const Playlist = () => {
 
       <Modal isOpen={isDeleteActive} close={toggleDelete}>
         <DeletePlaylistForm toggleDelete={toggleDelete} playlist={playlist} />
+      </Modal>
+
+      <Modal isOpen={isClearActive} close={toggleClear}>
+        <ClearPlaylistForm toggleClear={toggleClear} playlist={playlist} />
       </Modal>
 
       {playlist && (
@@ -544,7 +579,7 @@ const Playlist = () => {
                         </button>
                       </li>
                       <li className="playlist-actions-item">
-                        <button className="btn-playlist-action" onClick={() => clearPlaylist()}>
+                        <button className="btn-playlist-action" onClick={toggleClear}>
                           <IoMdRefresh />
                           <span>Clear tracks</span>
                         </button>
