@@ -10,6 +10,8 @@ import {IoIosTimer} from 'react-icons/io';
 const PlaylistTrackList = ({playlist, setPlaylist}) => {
   const [isDragging, setIsDragging] = useState(false);
   const [userFavs, setUserFavs] = useState([]);
+  const [activeTrack, setActiveTrack] = useState(null);
+  const [actionListIndex, setActionListIndex] = useState(null);
 
   const {currentUser} = useAuth();
 
@@ -21,6 +23,12 @@ const PlaylistTrackList = ({playlist, setPlaylist}) => {
       });
     }
     // eslint-disable-next-line
+  }, [isDragging]);
+
+  useEffect(() => {
+    if (isDragging) {
+      setActionListIndex(null);
+    }
   }, [isDragging]);
 
   useEffect(() => {
@@ -71,6 +79,7 @@ const PlaylistTrackList = ({playlist, setPlaylist}) => {
             <IoIosTimer />
           </span>
         </div>
+        <div className="table-header-item"></div>
       </div>
       <Reorder.Group
         values={playlist.tracks}
@@ -79,7 +88,7 @@ const PlaylistTrackList = ({playlist, setPlaylist}) => {
         }}>
         {playlist.tracks.map((track, index) => (
           <Reorder.Item key={track.id} value={track} onDragStart={() => setIsDragging(true)} onDragEnd={() => setIsDragging(false)}>
-            <PlaylistTrack key={track.id} track={track} index={index} userFavs={userFavs} updateUserFavourites={updateUserFavourites} />
+            <PlaylistTrack key={track.id} playlist={playlist} track={track} index={index} userFavs={userFavs} updateUserFavourites={updateUserFavourites} activeTrack={activeTrack} setActiveTrack={setActiveTrack} actionListIndex={actionListIndex} setActionListIndex={setActionListIndex} />
           </Reorder.Item>
         ))}
       </Reorder.Group>

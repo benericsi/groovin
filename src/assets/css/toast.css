@@ -129,7 +129,8 @@
     min-width: 100%;
     justify-content: space-between;
     padding: 0 1rem;
-    column-gap: 0;
+    -moz-column-gap: 0;
+         column-gap: 0;
     align-items: center;
     height: auto;
     min-height: 3.5rem;
