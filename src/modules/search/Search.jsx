@@ -104,7 +104,7 @@ const Search = () => {
           />
         </div>
 
-        {data ? <SearchList data={data} /> : <h1 className="no-search-data">Start typing . . .</h1>}
+        {data ? <SearchList data={data} q={searchString} /> : <h1 className="no-search-data">Start typing . . .</h1>}
       </section>
     </div>
   );

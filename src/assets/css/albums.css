@@ -37,10 +37,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-  -o-object-position: center center;
-     object-position: center center;
+  object-fit: cover;
+  object-position: center center;
 }
 .album-section .album-container .album-header .album-header-info {
   flex: 1;
@@ -277,7 +275,6 @@
   max-width: 90%;
 }
 .album-section .album-container .album-list .track .track-field:nth-child(2) div a {
-  width: -moz-fit-content !important;
   width: fit-content !important;
   display: flex;
   align-items: center;
@@ -313,10 +310,8 @@
   height: 3rem;
   aspect-ratio: 1/1;
   border-radius: 0.5rem;
-  -o-object-fit: cover;
-     object-fit: cover;
-  -o-object-position: center center;
-     object-position: center center;
+  object-fit: cover;
+  object-position: center center;
 }
 
 .modal_wrapper .modal .friends-container {
@@ -367,10 +362,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-  -o-object-position: center center;
-     object-position: center center;
+  object-fit: cover;
+  object-position: center center;
 }
 .modal_wrapper .modal .friends-container .friend-card .friend-card-name {
   font-size: 1.25rem;

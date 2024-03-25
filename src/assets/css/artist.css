@@ -1,3 +1,168 @@
+.artists-body {
+  max-width: 1920px;
+  flex: 1;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+.artists-body .artists-section {
+  margin: 1rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.artists-body .artists-section .body-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.artists-body .artists-section .body-section .list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.artists-body .artists-section .body-section .list-header h2 {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  color: #242424;
+}
+.artists-body .artists-section .body-section .list-header h2 svg {
+  margin-right: 0.5rem;
+  font-size: 1.5rem;
+}
+.artists-body .artists-section .body-section .load-more {
+  margin-top: 0.5rem;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.artists-body .artists-section .body-section .load-more button {
+  width: 100%;
+}
+.artists-body .artists-section .body-section .search-list {
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  grid-template-rows: 1fr;
+  gap: 2rem;
+  padding: 0 1rem;
+}
+.artists-body .artists-section .body-section .search-list .search-card {
+  position: relative;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: auto;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+.artists-body .artists-section .body-section .search-list .search-card .track-actions-list {
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  width: clamp(11rem, 100%, 16rem);
+  padding: 0.25rem;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  gap: 0.25rem;
+  border-radius: 0.25rem;
+  z-index: 99999;
+}
+.artists-body .artists-section .body-section .search-list .search-card .track-actions-list .track-actions-item {
+  width: 100%;
+  cursor: pointer;
+  height: 2.5rem;
+  transition: background-color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.artists-body .artists-section .body-section .search-list .search-card .track-actions-list .track-actions-item:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.artists-body .artists-section .body-section .search-list .search-card .track-actions-list .track-actions-item:hover .btn-track-action {
+  color: #0c6fe9;
+}
+.artists-body .artists-section .body-section .search-list .search-card .track-actions-list .track-actions-item .btn-track-action {
+  all: unset;
+  height: 2.5rem;
+  width: calc(100% - 1.5rem);
+  padding: 0 0.75rem;
+  background: transparent;
+  color: #2A2F37;
+  font-size: auto;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  transition: color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  gap: 0.5rem;
+}
+.artists-body .artists-section .body-section .search-list .search-card:hover {
+  border: 1px solid #B8BDC6;
+}
+.artists-body .artists-section .body-section .search-list .search-card:hover .search-card-name {
+  color: #0c6fe9;
+}
+.artists-body .artists-section .body-section .search-list .search-card .photo-alt {
+  position: relative;
+  width: 100%;
+  height: 75%;
+  color: #989FAD;
+  margin: 0 auto;
+}
+.artists-body .artists-section .body-section .search-list .search-card .search-card-photo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+  object-fit: cover;
+  object-position: center center;
+}
+.artists-body .artists-section .body-section .search-list .search-card .search-card-photo.album, .artists-body .artists-section .body-section .search-list .search-card .search-card-photo.playlist {
+  border-radius: 1rem;
+}
+.artists-body .artists-section .body-section .search-list .search-card .search-card-photo.track {
+  border-radius: 0;
+}
+.artists-body .artists-section .body-section .search-list .search-card .search-card-photo.user, .artists-body .artists-section .body-section .search-list .search-card .search-card-photo.artist {
+  border-radius: 50%;
+}
+.artists-body .artists-section .body-section .search-list .search-card .search-card-name {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #2A2F37;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.artists-body .artists-section .body-section .search-list .search-card .search-card-info {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #5C6678;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.artists-body .artists-section .body-section .search-list .search-card .search-card-info.capitalize {
+  text-transform: capitalize;
+}
+
 .artist-header {
   position: relative;
   top: 0;
@@ -19,8 +184,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   z-index: 1;
   border-radius: 0 0 1rem 1rem;
 }
@@ -49,8 +213,7 @@
 .artist-header .artist-profile-details .artist-profile-image img {
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   border-radius: 50%;
   border: 5px solid #fff;
 }
@@ -181,10 +344,8 @@
   overflow: hidden;
   margin: 0 auto;
   margin-bottom: 1rem;
-  -o-object-fit: cover;
-     object-fit: cover;
-  -o-object-position: center center;
-     object-position: center center;
+  object-fit: cover;
+  object-position: center center;
 }
 .artist-body .body-section .list .card .card-photo.artist {
   border-radius: 50%;

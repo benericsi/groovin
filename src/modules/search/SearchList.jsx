@@ -18,6 +18,9 @@ import {MdOutlineQueue} from 'react-icons/md';
 import {IoPersonOutline} from 'react-icons/io5';
 import {PiVinylRecordLight} from 'react-icons/pi';
 import {TbCircleOff} from 'react-icons/tb';
+import {IoMusicalNotesOutline} from 'react-icons/io5';
+import {PiPlaylistLight} from 'react-icons/pi';
+import {RiAccountCircleLine} from 'react-icons/ri';
 
 const AddToPlaylistForm = ({toggleForm, track}) => {
   const {currentUser} = useAuth();
@@ -153,7 +156,7 @@ const AddToPlaylistForm = ({toggleForm, track}) => {
   );
 };
 
-const SearchList = ({data}) => {
+const SearchList = ({data, q}) => {
   //console.log(data);
   const [openPlaylistIndex, setOpenPlaylistIndex] = useState(null);
   const [selectedTrack, setSelectedTrack] = useState(null);
@@ -317,7 +320,16 @@ const SearchList = ({data}) => {
       <div className="search-section-body">
         {data.tracks.length > 0 && (
           <section className="body-section">
-            <h2>Tracks</h2>
+            <div className="list-header">
+              <h2>
+                <IoMusicalNotesOutline /> Tracks
+              </h2>
+              <span>
+                <Link className="link" to={'/songs'}>
+                  Show More
+                </Link>
+              </span>
+            </div>
             <div className="search-list">
               {data.tracks.map((track, index) => (
                 <div className="search-card" key={track.id} onClick={() => handleTogglePlaylist(index)}>
@@ -380,7 +392,16 @@ const SearchList = ({data}) => {
 
         {data.albums.length > 0 && (
           <section className="body-section">
-            <h2>Albums</h2>
+            <div className="list-header">
+              <h2>
+                <PiVinylRecordLight /> Albums
+              </h2>
+              <span>
+                <Link className="link" to={'/albums'}>
+                  Show More
+                </Link>
+              </span>
+            </div>
             <div className="search-list">
               {data.albums.map((album) => (
                 <Link to={`/album/${album.id}`} className="search-card" key={album.id}>
@@ -395,7 +416,22 @@ const SearchList = ({data}) => {
 
         {data.artists.length > 0 && (
           <section className="body-section">
-            <h2>Artists</h2>
+            <div className="list-header">
+              <h2>
+                <IoPersonOutline />
+                Artists
+              </h2>
+              <span>
+                <Link
+                  className="link"
+                  to={{
+                    pathname: '/artists',
+                    search: `?q=${q}`,
+                  }}>
+                  Show More
+                </Link>
+              </span>
+            </div>
             <div className="search-list">
               {data.artists.map((artist) => (
                 <Link to={`/artist/${artist.id}`} className="search-card" key={artist.id}>
@@ -410,7 +446,9 @@ const SearchList = ({data}) => {
 
         {data.playlists.length > 0 && (
           <section className="body-section">
-            <h2>Playlists</h2>
+            <h2>
+              <PiPlaylistLight /> Playlists
+            </h2>
             <div className="search-list">
               {data.playlists.map((playlist) => (
                 <Link to={`/profile/${playlist.uid}/playlists/${playlist.id}`} className="search-card" key={playlist.id}>
@@ -425,7 +463,9 @@ const SearchList = ({data}) => {
 
         {data.users.length > 0 && (
           <section className="body-section">
-            <h2>Users</h2>
+            <h2>
+              <RiAccountCircleLine /> Users
+            </h2>
             <div className="search-list">
               {data.users.map((user) => (
                 <Link to={`/profile/${user.id}`} className="search-card" key={user.id}>
