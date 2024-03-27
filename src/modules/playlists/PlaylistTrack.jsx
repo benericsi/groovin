@@ -17,7 +17,6 @@ import {MdAddCircle, MdAddCircleOutline, MdDeleteOutline, MdExplicit, MdOutlineQ
 import {TbCircleOff} from 'react-icons/tb';
 
 const AddToPlaylistForm = ({toggleForm, currentPlaylist, track}) => {
-  console.log(track);
   const {currentUser} = useAuth();
 
   const [playlists, setPlaylists] = useState(null);

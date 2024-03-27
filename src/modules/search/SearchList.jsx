@@ -326,7 +326,7 @@ const SearchList = ({data, q}) => {
               </h2>
               <span>
                 <Link className="link" to={'/songs'}>
-                  Show More
+                  Show All
                 </Link>
               </span>
             </div>
@@ -397,8 +397,13 @@ const SearchList = ({data, q}) => {
                 <PiVinylRecordLight /> Albums
               </h2>
               <span>
-                <Link className="link" to={'/albums'}>
-                  Show More
+                <Link
+                  className="link"
+                  to={{
+                    pathname: '/albums',
+                    search: `?q=${q}`,
+                  }}>
+                  Show All
                 </Link>
               </span>
             </div>
@@ -428,7 +433,7 @@ const SearchList = ({data, q}) => {
                     pathname: '/artists',
                     search: `?q=${q}`,
                   }}>
-                  Show More
+                  Show All
                 </Link>
               </span>
             </div>

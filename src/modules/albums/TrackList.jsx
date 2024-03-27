@@ -10,6 +10,9 @@ import AlbumTrack from './AlbumTrack';
 
 const TrackList = ({album}) => {
   const [userFavs, setUserFavs] = useState([]);
+  const [activeTrack, setActiveTrack] = useState(null);
+  const [actionListIndex, setActionListIndex] = useState(null);
+
   const {currentUser} = useAuth();
 
   useEffect(() => {
@@ -70,10 +73,11 @@ const TrackList = ({album}) => {
             <IoIosTimer />
           </span>
         </div>
+        <div className="table-header-item"></div>
       </div>
 
       {album.tracks.items.map((track, index) => (
-        <AlbumTrack key={track.id} album={album} track={track} index={index} userFavs={userFavs} updateUserFavourites={updateUserFavourites} />
+        <AlbumTrack key={track.id} album={album} track={track} index={index} userFavs={userFavs} updateUserFavourites={updateUserFavourites} activeTrack={activeTrack} setActiveTrack={setActiveTrack} actionListIndex={actionListIndex} setActionListIndex={setActionListIndex} />
       ))}
     </div>
   );

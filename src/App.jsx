@@ -30,6 +30,7 @@ const ArtistMain = lazy(() => import('./modules/artist/ArtistMain'));
 const ArtistAlbums = lazy(() => import('./modules/artist/ArtistAlbums'));
 const ArtistRelated = lazy(() => import('./modules/artist/ArtistRelated'));
 
+const Albums = lazy(() => import('./modules/albums/Albums'));
 const Album = lazy(() => import('./modules/albums/Album'));
 
 const Favourites = lazy(() => import('./modules/favourites/Favourites'));
@@ -65,6 +66,7 @@ function App() {
               <Route path="related" element={<ArtistRelated />} />
             </Route>
 
+            <Route exact path="/albums" element={<Albums />} />
             <Route exact path="/album/:albumId" element={<Album />} />
 
             <Route exact path="/favs" element={<Favourites />} />

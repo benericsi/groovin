@@ -28,15 +28,10 @@
                 h2 {
                     display: flex;
                     align-items: center;
-                    font-size: 1.5rem;
+                    font-size: 2rem;
                     font-weight: 600;
                     margin: 0;
                     color: $clr-font;
-
-                    svg {
-                        margin-right: .5rem;
-                        font-size: 1.5rem;
-                    }
                 }
             }
 
@@ -74,53 +69,6 @@
                     padding: 1rem;
                     display: flex;
                     flex-direction: column;
-
-                    .track-actions-list {
-                        position: absolute;
-                        top: 25%;
-                        left: 25%;
-                        width: clamp(11rem, 100%, 16rem);
-                        padding: .25rem;
-                        background-color: $clr-white;
-                        box-shadow: $panel-box-shadow;
-                        display: flex;
-                        flex-direction: column;
-                        list-style: none;
-                        gap: .25rem;
-                        border-radius: .25rem;
-                        z-index: 99999;
-
-                        .track-actions-item {
-                            width: 100%;
-                            cursor: pointer;
-                            height: 2.5rem;
-                            transition: background-color .2s $animation-cubic;
-
-                            &:hover {
-                                background-color: rgba($color: $clr-black, $alpha: .1);
-
-                                .btn-track-action {
-                                    color: color(primary, 500);
-                                }
-                            }
-
-                            .btn-track-action {
-                                all: unset;
-                                height: 2.5rem;
-                                width: calc(100% - 1.5rem);
-                                padding: 0 .75rem;
-                                background: transparent;
-                                color: color(secondary, 900);
-                                font-size: auto;
-                                border-radius: 1rem;
-                                display: flex;
-                                align-items: center;
-                                justify-content: flex-start;
-                                transition: color .2s $animation-cubic;
-                                gap: .5rem;
-                            }
-                        }
-                    }
 
                     &:hover {
                         border: 1px solid color(secondary, 200);

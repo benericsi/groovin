@@ -1,4 +1,4 @@
-import '../../assets/css/artist.css';
+import '../../assets/css/albums.css';
 import {useSpotifyAuth} from '../../hooks/useSpotifyAuth';
 import {useTitle} from '../../hooks/useTitle';
 import {useState, useEffect} from 'react';
@@ -8,18 +8,17 @@ import {useLocation, useNavigate, Link} from 'react-router-dom';
 
 import Button from '../form/Button';
 
-import {MdAccountCircle} from 'react-icons/md';
 import {IoReload} from 'react-icons/io5';
 
 const Artists = () => {
-  useTitle('Artists');
+  useTitle('Albums');
 
   const navigate = useNavigate();
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const q = query.get('q');
 
-  const [artists, setArtists] = useState([]);
+  const [albums, setAlbums] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
@@ -34,7 +33,7 @@ const Artists = () => {
       return;
     }
     showLoader();
-    fetch(`https://api.spotify.com/v1/search?q=${q}&type=artist&limit=20&offset=${(page - 1) * 20}`, {
+    fetch(`https://api.spotify.com/v1/search?q=${q}&type=album&limit=20&offset=${(page - 1) * 20}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -42,8 +41,8 @@ const Artists = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        setArtists((prev) => [...prev, ...data.artists.items]);
-        setHasMore(data.artists.items.length > 0);
+        setAlbums((prev) => [...prev, ...data.albums.items]);
+        setHasMore(data.albums.items.length > 0);
         hideLoader();
       })
       .catch((error) => {
@@ -59,19 +58,19 @@ const Artists = () => {
   };
 
   return (
-    <div className="artists-body">
-      <section className="artists-section">
-        {artists.length > 0 && (
+    <div className="albums-body">
+      <section className="albums-section">
+        {albums.length > 0 && (
           <section className="body-section">
             <div className="list-header">
-              <h2>Artists</h2>
+              <h2>Albums</h2>
             </div>
             <div className="search-list">
-              {artists.map((artist, index) => (
-                <Link to={`/artist/${artist.id}`} className="search-card" key={index}>
-                  {artist.images.length > 0 ? <img className="search-card-photo artist" src={artist.images[1].url} alt={artist.name} /> : <MdAccountCircle className="photo-alt artist" />}
-                  <div className="search-card-name">{artist.name}</div>
-                  <div className="search-card-info capitalize">{artist.type}</div>
+              {albums.map((album, index) => (
+                <Link to={`/album/${album.id}`} className="search-card" key={index}>
+                  <img className="search-card-photo album" src={album.images[1].url} alt={album.name} />
+                  <div className="search-card-name">{album.name}</div>
+                  <div className="search-card-info capitalize">{album.type}</div>
                 </Link>
               ))}
             </div>
