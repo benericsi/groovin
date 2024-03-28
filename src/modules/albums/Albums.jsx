@@ -10,7 +10,7 @@ import Button from '../form/Button';
 
 import {IoReload} from 'react-icons/io5';
 
-const Artists = () => {
+const Albums = () => {
   useTitle('Albums');
 
   const navigate = useNavigate();
@@ -88,4 +88,4 @@ const Artists = () => {
   );
 };
 
-export default Artists;
+export default Albums;

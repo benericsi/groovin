@@ -1,26 +1,26 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {Link} from 'react-router-dom';
+import '../../assets/css/tracks.css';
+import {useSpotifyAuth} from '../../hooks/useSpotifyAuth';
+import {useTitle} from '../../hooks/useTitle';
+import {useState, useEffect, useRef} from 'react';
 import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';
-import {useAuth} from '../../hooks/useAuth';
+import {useLocation, useNavigate, Link} from 'react-router-dom';
 import {db} from '../../setup/Firebase';
+import {useAuth} from '../../hooks/useAuth';
 
 import Modal from '../../component/Modal';
 import Button from '../form/Button';
 
-import {MdAddCircle, MdAddCircleOutline} from 'react-icons/md';
-import {MdAccountCircle} from 'react-icons/md';
+import {IoReload} from 'react-icons/io5';
 import {FaRegPlayCircle} from 'react-icons/fa';
-import {AiOutlinePlusCircle} from 'react-icons/ai';
-import {HiOutlineHeart} from 'react-icons/hi';
-import {IoHeartDislikeOutline} from 'react-icons/io5';
 import {MdOutlineQueue} from 'react-icons/md';
+import {AiOutlinePlusCircle} from 'react-icons/ai';
+import {IoHeartDislikeOutline} from 'react-icons/io5';
+import {HiOutlineHeart} from 'react-icons/hi';
 import {IoPersonOutline} from 'react-icons/io5';
 import {PiVinylRecordLight} from 'react-icons/pi';
+import {MdAddCircle, MdAddCircleOutline} from 'react-icons/md';
 import {TbCircleOff} from 'react-icons/tb';
-import {IoMusicalNotesOutline} from 'react-icons/io5';
-import {PiPlaylistLight} from 'react-icons/pi';
-import {RiAccountCircleLine} from 'react-icons/ri';
 
 const AddToPlaylistForm = ({toggleForm, track}) => {
   const {currentUser} = useAuth();
@@ -156,15 +156,26 @@ const AddToPlaylistForm = ({toggleForm, track}) => {
   );
 };
 
-const SearchList = ({data, q}) => {
-  //console.log(data);
-  const [openPlaylistIndex, setOpenPlaylistIndex] = useState(null);
-  const [selectedTrack, setSelectedTrack] = useState(null);
-  const [userFavs, setUserFavs] = useState([]);
-  const [isAddToPlaylistOpen, setIsAddToPlaylistOpen] = useState(false);
+const Tracks = () => {
+  useTitle('Tracks');
 
   const {currentUser} = useAuth();
 
+  const navigate = useNavigate();
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const q = query.get('q');
+
+  const [tracks, setTracks] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+
+  const [openPlaylistIndex, setOpenPlaylistIndex] = useState(null);
+  const [userFavs, setUserFavs] = useState([]);
+  const [selectedTrack, setSelectedTrack] = useState(null);
+  const [isAddToPlaylistOpen, setIsAddToPlaylistOpen] = useState(false);
+
+  const token = useSpotifyAuth();
   const {addToast} = useToast();
   const {showLoader, hideLoader} = useLoader();
 
@@ -172,8 +183,22 @@ const SearchList = ({data, q}) => {
 
   const handleTogglePlaylist = (index) => {
     setOpenPlaylistIndex(index === openPlaylistIndex ? null : index);
-    setSelectedTrack(data.tracks[index]);
+    setSelectedTrack(tracks[index]);
   };
+
+  useEffect(() => {
+    // get user favourites realtime
+    const unsubscribe = db
+      .collection('favourites')
+      .doc(currentUser.uid)
+      .onSnapshot((doc) => {
+        if (doc.exists) {
+          setUserFavs(doc.data().tracks);
+        }
+      });
+
+    return unsubscribe;
+  }, [currentUser]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -192,18 +217,35 @@ const SearchList = ({data, q}) => {
   }, []);
 
   useEffect(() => {
-    // get user favourites realtime
-    const unsubscribe = db
-      .collection('favourites')
-      .doc(currentUser.uid)
-      .onSnapshot((doc) => {
-        if (doc.exists) {
-          setUserFavs(doc.data().tracks);
-        }
+    if (!token) return;
+    if (q === '' || q === null || q === undefined) {
+      navigate('/search');
+      return;
+    }
+    showLoader();
+    fetch(`https://api.spotify.com/v1/search?q=${q}&type=track&limit=20&offset=${(page - 1) * 20}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setTracks((prev) => [...prev, ...data.tracks.items]);
+        setHasMore(data.tracks.items.length > 0);
+        hideLoader();
+      })
+      .catch((error) => {
+        addToast('error', error.message);
+        hideLoader();
       });
 
-    return unsubscribe;
-  }, [currentUser]);
+    // eslint-disable-next-line
+  }, [q, page, token]);
+
+  const loadMore = () => {
+    setPage((prev) => prev + 1);
+  };
 
   const toggleAddToPlaylist = () => {
     setIsAddToPlaylistOpen(!isAddToPlaylistOpen);
@@ -305,179 +347,83 @@ const SearchList = ({data, q}) => {
         <AddToPlaylistForm toggleForm={toggleAddToPlaylist} track={selectedTrack} />
       </Modal>
 
-      <div className="search-section-body">
-        {data.tracks.length > 0 && (
-          <section className="body-section">
-            <div className="list-header">
-              <h2>
-                <IoMusicalNotesOutline /> Tracks
-              </h2>
-              <span>
-                <Link
-                  className="link"
-                  to={{
-                    pathname: '/tracks',
-                    search: `?q=${q}`,
-                  }}>
-                  Show All
-                </Link>
-              </span>
-            </div>
-            <div className="search-list">
-              {data.tracks.map((track, index) => (
-                <div className="search-card" key={track.id} onClick={() => handleTogglePlaylist(index)}>
-                  {openPlaylistIndex === index && (
-                    <ul className="track-actions-list" ref={trackActionsRef}>
-                      <li className="track-actions-item">
-                        <button className="btn-track-action">
-                          <FaRegPlayCircle />
-                          <span>Play Song</span>
-                        </button>
-                      </li>
-                      <li className="track-actions-item">
-                        <button className="btn-track-action">
-                          <MdOutlineQueue />
-                          <span>Add To Queue</span>
-                        </button>
-                      </li>
-                      <li className="track-actions-item">
-                        <button className="btn-track-action" onClick={toggleAddToPlaylist}>
-                          <AiOutlinePlusCircle />
-                          <span>Add To Playlist</span>
-                        </button>
-                      </li>
-                      <li className="track-actions-item">
-                        {userFavs.some((fav) => fav.id === track.id) ? (
-                          <button className="btn-track-action" onClick={(e) => removeFromFavs(e, track)}>
-                            <IoHeartDislikeOutline />
-                            <span>Remove From Favs</span>
+      <div className="tracks-body">
+        <section className="tracks-section">
+          {tracks.length > 0 && (
+            <section className="body-section">
+              <div className="list-header">
+                <h2>Tracks</h2>
+              </div>
+              <div className="search-list">
+                {tracks.map((track, index) => (
+                  <div className="search-card" key={track.id} onClick={() => handleTogglePlaylist(index)}>
+                    {openPlaylistIndex === index && (
+                      <ul className="track-actions-list" ref={trackActionsRef}>
+                        <li className="track-actions-item">
+                          <button className="btn-track-action">
+                            <FaRegPlayCircle />
+                            <span>Play Song</span>
                           </button>
-                        ) : (
-                          <button className="btn-track-action" onClick={(e) => saveToFavs(e, track)}>
-                            <HiOutlineHeart />
-                            <span>Add To Favourites</span>
+                        </li>
+                        <li className="track-actions-item">
+                          <button className="btn-track-action">
+                            <MdOutlineQueue />
+                            <span>Add To Queue</span>
                           </button>
-                        )}
-                      </li>
+                        </li>
+                        <li className="track-actions-item">
+                          <button className="btn-track-action" onClick={toggleAddToPlaylist}>
+                            <AiOutlinePlusCircle />
+                            <span>Add To Playlist</span>
+                          </button>
+                        </li>
+                        <li className="track-actions-item">
+                          {userFavs.some((fav) => fav.id === track.id) ? (
+                            <button className="btn-track-action" onClick={(e) => removeFromFavs(e, track)}>
+                              <IoHeartDislikeOutline />
+                              <span>Remove From Favs</span>
+                            </button>
+                          ) : (
+                            <button className="btn-track-action" onClick={(e) => saveToFavs(e, track)}>
+                              <HiOutlineHeart />
+                              <span>Add To Favourites</span>
+                            </button>
+                          )}
+                        </li>
 
-                      <li className="track-actions-item">
-                        <Link to={`/artist/${track.artists[0].id}`} className="btn-track-action">
-                          <IoPersonOutline />
-                          <span>About Artist</span>
-                        </Link>
-                      </li>
-                      <li className="track-actions-item">
-                        <Link to={`/album/${track.album.id}`} className="btn-track-action">
-                          <PiVinylRecordLight />
-                          <span>Visit Album</span>
-                        </Link>
-                      </li>
-                    </ul>
-                  )}
-                  <img className="search-card-photo track" src={track.album.images[1].url} alt={track.name} />
-                  <div className="search-card-name">{track.name}</div>
-                  <div className="search-card-info">{track.artists[0].name}</div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {data.albums.length > 0 && (
-          <section className="body-section">
-            <div className="list-header">
-              <h2>
-                <PiVinylRecordLight /> Albums
-              </h2>
-              <span>
-                <Link
-                  className="link"
-                  to={{
-                    pathname: '/albums',
-                    search: `?q=${q}`,
-                  }}>
-                  Show All
-                </Link>
-              </span>
-            </div>
-            <div className="search-list">
-              {data.albums.map((album) => (
-                <Link to={`/album/${album.id}`} className="search-card" key={album.id}>
-                  <img className="search-card-photo album" src={album.images[1].url} alt={album.name} />
-                  <div className="search-card-name">{album.name}</div>
-                  <div className="search-card-info">{album.artists[0].name}</div>
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {data.artists.length > 0 && (
-          <section className="body-section">
-            <div className="list-header">
-              <h2>
-                <IoPersonOutline />
-                Artists
-              </h2>
-              <span>
-                <Link
-                  className="link"
-                  to={{
-                    pathname: '/artists',
-                    search: `?q=${q}`,
-                  }}>
-                  Show All
-                </Link>
-              </span>
-            </div>
-            <div className="search-list">
-              {data.artists.map((artist) => (
-                <Link to={`/artist/${artist.id}`} className="search-card" key={artist.id}>
-                  {artist.images.length > 0 ? <img className="search-card-photo artist" src={artist.images[1].url} alt={artist.name} /> : <MdAccountCircle className="photo-alt artist" />}
-                  <div className="search-card-name">{artist.name}</div>
-                  <div className="search-card-info capitalize">{artist.type}</div>
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {data.playlists.length > 0 && (
-          <section className="body-section">
-            <h2>
-              <PiPlaylistLight /> Playlists
-            </h2>
-            <div className="search-list">
-              {data.playlists.map((playlist) => (
-                <Link to={`/profile/${playlist.uid}/playlists/${playlist.id}`} className="search-card" key={playlist.id}>
-                  <img className="search-card-photo playlist" src={playlist.photoURL} alt={playlist.title} />
-                  <div className="search-card-name">{playlist.title}</div>
-                  <div className="search-card-info">{playlist.creator}</div>
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {data.users.length > 0 && (
-          <section className="body-section">
-            <h2>
-              <RiAccountCircleLine /> Users
-            </h2>
-            <div className="search-list">
-              {data.users.map((user) => (
-                <Link to={`/profile/${user.id}`} className="search-card" key={user.id}>
-                  <img className="search-card-photo user" src={user.photoURL} alt={user.displayName} />
-                  <div className="search-card-name">{user.displayName}</div>
-                  <div className="search-card-info">{user.email}</div>
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
+                        <li className="track-actions-item">
+                          <Link to={`/artist/${track.artists[0].id}`} className="btn-track-action">
+                            <IoPersonOutline />
+                            <span>About Artist</span>
+                          </Link>
+                        </li>
+                        <li className="track-actions-item">
+                          <Link to={`/album/${track.album.id}`} className="btn-track-action">
+                            <PiVinylRecordLight />
+                            <span>Visit Album</span>
+                          </Link>
+                        </li>
+                      </ul>
+                    )}
+                    <img className="search-card-photo track" src={track.album.images[1].url} alt={track.name} />
+                    <div className="search-card-name">{track.name}</div>
+                    <div className="search-card-info capitalize">{track.type}</div>
+                  </div>
+                ))}
+              </div>
+              {hasMore && (
+                <form className="load-more">
+                  <Button className="primary " onClick={loadMore} text="Load more">
+                    <IoReload />
+                  </Button>
+                </form>
+              )}
+            </section>
+          )}
+        </section>
       </div>
     </>
   );
 };
 
-export default SearchList;
+export default Tracks;
