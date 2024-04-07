@@ -9,6 +9,7 @@ import {useToast} from '../../hooks/useToast';
 import {useDebounce} from '../../hooks/useDebounce';
 import {Outlet, useNavigate} from 'react-router-dom';
 import firebase from 'firebase/compat/app';
+import ColorThief from 'colorthief';
 
 import FriendButton from './FriendButton';
 import Modal from '../../component/Modal';
@@ -193,6 +194,7 @@ const Profile = () => {
   const {addToast} = useToast();
 
   const [userData, setUserData] = useState(null);
+  // const [dominantColor, setDominantColor] = useState('');
   const [isOwnProfile, setIsOwnProfile] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [friendStatus, setFriendStatus] = useState(null);
@@ -226,6 +228,21 @@ const Profile = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uid]);
+
+  /* Firebase cross origin issue
+  useEffect(() => {
+    if (userData) {
+      const colorThief = new ColorThief();
+      const img = new Image();
+      img.crossOrigin = 'Anonymous';
+      img.src = userData.photoURL;
+      img.onload = () => {
+        const color = colorThief.getColor(img);
+        setDominantColor(`rgb(${color[0]}, ${color[1]}, ${color[2]})`);
+      };
+    }
+  }, [userData]);
+  */
 
   useEffect(() => {
     const requestRef = db.collection('requests');
