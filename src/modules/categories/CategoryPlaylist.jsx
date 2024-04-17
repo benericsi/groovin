@@ -32,7 +32,7 @@ const CategoryPlaylist = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setPlaylist(data);
         hideLoader();
       })

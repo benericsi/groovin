@@ -169,6 +169,8 @@ const PlaylistTrack = ({index, playlist, track, userFavs, updateUserFavourites, 
     return () => {
       document.removeEventListener('click', handleClickOutside);
     };
+
+    // eslint-disable-next-line
   }, []);
 
   const toggleAddToPlaylist = () => {
