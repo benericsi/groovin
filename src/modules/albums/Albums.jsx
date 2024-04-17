@@ -1,14 +1,10 @@
 import '../../assets/css/albums.css';
 import {useSpotifyAuth} from '../../hooks/useSpotifyAuth';
 import {useTitle} from '../../hooks/useTitle';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';
 import {useLocation, useNavigate, Link} from 'react-router-dom';
-
-import Button from '../form/Button';
-
-import {IoReload} from 'react-icons/io5';
 
 const Artists = () => {
   useTitle('Albums');
@@ -19,12 +15,14 @@ const Artists = () => {
   const q = query.get('q');
 
   const [albums, setAlbums] = useState([]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
 
   const token = useSpotifyAuth();
   const {addToast} = useToast();
   const {showLoader, hideLoader} = useLoader();
+
+  const loadMoreRef = useRef(null);
 
   useEffect(() => {
     if (!token) return;
@@ -53,10 +51,24 @@ const Artists = () => {
     // eslint-disable-next-line
   }, [q, page, token]);
 
-  const loadMore = () => {
-    setPage((prev) => prev + 1);
-  };
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && hasMore) {
+        setPage((prev) => prev + 1);
+      }
+    });
 
+    const currentRef = loadMoreRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, [hasMore]);
   return (
     <div className="albums-body">
       <section className="albums-section">
@@ -74,15 +86,9 @@ const Artists = () => {
                 </Link>
               ))}
             </div>
-            {hasMore && (
-              <form className="load-more">
-                <Button className="primary " onClick={loadMore} text="Load more">
-                  <IoReload />
-                </Button>
-              </form>
-            )}
           </section>
         )}
+        <div ref={loadMoreRef} style={{height: '1px'}} />
       </section>
     </div>
   );

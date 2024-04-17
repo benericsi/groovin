@@ -1,0 +1,75 @@
+.main-wrapper {
+  background-color: #F0F1F3;
+  height: 100svh;
+  width: 100vw;
+  display: flex;
+}
+.main-wrapper .main-content {
+  flex: 1;
+  background-color: #F0F1F3;
+}
+.main-wrapper .main-content .main-header {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  height: 4rem;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #CFD3D9;
+}
+.main-wrapper .main-content .main-header .header-interactions {
+  height: 100%;
+  display: flex;
+  gap: 0.5rem;
+}
+.main-wrapper .main-content .main-header .header-interactions .header-interaction-item {
+  height: 100%;
+  min-width: 2rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.main-wrapper .main-content .main-header .header-interactions .header-interaction-item.active .header-interaction-img, .main-wrapper .main-content .main-header .header-interactions .header-interaction-item:hover .header-interaction-img {
+  color: #0c6fe9;
+  opacity: 1;
+}
+.main-wrapper .main-content .main-header .header-interactions .header-interaction-item:not(:hover).inactive .header-interaction-img {
+  color: #48505E !important;
+  opacity: 0.8 !important;
+}
+.main-wrapper .main-content .main-header .header-interactions .header-interaction-item .header-interaction-img {
+  color: #48505E;
+  opacity: 0.8;
+  font-size: 1.3rem;
+  transition: opacity 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.main-wrapper .main-content .main-header .header-interactions .header-interaction-item .header-interaction-img.logout {
+  color: #db1828;
+}
+.main-wrapper .main-content .main-header .header-interactions .header-interaction-item .header-interaction-img.logout:hover {
+  color: #c71624;
+}
+.main-wrapper .main-content .main-body {
+  height: calc(100vh - 4rem);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+@media only screen and (max-width: 1200px) {
+  .main-content {
+    margin: 4rem 0;
+  }
+  .main-content .main-header {
+    display: none !important;
+  }
+  .main-content .main-body {
+    height: calc(100vh - 8rem) !important;
+  }
+}/*# sourceMappingURL=main-page.css.map */
