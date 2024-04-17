@@ -15,7 +15,7 @@ import {PiVinylRecordLight, PiVinylRecordFill} from 'react-icons/pi';
 import {PiPlaylistLight, PiPlaylistFill} from 'react-icons/pi';
 import {HiOutlineHeart, HiHeart} from 'react-icons/hi';
 import {LiaStarSolid, LiaStar} from 'react-icons/lia';
-import {PiRadioFill, PiRadioLight} from 'react-icons/pi';
+// import {PiRadioFill, PiRadioLight} from 'react-icons/pi';
 import {RiAccountCircleFill, RiAccountCircleLine} from 'react-icons/ri';
 import {IoPeopleOutline, IoPeopleSharp} from 'react-icons/io5';
 import {HiEnvelope, HiOutlineEnvelope} from 'react-icons/hi2';
@@ -103,19 +103,20 @@ const MobileNavbar = () => {
             </li>
 
             <li className={mobileNavStyle['side-list-item']}>
-              <NavLink to="/genres" className={`${mobileNavStyle['side-link']} ${location === '/genres' ? mobileNavStyle['active'] : mobileNavStyle['inactive']}`}>
-                {location === '/genres' ? <LiaStarSolid className={`${mobileNavStyle['side-svg']} ${mobileNavStyle['scale-down']}`} /> : <LiaStar className={`${mobileNavStyle['side-svg']} ${mobileNavStyle['scale-down']}`} />}
-                <span className={mobileNavStyle['side-text']}>Genres</span>
+              <NavLink to="/categories" className={`${mobileNavStyle['side-link']} ${location === '/categories' ? mobileNavStyle['active'] : mobileNavStyle['inactive']}`}>
+                {location === '/categories' ? <LiaStarSolid className={`${mobileNavStyle['side-svg']} ${mobileNavStyle['scale-down']}`} /> : <LiaStar className={`${mobileNavStyle['side-svg']} ${mobileNavStyle['scale-down']}`} />}
+                <span className={mobileNavStyle['side-text']}>Categories</span>
               </NavLink>
             </li>
 
+            {/*
             <li className={`${mobileNavStyle['side-list-item']}`}>
               <NavLink to="/radio" className={`${mobileNavStyle['side-link']} ${location === '/radio' ? mobileNavStyle['active'] : mobileNavStyle['inactive']}`}>
                 {location === '/radio' ? <PiRadioFill className={mobileNavStyle['side-svg']} /> : <PiRadioLight className={mobileNavStyle['side-svg']} />}
                 <span className={mobileNavStyle['side-text']}>Radio</span>
               </NavLink>
             </li>
-
+            */}
             <li className={mobileNavStyle['side-list-item']}>
               <NavLink to={`/profile/${currentUser.uid}/playlists`} className={`${mobileNavStyle['side-link']} ${location === `/profile/${currentUser.uid}/playlists` ? mobileNavStyle['active'] : mobileNavStyle['inactive']}`}>
                 {location === `/profile/${currentUser.uid}/playlists` ? <PiPlaylistFill className={mobileNavStyle['side-svg']} /> : <PiPlaylistLight className={mobileNavStyle['side-svg']} />}

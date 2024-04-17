@@ -1,4 +1,4 @@
-.albums-body {
+.categories-body {
   max-width: 1920px;
   flex: 1;
   width: 100%;
@@ -6,24 +6,30 @@
   display: flex;
   flex-direction: column;
 }
-.albums-body .albums-section {
+.categories-body .categories-section {
   margin: 1rem;
   padding: 1rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
-.albums-body .albums-section .body-section {
+.categories-body .categories-section .body-section {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
-.albums-body .albums-section .body-section .list-header {
+.categories-body .categories-section .body-section .no-data {
+  text-align: center;
+  font-size: clamp(3rem, 5vw, 5rem);
+  font-weight: 600;
+  color: #B8BDC6;
+}
+.categories-body .categories-section .body-section .list-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.albums-body .albums-section .body-section .list-header h2 {
+.categories-body .categories-section .body-section .list-header h2 {
   display: flex;
   align-items: center;
   font-size: 2rem;
@@ -31,17 +37,7 @@
   margin: 0;
   color: #242424;
 }
-.albums-body .albums-section .body-section .load-more {
-  margin-top: 0.5rem;
-  padding: 0 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.albums-body .albums-section .body-section .load-more button {
-  width: 100%;
-}
-.albums-body .albums-section .body-section .search-list {
+.categories-body .categories-section .body-section .search-list {
   width: 100%;
   height: auto;
   display: grid;
@@ -50,7 +46,7 @@
   gap: 2rem;
   padding: 0 1rem;
 }
-.albums-body .albums-section .body-section .search-list .search-card {
+.categories-body .categories-section .body-section .search-list .search-card {
   position: relative;
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -62,20 +58,20 @@
   display: flex;
   flex-direction: column;
 }
-.albums-body .albums-section .body-section .search-list .search-card:hover {
+.categories-body .categories-section .body-section .search-list .search-card:hover {
   border: 1px solid #B8BDC6;
 }
-.albums-body .albums-section .body-section .search-list .search-card:hover .search-card-name {
+.categories-body .categories-section .body-section .search-list .search-card:hover .search-card-name {
   color: #0c6fe9;
 }
-.albums-body .albums-section .body-section .search-list .search-card .photo-alt {
+.categories-body .categories-section .body-section .search-list .search-card .photo-alt {
   position: relative;
   width: 100%;
   height: 75%;
   color: #989FAD;
   margin: 0 auto;
 }
-.albums-body .albums-section .body-section .search-list .search-card .search-card-photo {
+.categories-body .categories-section .body-section .search-list .search-card .search-card-photo {
   position: relative;
   width: 100%;
   aspect-ratio: 1/1;
@@ -85,16 +81,16 @@
   object-fit: cover;
   object-position: center center;
 }
-.albums-body .albums-section .body-section .search-list .search-card .search-card-photo.album, .albums-body .albums-section .body-section .search-list .search-card .search-card-photo.playlist {
+.categories-body .categories-section .body-section .search-list .search-card .search-card-photo.album, .categories-body .categories-section .body-section .search-list .search-card .search-card-photo.playlist {
   border-radius: 1rem;
 }
-.albums-body .albums-section .body-section .search-list .search-card .search-card-photo.track {
+.categories-body .categories-section .body-section .search-list .search-card .search-card-photo.track {
   border-radius: 0;
 }
-.albums-body .albums-section .body-section .search-list .search-card .search-card-photo.user, .albums-body .albums-section .body-section .search-list .search-card .search-card-photo.artist {
+.categories-body .categories-section .body-section .search-list .search-card .search-card-photo.user, .categories-body .categories-section .body-section .search-list .search-card .search-card-photo.artist {
   border-radius: 50%;
 }
-.albums-body .albums-section .body-section .search-list .search-card .search-card-name {
+.categories-body .categories-section .body-section .search-list .search-card .search-card-name {
   font-size: 1.25rem;
   font-weight: bold;
   color: #2A2F37;
@@ -104,7 +100,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.albums-body .albums-section .body-section .search-list .search-card .search-card-info {
+.categories-body .categories-section .body-section .search-list .search-card .search-card-info {
   font-size: 1rem;
   font-weight: 400;
   color: #5C6678;
@@ -113,7 +109,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.albums-body .albums-section .body-section .search-list .search-card .search-card-info.capitalize {
+.categories-body .categories-section .body-section .search-list .search-card .search-card-info.capitalize {
   text-transform: capitalize;
 }
 
@@ -283,17 +279,17 @@
   transition: color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   gap: 0.5rem;
 }
-.album-section .album-container .album-list {
+.album-section .album-container .playlist-list {
   width: 100%;
   height: auto;
   display: flex;
   flex-direction: column;
   background-color: #fff;
 }
-.album-section .album-container .album-list .table-header {
+.album-section .album-container .playlist-list .table-header {
   position: sticky;
-  z-index: 99;
   top: 0;
+  z-index: 99;
   width: 100%;
   height: 4rem;
   display: flex;
@@ -305,12 +301,12 @@
   border-bottom: 1px solid #CFD3D9;
   margin-bottom: 0.5rem;
 }
-.album-section .album-container .album-list .table-header .table-header-item {
+.album-section .album-container .playlist-list .table-header .table-header-item {
   height: 100%;
   font-size: 1rem;
   font-weight: 500;
 }
-.album-section .album-container .album-list .table-header .table-header-item span {
+.album-section .album-container .playlist-list .table-header .table-header-item span {
   height: 100%;
   width: 100%;
   display: flex;
@@ -319,31 +315,38 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.album-section .album-container .album-list .table-header .table-header-item:first-child {
+.album-section .album-container .playlist-list .table-header .table-header-item:first-child {
   width: 2rem;
 }
-.album-section .album-container .album-list .table-header .table-header-item:nth-child(2) {
+.album-section .album-container .playlist-list .table-header .table-header-item:nth-child(2) {
   flex: 1;
   min-width: 8rem;
 }
-.album-section .album-container .album-list .table-header .table-header-item:nth-child(3) {
+.album-section .album-container .playlist-list .table-header .table-header-item:nth-child(3) {
+  flex: 1;
+  min-width: 8rem;
+}
+.album-section .album-container .playlist-list .table-header .table-header-item:nth-child(4) {
+  width: clamp(5rem, 10vw, 10rem);
+}
+.album-section .album-container .playlist-list .table-header .table-header-item:nth-child(5) {
   width: 2rem;
 }
-.album-section .album-container .album-list .table-header .table-header-item:nth-child(4) {
+.album-section .album-container .playlist-list .table-header .table-header-item:nth-child(6) {
   width: 4rem;
 }
-.album-section .album-container .album-list .table-header .table-header-item:nth-child(4) span {
+.album-section .album-container .playlist-list .table-header .table-header-item:nth-child(6) span {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.album-section .album-container .album-list .table-header .table-header-item:nth-child(4) span svg {
+.album-section .album-container .playlist-list .table-header .table-header-item:nth-child(6) span svg {
   font-size: 1rem;
 }
-.album-section .album-container .album-list .table-header .table-header-item:last-child {
+.album-section .album-container .playlist-list .table-header .table-header-item:last-child {
   width: 2rem;
 }
-.album-section .album-container .album-list .track {
+.album-section .album-container .playlist-list .track {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -354,19 +357,19 @@
   background-color: #fff;
   transition: background-color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-.album-section .album-container .album-list .track:hover {
+.album-section .album-container .playlist-list .track:hover {
   background-color: #F0F1F3;
 }
-.album-section .album-container .album-list .track.active {
+.album-section .album-container .playlist-list .track.active {
   background-color: #F0F1F3;
 }
-.album-section .album-container .album-list .track.active .track-field:nth-child(2) h3 {
+.album-section .album-container .playlist-list .track.active .track-field:nth-child(2) h3 {
   color: #0c6fe9;
 }
-.album-section .album-container .album-list .track:hover .track-field:last-child, .album-section .album-container .album-list .track.active .track-field:last-child {
+.album-section .album-container .playlist-list .track:hover .track-field:last-child, .album-section .album-container .playlist-list .track.active .track-field:last-child {
   visibility: visible;
 }
-.album-section .album-container .album-list .track .track-field {
+.album-section .album-container .playlist-list .track .track-field {
   height: 100%;
   display: flex;
   align-items: center;
@@ -377,65 +380,73 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.album-section .album-container .album-list .track .track-field a {
+.album-section .album-container .playlist-list .track .track-field a {
   color: #5C6678;
   transition: color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-.album-section .album-container .album-list .track .track-field a:hover {
+.album-section .album-container .playlist-list .track .track-field a:hover {
   color: #0c6fe9;
   text-decoration: underline;
 }
-.album-section .album-container .album-list .track .track-field:first-child {
+.album-section .album-container .playlist-list .track .track-field:first-child {
   width: 2rem;
 }
-.album-section .album-container .album-list .track .track-field:nth-child(2) {
+.album-section .album-container .playlist-list .track .track-field:nth-child(2) {
   flex: 1;
   min-width: 8rem;
   display: flex;
   gap: 0.75rem;
 }
-.album-section .album-container .album-list .track .track-field:nth-child(2) div {
+.album-section .album-container .playlist-list .track .track-field:nth-child(2) div {
   width: 100%;
 }
-.album-section .album-container .album-list .track .track-field:nth-child(2) div h3,
-.album-section .album-container .album-list .track .track-field:nth-child(2) div a {
+.album-section .album-container .playlist-list .track .track-field:nth-child(2) div h3,
+.album-section .album-container .playlist-list .track .track-field:nth-child(2) div a {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 90%;
 }
-.album-section .album-container .album-list .track .track-field:nth-child(2) div a {
+.album-section .album-container .playlist-list .track .track-field:nth-child(2) div a {
   width: fit-content !important;
   display: flex;
   align-items: center;
   gap: 0.25rem;
 }
-.album-section .album-container .album-list .track .track-field:nth-child(2) div a svg {
+.album-section .album-container .playlist-list .track .track-field:nth-child(2) div a svg {
   font-size: 1rem;
   color: #000;
 }
-.album-section .album-container .album-list .track .track-field:nth-child(3) {
+.album-section .album-container .playlist-list .track .track-field:nth-child(3) {
+  flex: 1;
+  min-width: 8rem;
+}
+.album-section .album-container .playlist-list .track .track-field:nth-child(4) {
+  width: clamp(5rem, 10vw, 10rem);
+  color: #5C6678;
+}
+.album-section .album-container .playlist-list .track .track-field:nth-child(5) {
   width: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
 }
-.album-section .album-container .album-list .track .track-field:nth-child(3) svg {
+.album-section .album-container .playlist-list .track .track-field:nth-child(5) svg {
   color: #db1828;
   transition: color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-.album-section .album-container .album-list .track .track-field:nth-child(3):hover svg {
+.album-section .album-container .playlist-list .track .track-field:nth-child(5):hover svg {
   color: #9b111c;
 }
-.album-section .album-container .album-list .track .track-field:nth-child(4) {
+.album-section .album-container .playlist-list .track .track-field:nth-child(6) {
   width: 4rem;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #5C6678;
 }
-.album-section .album-container .album-list .track .track-field:last-child {
+.album-section .album-container .playlist-list .track .track-field:last-child {
   overflow: visible;
   position: relative;
   width: 2rem;
@@ -447,10 +458,10 @@
   cursor: pointer;
   transition: color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-.album-section .album-container .album-list .track .track-field:last-child:hover {
+.album-section .album-container .playlist-list .track .track-field:last-child:hover {
   color: #2A2F37;
 }
-.album-section .album-container .album-list .track .track-field:last-child .track-actions-list {
+.album-section .album-container .playlist-list .track .track-field:last-child .track-actions-list {
   position: absolute;
   top: 100%;
   right: 100%;
@@ -465,19 +476,19 @@
   border-radius: 0.25rem;
   z-index: 99999;
 }
-.album-section .album-container .album-list .track .track-field:last-child .track-actions-list .track-actions-item {
+.album-section .album-container .playlist-list .track .track-field:last-child .track-actions-list .track-actions-item {
   width: 100%;
   cursor: pointer;
   height: 2.5rem;
   transition: background-color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-.album-section .album-container .album-list .track .track-field:last-child .track-actions-list .track-actions-item:hover {
+.album-section .album-container .playlist-list .track .track-field:last-child .track-actions-list .track-actions-item:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
-.album-section .album-container .album-list .track .track-field:last-child .track-actions-list .track-actions-item:hover .btn-track-action {
+.album-section .album-container .playlist-list .track .track-field:last-child .track-actions-list .track-actions-item:hover .btn-track-action {
   color: #0c6fe9;
 }
-.album-section .album-container .album-list .track .track-field:last-child .track-actions-list .track-actions-item .btn-track-action {
+.album-section .album-container .playlist-list .track .track-field:last-child .track-actions-list .track-actions-item .btn-track-action {
   all: unset;
   height: 2.5rem;
   width: calc(100% - 1.5rem);
@@ -492,140 +503,11 @@
   transition: color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   gap: 0.5rem;
 }
-.album-section .album-container .album-list .track img {
+.album-section .album-container .playlist-list .track img {
   width: 3rem;
   height: 3rem;
   aspect-ratio: 1/1;
   border-radius: 0.5rem;
   object-fit: cover;
   object-position: center center;
-}
-
-.modal_wrapper .modal .friends-container {
-  width: 100%;
-  height: auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
-  grid-template-rows: 1fr;
-  gap: 1.5rem;
-  padding: 1rem 0;
-}
-.modal_wrapper .modal .friends-container .friend-card {
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  height: auto;
-  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  cursor: pointer;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-.modal_wrapper .modal .friends-container .friend-card:hover {
-  border: 1px solid #B8BDC6;
-}
-.modal_wrapper .modal .friends-container .friend-card:hover .friend-card-name {
-  color: #0c6fe9;
-}
-.modal_wrapper .modal .friends-container .friend-card.selected {
-  background-color: #e7f1fd;
-  border: 2px solid #0c6fe9;
-}
-.modal_wrapper .modal .friends-container .friend-card .friend-card-photo {
-  position: relative;
-  width: 100%;
-  padding-top: 100%;
-  /* 1:1 aspect ratio (height = width) */
-  border-radius: 50%;
-  background-color: #48505E;
-  overflow: hidden;
-  margin: 0 auto;
-  margin-bottom: 1rem;
-}
-.modal_wrapper .modal .friends-container .friend-card .friend-card-photo img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center center;
-}
-.modal_wrapper .modal .friends-container .friend-card .friend-card-name {
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: #2A2F37;
-  margin-bottom: 0.5rem;
-  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.modal_wrapper .modal .playlists-container {
-  width: 100%;
-  height: auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
-  grid-template-rows: 1fr;
-  gap: 1.5rem;
-  padding: 1rem 0;
-}
-.modal_wrapper .modal .playlists-container .playlist-card {
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  height: auto;
-  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  cursor: pointer;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-.modal_wrapper .modal .playlists-container .playlist-card:hover {
-  border: 1px solid #B8BDC6;
-}
-.modal_wrapper .modal .playlists-container .playlist-card:hover .playlist-card-name {
-  color: #0c6fe9;
-}
-.modal_wrapper .modal .playlists-container .playlist-card.selected {
-  background-color: #e7f1fd;
-  border: 2px solid #0c6fe9;
-}
-.modal_wrapper .modal .playlists-container .playlist-card .playlist-card-photo {
-  position: relative;
-  width: 100%;
-  padding-top: 100%;
-  /* 1:1 aspect ratio (height = width) */
-  border-radius: 0.5rem;
-  background-color: #48505E;
-  overflow: hidden;
-  margin: 0 auto;
-  margin-bottom: 1rem;
-}
-.modal_wrapper .modal .playlists-container .playlist-card .playlist-card-photo img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center center;
-}
-.modal_wrapper .modal .playlists-container .playlist-card .playlist-card-name {
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: #2A2F37;
-  margin-bottom: 0.5rem;
-  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.modal_wrapper .modal .modal_content h2 {
-  text-align: center;
-  font-size: 2.5rem;
-  font-weight: 600;
-  color: #989FAD;
-}/*# sourceMappingURL=albums.css.map */
+}/*# sourceMappingURL=categories.css.map */

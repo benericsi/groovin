@@ -15,7 +15,7 @@ import {PiVinylRecordLight, PiVinylRecordFill} from 'react-icons/pi';
 import {PiPlaylistLight, PiPlaylistFill} from 'react-icons/pi';
 import {HiOutlineHeart, HiHeart} from 'react-icons/hi';
 import {LiaStarSolid, LiaStar} from 'react-icons/lia';
-import {PiRadioFill, PiRadioLight} from 'react-icons/pi';
+// import {PiRadioFill, PiRadioLight} from 'react-icons/pi';
 import {RiAccountCircleFill, RiAccountCircleLine} from 'react-icons/ri';
 import {IoPeopleOutline, IoPeopleSharp} from 'react-icons/io5';
 import {HiEnvelope, HiOutlineEnvelope} from 'react-icons/hi2';
@@ -155,19 +155,20 @@ const DesktopNavbar = () => {
             <span className={desktopNavStyle['nav-text']}>Songs</span>
           </NavLink>
         </li>
-        <li className={desktopNavStyle['nav-list-item']}>
-          <NavLink to="/genres" className={`${desktopNavStyle['nav-link']} ${location === '/genres' ? desktopNavStyle['active'] : ''}`}>
-            {location === '/genres' ? <LiaStarSolid className={desktopNavStyle['nav-svg']} /> : <LiaStar className={desktopNavStyle['nav-svg']} />}
-            <span className={desktopNavStyle['nav-text']}>Genres</span>
+        <li className={`${desktopNavStyle['nav-list-item']} ${desktopNavStyle['last-in-group']}`}>
+          <NavLink to="/categories" className={`${desktopNavStyle['nav-link']} ${location === '/categories' ? desktopNavStyle['active'] : ''}`}>
+            {location === '/categories' ? <LiaStarSolid className={desktopNavStyle['nav-svg']} /> : <LiaStar className={desktopNavStyle['nav-svg']} />}
+            <span className={desktopNavStyle['nav-text']}>Categories</span>
           </NavLink>
         </li>
+        {/*
         <li className={`${desktopNavStyle['nav-list-item']} ${desktopNavStyle['last-in-group']}`}>
           <NavLink to="/radio" className={`${desktopNavStyle['nav-link']} ${location === '/radio' ? desktopNavStyle['active'] : ''}`}>
             {location === '/radio' ? <PiRadioFill className={desktopNavStyle['nav-svg']} /> : <PiRadioLight className={desktopNavStyle['nav-svg']} />}
             <span className={desktopNavStyle['nav-text']}>Radio</span>
           </NavLink>
         </li>
-
+        */}
         <li className={desktopNavStyle['nav-list-item']}>
           <span className={desktopNavStyle['part-title']}>Account</span>
         </li>

@@ -37,6 +37,10 @@ const Favourites = lazy(() => import('./modules/favourites/Favourites'));
 
 const Tracks = lazy(() => import('./modules/tracks/Tracks'));
 
+const Categories = lazy(() => import('./modules/categories/Categories'));
+const Category = lazy(() => import('./modules/categories/Category'));
+const CategoryPlaylist = lazy(() => import('./modules/categories/CategoryPlaylist'));
+
 function App() {
   return (
     <Suspense fallback={<Loader />}>
@@ -74,6 +78,10 @@ function App() {
             <Route exact path="/favs" element={<Favourites />} />
 
             <Route exact path="/tracks" element={<Tracks />} />
+
+            <Route exact path="/categories" element={<Categories />} />
+            <Route exact path="/category/:categoryId" element={<Category />} />
+            <Route exact path="/category/playlist/:playlistId" element={<CategoryPlaylist />} />
           </Route>
         </Route>
 

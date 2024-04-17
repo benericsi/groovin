@@ -9,7 +9,6 @@ import {useToast} from '../../hooks/useToast';
 import {useDebounce} from '../../hooks/useDebounce';
 import {Outlet, useNavigate} from 'react-router-dom';
 import firebase from 'firebase/compat/app';
-import ColorThief from 'colorthief';
 
 import FriendButton from './FriendButton';
 import Modal from '../../component/Modal';
@@ -17,7 +16,7 @@ import Input from '../form/Input';
 import Button from '../form/Button';
 import Dropzone from '../form/Dropzone';
 
-import {AiOutlinePlusCircle, AiFillEdit} from 'react-icons/ai';
+import {AiFillEdit} from 'react-icons/ai';
 import {BiEdit} from 'react-icons/bi';
 import ProfileSubNav from './ProfileSubNav';
 import {MdOutlineSaveAlt} from 'react-icons/md';
@@ -475,12 +474,6 @@ const Profile = () => {
           <div className="user-profile-details">
             <div className="user-profile-image">
               <img src={userData.photoURL} alt="" />
-              {isOwnProfile ? (
-                <div className="story">
-                  <AiOutlinePlusCircle />
-                  <span>Add to story</span>
-                </div>
-              ) : null}
             </div>
             <div className="user-profile-actions">
               <span className="user-profile-name">{userData.displayName}</span>

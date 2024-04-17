@@ -11,7 +11,6 @@ import {useAuth} from '../../hooks/useAuth';
 import Modal from '../../component/Modal';
 import Button from '../form/Button';
 
-import {IoReload} from 'react-icons/io5';
 import {FaRegPlayCircle} from 'react-icons/fa';
 import {MdOutlineQueue} from 'react-icons/md';
 import {AiOutlinePlusCircle} from 'react-icons/ai';
