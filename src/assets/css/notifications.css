@@ -57,8 +57,10 @@
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center center;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center;
 }
 .notifications-section .notifications-container .notification-card .notification-text h3 {
   font-size: 1.25rem;

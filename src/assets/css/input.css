@@ -58,7 +58,9 @@
   margin: 0;
   border: 1px solid #CFD3D9;
   border-radius: 1rem;
-  appearance: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
   cursor: pointer;
   transition: border 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
@@ -97,8 +99,18 @@
 .input_wrapper .input_group .input_field:focus ~ .input_svg {
   color: #657084;
 }
+.input_wrapper .input_group .input_field:not(:-moz-placeholder-shown) {
+  border: 1px solid #000;
+  background-color: #fff;
+}
 .input_wrapper .input_group .input_field:invalid, .input_wrapper .input_group .input_field:not(:placeholder-shown) {
   border: 1px solid #000;
+  background-color: #fff;
+}
+.input_wrapper .input_group .input_field:not(:-moz-placeholder-shown) ~ label {
+  top: 0;
+  color: #000;
+  font-size: 1.1rem;
   background-color: #fff;
 }
 .input_wrapper .input_group .input_field:invalid ~ label, .input_wrapper .input_group .input_field:not(:placeholder-shown) ~ label {
@@ -107,11 +119,20 @@
   font-size: 1.1rem;
   background-color: #fff;
 }
+.input_wrapper .input_group .input_field:not(:-moz-placeholder-shown).textarea ~ label {
+  transform: translateY(-50%);
+}
 .input_wrapper .input_group .input_field:invalid.textarea ~ label, .input_wrapper .input_group .input_field:not(:placeholder-shown).textarea ~ label {
   transform: translateY(-50%);
 }
+.input_wrapper .input_group .input_field:not(:-moz-placeholder-shown) ~ .input_svg {
+  color: #000;
+}
 .input_wrapper .input_group .input_field:invalid ~ .input_svg, .input_wrapper .input_group .input_field:not(:placeholder-shown) ~ .input_svg {
   color: #000;
+}
+.input_wrapper .input_group .input_field:not(:-moz-placeholder-shown):focus {
+  outline: 2px solid #CFD3D9;
 }
 .input_wrapper .input_group .input_field:invalid:focus, .input_wrapper .input_group .input_field:not(:placeholder-shown):focus {
   outline: 2px solid #CFD3D9;
@@ -161,7 +182,8 @@
   width: 100%;
   --webkit-appearance: none;
   -moz-appearance: none;
-  appearance: none;
+  -webkit-appearance: none;
+          appearance: none;
   cursor: pointer;
   font-size: 0.9rem;
   transition: border 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -181,8 +203,17 @@
   font-size: 1.1rem;
   background-color: #fff;
 }
+.select_wrapper .select_menu:not(:-moz-placeholder-shown) {
+  border: 1px solid #000;
+}
 .select_wrapper .select_menu:invalid, .select_wrapper .select_menu:not(:placeholder-shown) {
   border: 1px solid #000;
+}
+.select_wrapper .select_menu:not(:-moz-placeholder-shown) ~ label {
+  top: 0;
+  color: #000;
+  font-size: 1.1rem;
+  background-color: #fff;
 }
 .select_wrapper .select_menu:invalid ~ label, .select_wrapper .select_menu:not(:placeholder-shown) ~ label {
   top: 0;

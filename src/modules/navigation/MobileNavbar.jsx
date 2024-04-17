@@ -96,8 +96,8 @@ const MobileNavbar = () => {
             </li>
 
             <li className={mobileNavStyle['side-list-item']}>
-              <NavLink to="/songs" className={`${mobileNavStyle['side-link']} ${location === '/songs' ? mobileNavStyle['active'] : mobileNavStyle['inactive']}`}>
-                {location === '/songs' ? <IoMusicalNotesSharp className={`${mobileNavStyle['side-svg']} ${mobileNavStyle['scale-down']}`} /> : <IoMusicalNotesOutline className={`${mobileNavStyle['side-svg']} ${mobileNavStyle['scale-down']}`} />}
+              <NavLink to="/tracks" className={`${mobileNavStyle['side-link']} ${location === '/tracks' ? mobileNavStyle['active'] : mobileNavStyle['inactive']}`}>
+                {location === '/tracks' ? <IoMusicalNotesSharp className={`${mobileNavStyle['side-svg']} ${mobileNavStyle['scale-down']}`} /> : <IoMusicalNotesOutline className={`${mobileNavStyle['side-svg']} ${mobileNavStyle['scale-down']}`} />}
                 <span className={mobileNavStyle['side-text']}>Songs</span>
               </NavLink>
             </li>

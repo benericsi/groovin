@@ -35,6 +35,28 @@
                 font-weight: 600;
                 margin: 0;
             }
+
+            .last-searches {
+                display: flex;
+                flex-wrap: wrap;
+                gap: .5rem;
+
+                li {
+                    display: inline-block;
+                    padding: .5rem 1rem;
+                    background-color: $clr-white;
+                    border-radius: 1rem;
+                    font-size: 1rem;
+                    color: color(secondary, 900);
+                    cursor: pointer;
+                    transition: all .2s $animation-cubic;
+                    border: 1px solid color(secondary, 200);
+
+                    &:hover {
+                        border: 1px solid color(secondary, 500);
+                    }
+                }
+            }
         }
 
         .search-section-body {

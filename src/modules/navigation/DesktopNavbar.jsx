@@ -150,8 +150,8 @@ const DesktopNavbar = () => {
           <span className={desktopNavStyle['part-title']}>Discover</span>
         </li>
         <li className={desktopNavStyle['nav-list-item']}>
-          <NavLink to="/songs" className={`${desktopNavStyle['nav-link']} ${location === '/songs' ? desktopNavStyle['active'] : ''}`}>
-            {location === '/songs' ? <IoMusicalNotesSharp className={desktopNavStyle['nav-svg']} /> : <IoMusicalNotesOutline className={desktopNavStyle['nav-svg']} />}
+          <NavLink to="/tracks" className={`${desktopNavStyle['nav-link']} ${location === '/tracks' ? desktopNavStyle['active'] : ''}`}>
+            {location === '/tracks' ? <IoMusicalNotesSharp className={desktopNavStyle['nav-svg']} /> : <IoMusicalNotesOutline className={desktopNavStyle['nav-svg']} />}
             <span className={desktopNavStyle['nav-text']}>Songs</span>
           </NavLink>
         </li>

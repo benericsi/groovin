@@ -35,6 +35,8 @@ const Album = lazy(() => import('./modules/albums/Album'));
 
 const Favourites = lazy(() => import('./modules/favourites/Favourites'));
 
+const Tracks = lazy(() => import('./modules/tracks/Tracks'));
+
 function App() {
   return (
     <Suspense fallback={<Loader />}>
@@ -70,6 +72,8 @@ function App() {
             <Route exact path="/album/:albumId" element={<Album />} />
 
             <Route exact path="/favs" element={<Favourites />} />
+
+            <Route exact path="/tracks" element={<Tracks />} />
           </Route>
         </Route>
 

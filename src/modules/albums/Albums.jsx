@@ -6,7 +6,7 @@ import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';
 import {useLocation, useNavigate, Link} from 'react-router-dom';
 
-const Artists = () => {
+const Albums = () => {
   useTitle('Albums');
 
   const navigate = useNavigate();
@@ -94,4 +94,4 @@ const Artists = () => {
   );
 };
 
-export default Artists;
+export default Albums;

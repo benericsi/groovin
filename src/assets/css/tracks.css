@@ -1,4 +1,4 @@
-.search-body {
+.tracks-body {
   max-width: 1920px;
   flex: 1;
   width: 100%;
@@ -6,80 +6,42 @@
   display: flex;
   flex-direction: column;
 }
-.search-body .search-section {
+.tracks-body .tracks-section {
   margin: 1rem;
   padding: 1rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
-.search-body .search-section .no-search-data {
-  text-align: center;
-  font-size: clamp(3rem, 5vw, 5rem);
-  font-weight: 600;
-  color: #B8BDC6;
-}
-.search-body .search-section .search-section-header {
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
+.tracks-body .tracks-section .body-section {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
-.search-body .search-section .search-section-header h1 {
-  font-size: 2rem;
-  font-weight: 600;
-  margin: 0;
-}
-.search-body .search-section .search-section-header .last-searches {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-.search-body .search-section .search-section-header .last-searches li {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  background-color: #fff;
-  border-radius: 1rem;
-  font-size: 1rem;
-  color: #2A2F37;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border: 1px solid #B8BDC6;
-}
-.search-body .search-section .search-section-header .last-searches li:hover {
-  border: 1px solid #657084;
-}
-.search-body .search-section .search-section-body {
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-}
-.search-body .search-section .search-section-body .body-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-.search-body .search-section .search-section-body .body-section .list-header {
+.tracks-body .tracks-section .body-section .list-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.search-body .search-section .search-section-body .body-section .list-header h2 {
+.tracks-body .tracks-section .body-section .list-header h2 {
   display: flex;
   align-items: center;
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 600;
   margin: 0;
   color: #242424;
 }
-.search-body .search-section .search-section-body .body-section .list-header h2 svg {
-  margin-right: 0.5rem;
-  font-size: 1.5rem;
+.tracks-body .tracks-section .body-section .load-more {
+  margin-top: 0.5rem;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.search-body .search-section .search-section-body .body-section .search-list {
+.tracks-body .tracks-section .body-section .load-more button {
+  width: 100%;
+}
+.tracks-body .tracks-section .body-section .search-list {
   width: 100%;
   height: auto;
   display: grid;
@@ -88,7 +50,7 @@
   gap: 2rem;
   padding: 0 1rem;
 }
-.search-body .search-section .search-section-body .body-section .search-list .search-card {
+.tracks-body .tracks-section .body-section .search-list .search-card {
   position: relative;
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -100,7 +62,7 @@
   display: flex;
   flex-direction: column;
 }
-.search-body .search-section .search-section-body .body-section .search-list .search-card .track-actions-list {
+.tracks-body .tracks-section .body-section .search-list .search-card .track-actions-list {
   position: absolute;
   top: 25%;
   left: 25%;
@@ -115,19 +77,19 @@
   border-radius: 0.25rem;
   z-index: 99999;
 }
-.search-body .search-section .search-section-body .body-section .search-list .search-card .track-actions-list .track-actions-item {
+.tracks-body .tracks-section .body-section .search-list .search-card .track-actions-list .track-actions-item {
   width: 100%;
   cursor: pointer;
   height: 2.5rem;
   transition: background-color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-.search-body .search-section .search-section-body .body-section .search-list .search-card .track-actions-list .track-actions-item:hover {
+.tracks-body .tracks-section .body-section .search-list .search-card .track-actions-list .track-actions-item:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
-.search-body .search-section .search-section-body .body-section .search-list .search-card .track-actions-list .track-actions-item:hover .btn-track-action {
+.tracks-body .tracks-section .body-section .search-list .search-card .track-actions-list .track-actions-item:hover .btn-track-action {
   color: #0c6fe9;
 }
-.search-body .search-section .search-section-body .body-section .search-list .search-card .track-actions-list .track-actions-item .btn-track-action {
+.tracks-body .tracks-section .body-section .search-list .search-card .track-actions-list .track-actions-item .btn-track-action {
   all: unset;
   height: 2.5rem;
   width: calc(100% - 1.5rem);
@@ -142,20 +104,20 @@
   transition: color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   gap: 0.5rem;
 }
-.search-body .search-section .search-section-body .body-section .search-list .search-card:hover {
+.tracks-body .tracks-section .body-section .search-list .search-card:hover {
   border: 1px solid #B8BDC6;
 }
-.search-body .search-section .search-section-body .body-section .search-list .search-card:hover .search-card-name {
+.tracks-body .tracks-section .body-section .search-list .search-card:hover .search-card-name {
   color: #0c6fe9;
 }
-.search-body .search-section .search-section-body .body-section .search-list .search-card .photo-alt {
+.tracks-body .tracks-section .body-section .search-list .search-card .photo-alt {
   position: relative;
   width: 100%;
   height: 75%;
   color: #989FAD;
   margin: 0 auto;
 }
-.search-body .search-section .search-section-body .body-section .search-list .search-card .search-card-photo {
+.tracks-body .tracks-section .body-section .search-list .search-card .search-card-photo {
   position: relative;
   width: 100%;
   aspect-ratio: 1/1;
@@ -167,16 +129,16 @@
   -o-object-position: center center;
      object-position: center center;
 }
-.search-body .search-section .search-section-body .body-section .search-list .search-card .search-card-photo.album, .search-body .search-section .search-section-body .body-section .search-list .search-card .search-card-photo.playlist {
+.tracks-body .tracks-section .body-section .search-list .search-card .search-card-photo.album, .tracks-body .tracks-section .body-section .search-list .search-card .search-card-photo.playlist {
   border-radius: 1rem;
 }
-.search-body .search-section .search-section-body .body-section .search-list .search-card .search-card-photo.track {
+.tracks-body .tracks-section .body-section .search-list .search-card .search-card-photo.track {
   border-radius: 0;
 }
-.search-body .search-section .search-section-body .body-section .search-list .search-card .search-card-photo.user, .search-body .search-section .search-section-body .body-section .search-list .search-card .search-card-photo.artist {
+.tracks-body .tracks-section .body-section .search-list .search-card .search-card-photo.user, .tracks-body .tracks-section .body-section .search-list .search-card .search-card-photo.artist {
   border-radius: 50%;
 }
-.search-body .search-section .search-section-body .body-section .search-list .search-card .search-card-name {
+.tracks-body .tracks-section .body-section .search-list .search-card .search-card-name {
   font-size: 1.25rem;
   font-weight: bold;
   color: #2A2F37;
@@ -186,7 +148,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.search-body .search-section .search-section-body .body-section .search-list .search-card .search-card-info {
+.tracks-body .tracks-section .body-section .search-list .search-card .search-card-info {
   font-size: 1rem;
   font-weight: 400;
   color: #5C6678;
@@ -195,7 +157,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.search-body .search-section .search-section-body .body-section .search-list .search-card .search-card-info.capitalize {
+.tracks-body .tracks-section .body-section .search-list .search-card .search-card-info.capitalize {
   text-transform: capitalize;
 }
 
@@ -267,4 +229,4 @@
   font-size: 2.5rem;
   font-weight: 600;
   color: #989FAD;
-}/*# sourceMappingURL=search.css.map */
+}/*# sourceMappingURL=tracks.css.map */

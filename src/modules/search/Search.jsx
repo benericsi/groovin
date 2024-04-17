@@ -5,6 +5,7 @@ import {useEffect, useState} from 'react';
 import {useDebounce} from '../../hooks/useDebounce';
 import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';
+import {useAuth} from '../../hooks/useAuth';
 
 import SearchList from './SearchList';
 import {useSpotifyAuth} from '../../hooks/useSpotifyAuth';
@@ -15,10 +16,12 @@ import {useQueryParam} from 'use-query-params';
 
 const Search = () => {
   useTitle('Search');
-  const [searchString, setSearchString] = useQueryParam('q', '') || '';
+  const [searchString, setSearchString] = useQueryParam('q', '');
   const [data, setData] = useState(null);
+  const [lastSearches, setLastSearches] = useState([]);
   const token = useSpotifyAuth();
 
+  const {currentUser} = useAuth();
   const {addToast} = useToast();
   const {showLoader, hideLoader} = useLoader();
 
@@ -74,6 +77,24 @@ const Search = () => {
           users: usersData,
           playlists: playlistsData,
         });
+
+        // Check if the search string already exists in Firebase for the current user
+        const searchesRef = db.collection('searches');
+        const existingSearchSnapshot = await searchesRef.where('searchString', '==', searchString).where('uid', '==', currentUser.uid).get();
+
+        if (!existingSearchSnapshot.empty) {
+          // If the search string exists, update the timestamp
+          const existingSearchDoc = existingSearchSnapshot.docs[0];
+          await searchesRef.doc(existingSearchDoc.id).update({timestamp: Date.now()});
+        } else {
+          // If the search string doesn't exist, add a new document
+          await searchesRef.add({searchString, timestamp: Date.now(), uid: currentUser.uid});
+        }
+
+        // Fetch the last 5 search strings from Firebase for the current user
+        const lastSearchesSnapshot = await searchesRef.where('uid', '==', currentUser.uid).orderBy('timestamp', 'desc').limit(5).get();
+        const lastSearchesData = lastSearchesSnapshot.docs.map((doc) => doc.data().searchString);
+        setLastSearches(lastSearchesData);
       } catch (error) {
         addToast('error', error.message);
       } finally {
@@ -87,6 +108,26 @@ const Search = () => {
   useEffect(() => {
     debouncedSearch();
   }, [searchString, debouncedSearch]);
+
+  useEffect(() => {
+    // Fetch the last 5 search strings from Firebase for the current user
+    const fetchLastSearches = async () => {
+      if (!currentUser) return;
+
+      try {
+        const searchesRef = db.collection('searches');
+        const lastSearchesSnapshot = await searchesRef.where('uid', '==', currentUser.uid).orderBy('timestamp', 'desc').limit(5).get();
+        const lastSearchesData = lastSearchesSnapshot.docs.map((doc) => doc.data().searchString);
+        setLastSearches(lastSearchesData);
+      } catch (error) {
+        addToast('error', error.message);
+      }
+    };
+
+    fetchLastSearches();
+
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div className="search-body">
@@ -102,8 +143,20 @@ const Search = () => {
             }}
             className="input-field light"
           />
-        </div>
 
+          {lastSearches.length > 0 && (
+            <>
+              <h2>Latest</h2>
+              <ul className="last-searches">
+                {lastSearches.map((search, index) => (
+                  <li key={index} onClick={() => setSearchString(search)}>
+                    {search}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
         {data ? <SearchList data={data} q={searchString} /> : <h1 className="no-search-data">Start typing . . .</h1>}
       </section>
     </div>
