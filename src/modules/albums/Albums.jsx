@@ -69,6 +69,7 @@ const Albums = () => {
       }
     };
   }, [hasMore]);
+
   return (
     <div className="albums-body">
       <section className="albums-section">

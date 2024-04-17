@@ -167,7 +167,7 @@ const Tracks = () => {
   const q = query.get('q');
 
   const [tracks, setTracks] = useState([]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
 
   const [openPlaylistIndex, setOpenPlaylistIndex] = useState(null);
@@ -180,6 +180,7 @@ const Tracks = () => {
   const {showLoader, hideLoader} = useLoader();
 
   const trackActionsRef = useRef(null);
+  const loadMoreRef = useRef(null);
 
   const handleTogglePlaylist = (index) => {
     setOpenPlaylistIndex(index === openPlaylistIndex ? null : index);
@@ -231,6 +232,7 @@ const Tracks = () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         setTracks((prev) => [...prev, ...data.tracks.items]);
         setHasMore(data.tracks.items.length > 0);
         hideLoader();
@@ -243,9 +245,24 @@ const Tracks = () => {
     // eslint-disable-next-line
   }, [q, page, token]);
 
-  const loadMore = () => {
-    setPage((prev) => prev + 1);
-  };
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && hasMore) {
+        setPage((prev) => prev + 1);
+      }
+    });
+
+    const currentRef = loadMoreRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, [hasMore]);
 
   const toggleAddToPlaylist = () => {
     setIsAddToPlaylistOpen(!isAddToPlaylistOpen);
@@ -411,15 +428,9 @@ const Tracks = () => {
                   </div>
                 ))}
               </div>
-              {hasMore && (
-                <form className="load-more">
-                  <Button className="primary " onClick={loadMore} text="Load more">
-                    <IoReload />
-                  </Button>
-                </form>
-              )}
             </section>
           )}
+          <div ref={loadMoreRef} style={{height: '1px'}} />
         </section>
       </div>
     </>
