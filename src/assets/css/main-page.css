@@ -4,6 +4,9 @@
   width: 100vw;
   display: flex;
 }
+.main-wrapper.playing {
+  height: calc(100svh - 6rem);
+}
 .main-wrapper .main-content {
   flex: 1;
   background-color: #F0F1F3;
@@ -56,20 +59,26 @@
   color: #c71624;
 }
 .main-wrapper .main-content .main-body {
-  height: calc(100vh - 4rem);
+  height: calc(100% - 4rem);
   overflow-y: auto;
   display: flex;
   flex-direction: column;
 }
 
 @media only screen and (max-width: 1200px) {
-  .main-content {
+  .main-wrapper.playing {
+    height: 100svh;
+  }
+  .main-wrapper.playing .main-content .main-body {
+    height: calc(100% - 6rem);
+  }
+  .main-wrapper .main-content {
     margin: 4rem 0;
   }
-  .main-content .main-header {
+  .main-wrapper .main-content .main-header {
     display: none !important;
   }
-  .main-content .main-body {
-    height: calc(100vh - 8rem) !important;
+  .main-wrapper .main-content .main-body {
+    height: 100%;
   }
 }/*# sourceMappingURL=main-page.css.map */

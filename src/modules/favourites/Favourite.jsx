@@ -4,13 +4,15 @@ import {db} from '../../setup/Firebase';
 import {useAuth} from '../../hooks/useAuth';
 import {useLoader} from '../../hooks/useLoader';
 import {useToast} from '../../hooks/useToast';
+import {usePlayer} from '../../hooks/usePlayer';
 
 import Button from '../form/Button';
 
 import {MdExplicit} from 'react-icons/md';
 import {HiHeart} from 'react-icons/hi';
-import {FaEllipsisVertical} from 'react-icons/fa6';
-import {FaRegPlayCircle} from 'react-icons/fa';
+import {FaPlay, FaEllipsisVertical, FaPause} from 'react-icons/fa6';
+import {IoMusicalNotesSharp} from 'react-icons/io5';
+import {FaRegPauseCircle, FaRegPlayCircle} from 'react-icons/fa';
 import {MdOutlineQueue} from 'react-icons/md';
 import {AiOutlinePlusCircle} from 'react-icons/ai';
 import {MdAddCircle, MdAddCircleOutline} from 'react-icons/md';
@@ -152,9 +154,11 @@ const AddToPlaylistForm = ({toggleForm, track}) => {
   );
 };
 
-const Favourite = ({track, index, removeTrack, activeTrack, setActiveTrack, actionListIndex, setActionListIndex}) => {
+const Favourite = ({track, index, removeTrack, activeTrack, setActiveTrack, actionListIndex, setActionListIndex, toggleSong}) => {
   const [addToPlaylist, setAddToPlaylist] = useState(false);
   const actionListRef = useRef(null);
+
+  const {currentSong, playing} = usePlayer();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -190,9 +194,10 @@ const Favourite = ({track, index, removeTrack, activeTrack, setActiveTrack, acti
         <AddToPlaylistForm toggleForm={toggleAddToPlaylist} track={track} />
       </Modal>
 
-      <div className={`favourite ${track === activeTrack ? 'active' : ''}`} onClick={() => setActiveTrack(track)}>
-        <div className="favourite-field">
-          <span>{index + 1}</span>
+      <div className={`favourite ${track === activeTrack ? 'active' : ''} ${track === currentSong ? 'current' : ''}`} onClick={() => setActiveTrack(track)}>
+        <div className="favourite-field" onClick={() => toggleSong(track)}>
+          <span>{track === currentSong && playing ? <IoMusicalNotesSharp /> : index + 1}</span>
+          {track === currentSong && playing ? <FaPause className="ic" /> : <FaPlay className="ic" />}
         </div>
         <div className="favourite-field">
           <img src={track.image} alt={track.name} />
@@ -231,10 +236,10 @@ const Favourite = ({track, index, removeTrack, activeTrack, setActiveTrack, acti
 
           {actionListIndex === track.id && (
             <ul className="track-actions-list" ref={actionListRef}>
-              <li className="track-actions-item">
+              <li className="track-actions-item" onClick={() => toggleSong(track)}>
                 <button className="btn-track-action">
-                  <FaRegPlayCircle />
-                  <span>Play Song</span>
+                  {track === currentSong && playing ? <FaRegPauseCircle /> : <FaRegPlayCircle />}
+                  <span>{track === currentSong && playing ? 'Pause Song' : 'Play Song'}</span>
                 </button>
               </li>
               <li className="track-actions-item">

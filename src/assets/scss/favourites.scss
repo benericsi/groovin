@@ -293,15 +293,37 @@
 
                     &:hover {
                         background-color: color(secondary, 50);
+
+                        .favourite-field:first-child {
+                            span {
+                                display: none;
+                            }
+
+                            .ic {
+                                display: block;
+                            }
+                        }
                     }
 
                     &.active {
                         background-color: color(secondary, 50);
 
-                        .favourite-field:nth-child(2) {
-                            h3 {
-                                color: color(primary, 500);
+                        .favourite-field:first-child {
+                            span {
+                                display: none;
                             }
+
+                            .ic {
+                                display: block;
+                            }
+                        }
+                    }
+
+                    &.current {
+
+                        .favourite-field:first-child,
+                        .favourite-field:nth-child(2) {
+                            color: color(primary, 500);
                         }
                     }
 
@@ -335,6 +357,14 @@
 
                         &:first-child {
                             width: 2rem;
+
+                            span {
+                                display: block;
+                            }
+
+                            .ic {
+                                display: none;
+                            }
                         }
 
                         &:nth-child(2) {

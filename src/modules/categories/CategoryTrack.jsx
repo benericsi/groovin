@@ -10,7 +10,7 @@ import Modal from '../../component/Modal';
 
 import {HiHeart} from 'react-icons/hi';
 import {HiOutlineHeart} from 'react-icons/hi';
-import {FaEllipsisVertical} from 'react-icons/fa6';
+import {FaEllipsisVertical, FaPlay} from 'react-icons/fa6';
 import {FaRegPlayCircle} from 'react-icons/fa';
 import {AiOutlinePlusCircle} from 'react-icons/ai';
 import {MdExplicit, MdOutlineQueue} from 'react-icons/md';
@@ -196,6 +196,7 @@ const CategoryTrack = ({track, index, userFavs, updateUserFavourites, activeTrac
       <div className={`track ${track === activeTrack ? 'active' : ''}`} onClick={() => setActiveTrack(track)}>
         <div className="track-field">
           <span>{index + 1}</span>
+          <FaPlay />
         </div>
         <div className="track-field">
           <img src={track.track.album.images[0].url} alt={track.track.name} />

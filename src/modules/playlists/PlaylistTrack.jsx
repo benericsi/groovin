@@ -10,7 +10,7 @@ import Button from '../form/Button';
 
 import {HiHeart} from 'react-icons/hi';
 import {HiOutlineHeart} from 'react-icons/hi';
-import {FaEllipsisVertical} from 'react-icons/fa6';
+import {FaEllipsisVertical, FaPlay} from 'react-icons/fa6';
 import {FaRegPlayCircle} from 'react-icons/fa';
 import {AiOutlinePlusCircle} from 'react-icons/ai';
 import {MdAddCircle, MdAddCircleOutline, MdDeleteOutline, MdExplicit, MdOutlineQueue} from 'react-icons/md';
@@ -208,6 +208,7 @@ const PlaylistTrack = ({index, playlist, track, userFavs, updateUserFavourites, 
       <div className={`track ${track === activeTrack ? 'active' : ''}`} onClick={() => setActiveTrack(track)}>
         <div className="track-field">
           <span>{index + 1}</span>
+          <FaPlay />
         </div>
         <div className="track-field">
           <img src={track.image} alt={track.name} />

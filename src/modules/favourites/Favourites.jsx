@@ -10,6 +10,7 @@ import {useAuth} from '../../hooks/useAuth';
 import {useLoader} from '../../hooks/useLoader';
 import {useToast} from '../../hooks/useToast';
 import {useTitle} from '../../hooks/useTitle';
+import {usePlayer} from '../../hooks/usePlayer';
 
 import Favourite from './Favourite';
 import Button from '../form/Button';
@@ -25,8 +26,6 @@ const Favourites = () => {
   const [tracks, setTracks] = useState([]);
   const [activeTrack, setActiveTrack] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isShuffle, setIsShuffle] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
   const [isPlaylistActionsActive, setIsPlaylistActionsActive] = useState(false);
@@ -38,6 +37,8 @@ const Favourites = () => {
 
   const {addToast} = useToast();
   const {showLoader, hideLoader} = useLoader();
+
+  const {queue, currentSong, playing, shuffle, repeat, setCurrentSong, setQueue, addToQueue, togglePlaying, toggleShuffle, prevSong, nextSong, handleEnd} = usePlayer();
 
   useEffect(() => {
     let unsubscribe = () => {};
@@ -72,6 +73,16 @@ const Favourites = () => {
   }, []);
 
   useEffect(() => {
+    if (currentSong) {
+      const updatedCurrentSong = tracks.find((track) => track.id === currentSong.id);
+      if (updatedCurrentSong) {
+        setCurrentSong(updatedCurrentSong);
+      }
+    }
+    // eslint-disable-next-line
+  }, [tracks]);
+
+  useEffect(() => {
     // Update the track order in the database
     if (!isDragging && tracks.length > 0) {
       db.collection('favourites').doc(currentUser.uid).update({
@@ -91,13 +102,28 @@ const Favourites = () => {
     navigate('/search');
   };
 
-  const toggleMusic = () => {
+  const toggleSongs = () => {
     if (tracks.length === 0) {
       addToast('info', 'Favourites is empty.');
       return;
     }
 
-    setIsPlaying(!isPlaying);
+    if (!playing && currentSong === null) {
+      setCurrentSong(tracks[0]);
+      setQueue(tracks);
+      togglePlaying();
+    } else {
+      togglePlaying();
+    }
+  };
+
+  const toggleSong = (track) => {
+    if (currentSong === null || currentSong.id !== track.id) {
+      setCurrentSong(track);
+      setQueue([track]);
+    } else {
+      togglePlaying();
+    }
   };
 
   const togglePlaylistActions = () => {
@@ -164,10 +190,10 @@ const Favourites = () => {
               </header>
               <nav className="favourites-subnav">
                 <ul className="favourites-subnav-list">
-                  <li className="favourites-subnav-item" onClick={() => toggleMusic()}>
-                    {isPlaying ? <FaCirclePause /> : <FaCirclePlay />}
+                  <li className="favourites-subnav-item" onClick={() => toggleSongs()}>
+                    {playing ? <FaCirclePause /> : <FaCirclePlay />}
                   </li>
-                  <li className={`favourites-subnav-item blue ${isShuffle ? 'active' : ''}`} onClick={() => setIsShuffle(!isShuffle)}>
+                  <li className={`favourites-subnav-item blue ${shuffle ? 'active' : ''}`} onClick={toggleShuffle}>
                     <IoShuffleOutline />
                   </li>
                   <li className="favourites-subnav-item" onClick={() => togglePlaylistActions()}>
@@ -223,7 +249,7 @@ const Favourites = () => {
                         onDragEnd={() => {
                           setIsDragging(false);
                         }}>
-                        <Favourite track={track} index={index} removeTrack={removeTrack} isDragging={isDragging} activeTrack={activeTrack} setActiveTrack={setActiveTrack} actionListIndex={actionListIndex} setActionListIndex={setActionListIndex} />
+                        <Favourite track={track} index={index} removeTrack={removeTrack} isDragging={isDragging} activeTrack={activeTrack} setActiveTrack={setActiveTrack} actionListIndex={actionListIndex} setActionListIndex={setActionListIndex} toggleSong={toggleSong} />
                       </Reorder.Item>
                     ))}
                   </Reorder.Group>

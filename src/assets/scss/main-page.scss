@@ -6,6 +6,10 @@
     width: 100vw;
     display: flex;
 
+    &.playing {
+        height: calc(100svh - $player-height);
+    }
+
     .main-content {
         flex: 1;
         background-color: color(secondary, 50);
@@ -74,7 +78,7 @@
         }
 
         .main-body {
-            height: calc(100vh - 4rem);
+            height: calc(100% - $mobile-header-height);
             overflow-y: auto;
             display: flex;
             flex-direction: column;
@@ -84,15 +88,27 @@
 }
 
 @media only screen and (max-width: $media-query-lg) {
-    .main-content {
-        margin: $mobile-header-height 0;
+    .main-wrapper {
+        &.playing {
+            height: 100svh;
 
-        .main-header {
-            display: none !important;
+            .main-content {
+                .main-body {
+                    height: calc(100% - $player-height)
+                }
+            }
         }
 
-        .main-body {
-            height: calc(100vh - 2 * $mobile-header-height) !important;
+        .main-content {
+            margin: $mobile-header-height 0;
+
+            .main-header {
+                display: none !important;
+            }
+
+            .main-body {
+                height: 100%;
+            }
         }
     }
 }

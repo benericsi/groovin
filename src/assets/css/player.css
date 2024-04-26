@@ -1,0 +1,16 @@
+.player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 6rem;
+  background-color: #fff;
+  border-top: 1px solid #CFD3D9;
+  width: 100%;
+  z-index: 99999;
+}
+
+@media only screen and (max-width: 1200px) {
+  .player {
+    bottom: 4rem;
+  }
+}/*# sourceMappingURL=player.css.map */

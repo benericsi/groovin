@@ -254,10 +254,23 @@
 .favourites-body .favourites-section .favourites-container .favourites-list .favourite:hover {
   background-color: #F0F1F3;
 }
+.favourites-body .favourites-section .favourites-container .favourites-list .favourite:hover .favourite-field:first-child span {
+  display: none;
+}
+.favourites-body .favourites-section .favourites-container .favourites-list .favourite:hover .favourite-field:first-child .ic {
+  display: block;
+}
 .favourites-body .favourites-section .favourites-container .favourites-list .favourite.active {
   background-color: #F0F1F3;
 }
-.favourites-body .favourites-section .favourites-container .favourites-list .favourite.active .favourite-field:nth-child(2) h3 {
+.favourites-body .favourites-section .favourites-container .favourites-list .favourite.active .favourite-field:first-child span {
+  display: none;
+}
+.favourites-body .favourites-section .favourites-container .favourites-list .favourite.active .favourite-field:first-child .ic {
+  display: block;
+}
+.favourites-body .favourites-section .favourites-container .favourites-list .favourite.current .favourite-field:first-child,
+.favourites-body .favourites-section .favourites-container .favourites-list .favourite.current .favourite-field:nth-child(2) {
   color: #0c6fe9;
 }
 .favourites-body .favourites-section .favourites-container .favourites-list .favourite:hover .favourite-field:last-child, .favourites-body .favourites-section .favourites-container .favourites-list .favourite.active .favourite-field:last-child {
@@ -284,6 +297,12 @@
 }
 .favourites-body .favourites-section .favourites-container .favourites-list .favourite .favourite-field:first-child {
   width: 2rem;
+}
+.favourites-body .favourites-section .favourites-container .favourites-list .favourite .favourite-field:first-child span {
+  display: block;
+}
+.favourites-body .favourites-section .favourites-container .favourites-list .favourite .favourite-field:first-child .ic {
+  display: none;
 }
 .favourites-body .favourites-section .favourites-container .favourites-list .favourite .favourite-field:nth-child(2) {
   flex: 1;

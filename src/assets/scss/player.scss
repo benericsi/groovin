@@ -1,0 +1,18 @@
+@import 'variables';
+
+.player {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: $player-height;
+    background-color: $clr-white;
+    border-top: 1px solid color(secondary, 100);
+    width: 100%;
+    z-index: 99999;
+}
+
+@media only screen and (max-width: $media-query-lg) {
+    .player {
+        bottom: $mobile-nav-height;
+    }
+}

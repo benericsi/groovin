@@ -360,11 +360,20 @@
 .album-section .album-container .playlist-list .track:hover {
   background-color: #F0F1F3;
 }
+.album-section .album-container .playlist-list .track:hover .track-field:first-child span {
+  display: none;
+}
+.album-section .album-container .playlist-list .track:hover .track-field:first-child svg {
+  display: block;
+}
 .album-section .album-container .playlist-list .track.active {
   background-color: #F0F1F3;
 }
-.album-section .album-container .playlist-list .track.active .track-field:nth-child(2) h3 {
-  color: #0c6fe9;
+.album-section .album-container .playlist-list .track.active .track-field:first-child span {
+  display: none;
+}
+.album-section .album-container .playlist-list .track.active .track-field:first-child svg {
+  display: block;
 }
 .album-section .album-container .playlist-list .track:hover .track-field:last-child, .album-section .album-container .playlist-list .track.active .track-field:last-child {
   visibility: visible;
@@ -390,6 +399,12 @@
 }
 .album-section .album-container .playlist-list .track .track-field:first-child {
   width: 2rem;
+}
+.album-section .album-container .playlist-list .track .track-field:first-child span {
+  display: block;
+}
+.album-section .album-container .playlist-list .track .track-field:first-child svg {
+  display: none;
 }
 .album-section .album-container .playlist-list .track .track-field:nth-child(2) {
   flex: 1;

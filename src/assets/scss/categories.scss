@@ -417,14 +417,28 @@
 
                 &:hover {
                     background-color: color(secondary, 50);
+
+                    .track-field:first-child {
+                        span {
+                            display: none;
+                        }
+
+                        svg {
+                            display: block;
+                        }
+                    }
                 }
 
                 &.active {
                     background-color: color(secondary, 50);
 
-                    .track-field:nth-child(2) {
-                        h3 {
-                            color: color(primary, 500);
+                    .track-field:first-child {
+                        span {
+                            display: none;
+                        }
+
+                        svg {
+                            display: block;
                         }
                     }
                 }
@@ -459,6 +473,14 @@
 
                     &:first-child {
                         width: 2rem;
+
+                        span {
+                            display: block;
+                        }
+
+                        svg {
+                            display: none;
+                        }
                     }
 
                     &:nth-child(2) {

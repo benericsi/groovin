@@ -5,7 +5,7 @@
   height: 4rem;
   width: 100vw;
   z-index: 100;
-  border-top: 1px solid #989FAD;
+  border-top: 1px solid #CFD3D9;
 }
 .nav-bar .nav-list {
   list-style-type: none;
@@ -50,7 +50,7 @@
   height: 4rem;
   background-color: #fff;
   z-index: 100;
-  border-bottom: 1px solid #989FAD;
+  border-bottom: 1px solid #CFD3D9;
 }
 .mobile-header-wrapper .header-list {
   list-style-type: none;

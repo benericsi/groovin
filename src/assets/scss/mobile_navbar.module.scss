@@ -7,7 +7,7 @@
     height: $mobile-nav-height;
     width: 100vw;
     z-index: 100;
-    border-top: 1px solid color(secondary, 300);
+    border-top: 1px solid color(secondary, 100);
 
     .nav-list {
         list-style-type: none;
@@ -61,7 +61,7 @@
     height: $mobile-header-height;
     background-color: $clr-white;
     z-index: 100;
-    border-bottom: 1px solid color(secondary, 300);
+    border-bottom: 1px solid color(secondary, 100);
 
     .header-list {
         list-style-type: none;

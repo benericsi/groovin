@@ -8,6 +8,7 @@ import LoaderProvider from './context/LoaderProvider';
 import ToastContainer from './component/ToastContainer';
 import ToastProvider from './context/ToastProvider';
 import AuthProvider from './context/AuthProvider';
+import PlayerProvider from './context/PlayerProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,8 +17,10 @@ root.render(
       <LoaderProvider>
         <ToastProvider>
           <AuthProvider>
-            <ToastContainer />
-            <App />
+            <PlayerProvider>
+              <ToastContainer />
+              <App />
+            </PlayerProvider>
           </AuthProvider>
         </ToastProvider>
       </LoaderProvider>

@@ -358,11 +358,20 @@
 .playlist-section .playlist-container .playlist-list .track:hover {
   background-color: #F0F1F3;
 }
+.playlist-section .playlist-container .playlist-list .track:hover .track-field:first-child span {
+  display: none;
+}
+.playlist-section .playlist-container .playlist-list .track:hover .track-field:first-child svg {
+  display: block;
+}
 .playlist-section .playlist-container .playlist-list .track.active {
   background-color: #F0F1F3;
 }
-.playlist-section .playlist-container .playlist-list .track.active .track-field:nth-child(2) h3 {
-  color: #0c6fe9;
+.playlist-section .playlist-container .playlist-list .track.active .track-field:first-child span {
+  display: none;
+}
+.playlist-section .playlist-container .playlist-list .track.active .track-field:first-child svg {
+  display: block;
 }
 .playlist-section .playlist-container .playlist-list .track:hover .track-field:last-child, .playlist-section .playlist-container .playlist-list .track.active .track-field:last-child {
   visibility: visible;
@@ -388,6 +397,12 @@
 }
 .playlist-section .playlist-container .playlist-list .track .track-field:first-child {
   width: 2rem;
+}
+.playlist-section .playlist-container .playlist-list .track .track-field:first-child span {
+  display: block;
+}
+.playlist-section .playlist-container .playlist-list .track .track-field:first-child svg {
+  display: none;
 }
 .playlist-section .playlist-container .playlist-list .track .track-field:nth-child(2) {
   flex: 1;
