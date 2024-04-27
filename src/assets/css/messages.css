@@ -44,8 +44,10 @@
   min-height: 4rem;
   min-width: 4rem;
   border-radius: 50%;
-  object-fit: cover;
-  object-position: center center;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center;
 }
 .messages-section .user-list-container .user-list .user-list-item h4 {
   font-size: 1.25rem;
@@ -97,8 +99,10 @@
   min-height: 4rem;
   min-width: 4rem;
   border-radius: 50%;
-  object-fit: cover;
-  object-position: center center;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center;
 }
 .messages-section .chatroom .chatroom-header .chat-actions {
   position: relative;
@@ -208,8 +212,10 @@
   min-height: 2.5rem;
   min-width: 2.5rem;
   border-radius: 50%;
-  object-fit: cover;
-  object-position: center center;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center;
 }
 .messages-section .chatroom .chatroom-body .message-container .dummy {
   position: absolute;

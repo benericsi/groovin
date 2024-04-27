@@ -3,9 +3,10 @@
   inset: 0;
   z-index: 9999;
   background-color: rgba(0, 0, 0, 0.6);
+  pointer-events: auto;
 }
 .modal_wrapper .modal {
-  position: relative;
+  position: fixed;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -14,6 +15,7 @@
   max-width: 576px;
   overflow: hidden;
   padding: 1rem 0;
+  pointer-events: auto;
 }
 .modal_wrapper .modal.md {
   max-width: 768px;

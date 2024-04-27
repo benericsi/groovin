@@ -5,36 +5,11 @@ export const PlayerContext = createContext();
 const reducer = (state, action) => {
   switch (action.type) {
     case 'SET_QUEUE':
-      return {
-        ...state,
-        queue: action.data,
-      };
-    case 'ADD_TO_QUEUE':
-      return {
-        ...state,
-        queue: [...state.queue, action.data],
-      };
+      return {...state, queue: action.payload};
     case 'SET_CURRENT_SONG':
-      return {
-        ...state,
-        currentSong: action.data,
-        playing: true,
-      };
-    case 'TOGGLE_PLAY':
-      return {
-        ...state,
-        playing: action.data,
-      };
-    case 'TOGGLE_SHUFFLE':
-      return {
-        ...state,
-        shuffle: action.data,
-      };
-    case 'TOGGLE_REPEAT':
-      return {
-        ...state,
-        repeat: action.data,
-      };
+      return {...state, currentSong: action.payload};
+    case 'SET_PLAYING':
+      return {...state, playing: action.payload};
     default:
       return state;
   }
@@ -45,51 +20,31 @@ const PlayerProvider = ({children}) => {
     queue: [],
     currentSong: null,
     playing: false,
-    shuffle: false,
-    repeat: false,
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const setCurrentSong = (song) => dispatch({type: 'SET_CURRENT_SONG', data: song});
-  const setQueue = (songs) => dispatch({type: 'SET_QUEUE', data: songs});
-  const addToQueue = (song) => dispatch({type: 'ADD_TO_QUEUE', data: song});
-  const togglePlaying = () => dispatch({type: 'TOGGLE_PLAY', data: !state.playing});
-  const toggleShuffle = () => dispatch({type: 'TOGGLE_SHUFFLE', data: !state.shuffle});
-  const toggleRepeat = () => dispatch({type: 'TOGGLE_REPEAT', data: !state.repeat});
-
-  const prevSong = () => {
-    const currentIndex = state.queue.findIndex((song) => song.id === state.currentSong.id);
-
-    if (currentIndex === 0) {
-      setCurrentSong(state.queue[state.queue.length - 1]);
-    } else {
-      setCurrentSong(state.queue[currentIndex - 1]);
-    }
+  const setQueue = (tracks) => {
+    dispatch({type: 'SET_QUEUE', payload: tracks});
   };
 
-  const nextSong = () => {
-    const currentIndex = state.queue.findIndex((song) => song.id === state.currentSong.id);
-
-    if (currentIndex === state.queue.length - 1) {
-      setCurrentSong(state.queue[0]);
-    } else {
-      setCurrentSong(state.queue[currentIndex + 1]);
-    }
+  const setCurrentSong = (track) => {
+    dispatch({type: 'SET_CURRENT_SONG', payload: track});
   };
 
-  const handleEnd = () => {
-    if (state.shuffle) {
-      const randomIndex = Math.floor(Math.random() * state.queue.length);
-      return dispatch({type: 'SET_CURRENT_SONG', data: state.queue[randomIndex]});
-    } else {
-      if (state.repeat) {
-        return dispatch({type: 'SET_CURRENT_SONG', data: state.currentSong});
-      } else if (state.currentSong === state.queue[state.queue.length - 1]) {
-        return;
-      } else {
-        nextSong();
-      }
+  const setPlaying = (bool) => {
+    dispatch({type: 'SET_PLAYING', payload: bool});
+  };
+
+  const playTrack = (track, newQueue) => {
+    dispatch({type: 'SET_CURRENT_SONG', payload: track});
+    dispatch({type: 'SET_QUEUE', payload: newQueue || []});
+    dispatch({type: 'SET_PLAYING', payload: true});
+  };
+
+  const updateQueue = (newTracks) => {
+    if (newTracks.includes(state.currentSong)) {
+      dispatch({type: 'SET_QUEUE', payload: newTracks.slice(newTracks.indexOf(state.currentSong))});
     }
   };
 
@@ -99,16 +54,11 @@ const PlayerProvider = ({children}) => {
         queue: state.queue,
         currentSong: state.currentSong,
         playing: state.playing,
-        shuffle: state.shuffle,
-        repeat: state.repeat,
-        setCurrentSong,
         setQueue,
-        addToQueue,
-        togglePlaying,
-        toggleShuffle,
-        prevSong,
-        nextSong,
-        handleEnd,
+        setCurrentSong,
+        setPlaying,
+        playTrack,
+        updateQueue,
       }}>
       {children}
     </PlayerContext.Provider>

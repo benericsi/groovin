@@ -124,8 +124,10 @@
   overflow: hidden;
   margin: 0 auto;
   margin-bottom: 1rem;
-  object-fit: cover;
-  object-position: center center;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center;
 }
 .tracks-body .tracks-section .body-section .search-list .search-card .search-card-photo.album, .tracks-body .tracks-section .body-section .search-list .search-card .search-card-photo.playlist {
   border-radius: 1rem;
@@ -207,8 +209,10 @@
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center center;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center;
 }
 .modal_wrapper .modal .playlists-container .playlist-card .playlist-card-name {
   font-size: 1.25rem;

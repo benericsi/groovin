@@ -8,7 +8,93 @@
     background-color: $clr-white;
     border-top: 1px solid color(secondary, 100);
     width: 100%;
-    z-index: 99999;
+    z-index: 999;
+    padding: 0.75rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .player_song-info {
+        height: 100%;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+
+        img {
+            width: auto;
+            height: 100%;
+            aspect-ratio: 1/1;
+            border-radius: $border-radius;
+        }
+
+        div {
+            display: flex;
+            flex-direction: column;
+
+            a {
+                color: $clr-font;
+                transition: color .2s $animation-cubic;
+
+                &:first-child {
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                }
+
+                &:last-child {
+                    font-size: 1rem;
+                    font-weight: 500;
+                    color: color(secondary, 600);
+                }
+
+                &:hover {
+                    color: color(primary, 500);
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .fav-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+
+            svg {
+                margin-left: .5rem;
+                font-size: 1.25rem;
+                color: color(red, 500);
+                transition: color .2s $animation-cubic;
+            }
+
+            &:hover {
+                svg {
+                    color: color(red, 700);
+                }
+            }
+        }
+    }
+
+    .player_controls {}
+
+    .player_queue {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        cursor: pointer;
+
+        svg {
+            font-size: 1.5rem;
+            color: $clr-font;
+            transition: color .2s $animation-cubic;
+
+            &:hover,
+            &.active {
+                color: color(primary, 500);
+            }
+        }
+    }
 }
 
 @media only screen and (max-width: $media-query-lg) {

@@ -154,11 +154,11 @@ const AddToPlaylistForm = ({toggleForm, track}) => {
   );
 };
 
-const Favourite = ({track, index, removeTrack, activeTrack, setActiveTrack, actionListIndex, setActionListIndex, toggleSong}) => {
+const Favourite = ({track, index, removeTrack, activeTrack, setActiveTrack, actionListIndex, setActionListIndex, handleTrackPlayButtonClick}) => {
   const [addToPlaylist, setAddToPlaylist] = useState(false);
   const actionListRef = useRef(null);
 
-  const {currentSong, playing} = usePlayer();
+  const player = usePlayer();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -194,10 +194,10 @@ const Favourite = ({track, index, removeTrack, activeTrack, setActiveTrack, acti
         <AddToPlaylistForm toggleForm={toggleAddToPlaylist} track={track} />
       </Modal>
 
-      <div className={`favourite ${track === activeTrack ? 'active' : ''} ${track === currentSong ? 'current' : ''}`} onClick={() => setActiveTrack(track)}>
-        <div className="favourite-field" onClick={() => toggleSong(track)}>
-          <span>{track === currentSong && playing ? <IoMusicalNotesSharp /> : index + 1}</span>
-          {track === currentSong && playing ? <FaPause className="ic" /> : <FaPlay className="ic" />}
+      <div className={`favourite ${track === activeTrack ? 'active' : ''} ${track === player.currentSong ? 'current' : ''}`} onClick={() => setActiveTrack(track)}>
+        <div className="favourite-field" onClick={() => handleTrackPlayButtonClick(track)}>
+          <span>{track === player.currentSong && player.playing ? <IoMusicalNotesSharp /> : index + 1}</span>
+          {track === player.currentSong && player.playing ? <FaPause className="ic" /> : <FaPlay className="ic" />}
         </div>
         <div className="favourite-field">
           <img src={track.image} alt={track.name} />
@@ -236,10 +236,10 @@ const Favourite = ({track, index, removeTrack, activeTrack, setActiveTrack, acti
 
           {actionListIndex === track.id && (
             <ul className="track-actions-list" ref={actionListRef}>
-              <li className="track-actions-item" onClick={() => toggleSong(track)}>
+              <li className="track-actions-item" onClick={() => handleTrackPlayButtonClick(track)}>
                 <button className="btn-track-action">
-                  {track === currentSong && playing ? <FaRegPauseCircle /> : <FaRegPlayCircle />}
-                  <span>{track === currentSong && playing ? 'Pause Song' : 'Play Song'}</span>
+                  {track === player.currentSong && player.playing ? <FaRegPauseCircle /> : <FaRegPlayCircle />}
+                  <span>{track === player.currentSong && player.playing ? 'Pause Song' : 'Play Song'}</span>
                 </button>
               </li>
               <li className="track-actions-item">

@@ -6,7 +6,75 @@
   background-color: #fff;
   border-top: 1px solid #CFD3D9;
   width: 100%;
-  z-index: 99999;
+  z-index: 999;
+  padding: 0.75rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.player .player_song-info {
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.player .player_song-info img {
+  width: auto;
+  height: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 0.5rem;
+}
+.player .player_song-info div {
+  display: flex;
+  flex-direction: column;
+}
+.player .player_song-info div a {
+  color: #242424;
+  transition: color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.player .player_song-info div a:first-child {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.player .player_song-info div a:last-child {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #5C6678;
+}
+.player .player_song-info div a:hover {
+  color: #0c6fe9;
+  text-decoration: underline;
+}
+.player .player_song-info .fav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.player .player_song-info .fav-btn svg {
+  margin-left: 0.5rem;
+  font-size: 1.25rem;
+  color: #db1828;
+  transition: color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.player .player_song-info .fav-btn:hover svg {
+  color: #9b111c;
+}
+.player .player_queue {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+}
+.player .player_queue svg {
+  font-size: 1.5rem;
+  color: #242424;
+  transition: color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.player .player_queue svg:hover, .player .player_queue svg.active {
+  color: #0c6fe9;
 }
 
 @media only screen and (max-width: 1200px) {

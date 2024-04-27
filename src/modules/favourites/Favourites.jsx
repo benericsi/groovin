@@ -38,7 +38,7 @@ const Favourites = () => {
   const {addToast} = useToast();
   const {showLoader, hideLoader} = useLoader();
 
-  const {queue, currentSong, playing, shuffle, repeat, setCurrentSong, setQueue, addToQueue, togglePlaying, toggleShuffle, prevSong, nextSong, handleEnd} = usePlayer();
+  const player = usePlayer();
 
   useEffect(() => {
     let unsubscribe = () => {};
@@ -73,16 +73,6 @@ const Favourites = () => {
   }, []);
 
   useEffect(() => {
-    if (currentSong) {
-      const updatedCurrentSong = tracks.find((track) => track.id === currentSong.id);
-      if (updatedCurrentSong) {
-        setCurrentSong(updatedCurrentSong);
-      }
-    }
-    // eslint-disable-next-line
-  }, [tracks]);
-
-  useEffect(() => {
     // Update the track order in the database
     if (!isDragging && tracks.length > 0) {
       db.collection('favourites').doc(currentUser.uid).update({
@@ -98,32 +88,18 @@ const Favourites = () => {
     }
   }, [isDragging]);
 
+  useEffect(() => {
+    if (player.currentSong) {
+      const updatedCurrentSong = tracks.find((track) => track.id === player.currentSong.id);
+      if (updatedCurrentSong) {
+        player.setCurrentSong(updatedCurrentSong, player.playing);
+      }
+    }
+    // eslint-disable-next-line
+  }, [tracks]);
+
   const navigateToSearch = () => {
     navigate('/search');
-  };
-
-  const toggleSongs = () => {
-    if (tracks.length === 0) {
-      addToast('info', 'Favourites is empty.');
-      return;
-    }
-
-    if (!playing && currentSong === null) {
-      setCurrentSong(tracks[0]);
-      setQueue(tracks);
-      togglePlaying();
-    } else {
-      togglePlaying();
-    }
-  };
-
-  const toggleSong = (track) => {
-    if (currentSong === null || currentSong.id !== track.id) {
-      setCurrentSong(track);
-      setQueue([track]);
-    } else {
-      togglePlaying();
-    }
   };
 
   const togglePlaylistActions = () => {
@@ -163,6 +139,31 @@ const Favourites = () => {
     }
   };
 
+  const handlePlayButtonClick = () => {
+    if (tracks.length === 0) {
+      addToast('info', 'Favourites is empty.');
+      return;
+    }
+
+    if (player.playing) {
+      player.setPlaying(false);
+    } else {
+      if (player.currentSong) {
+        player.setPlaying(true);
+      } else {
+        player.playTrack(tracks[0], tracks);
+      }
+    }
+  };
+
+  const handleTrackPlayButtonClick = (track) => {
+    if (player.playing && player.currentSong.id === track.id) {
+      player.setPlaying(false);
+    } else {
+      player.playTrack(track, tracks.slice(tracks.indexOf(track)));
+    }
+  };
+
   return (
     <>
       {isLoading ? null : tracks.length === 0 ? (
@@ -190,11 +191,8 @@ const Favourites = () => {
               </header>
               <nav className="favourites-subnav">
                 <ul className="favourites-subnav-list">
-                  <li className="favourites-subnav-item" onClick={() => toggleSongs()}>
-                    {playing ? <FaCirclePause /> : <FaCirclePlay />}
-                  </li>
-                  <li className={`favourites-subnav-item blue ${shuffle ? 'active' : ''}`} onClick={toggleShuffle}>
-                    <IoShuffleOutline />
+                  <li className="favourites-subnav-item" onClick={handlePlayButtonClick}>
+                    {player.playing ? <FaCirclePause /> : <FaCirclePlay />}
                   </li>
                   <li className="favourites-subnav-item" onClick={() => togglePlaylistActions()}>
                     <FaEllipsisVertical />
@@ -249,7 +247,7 @@ const Favourites = () => {
                         onDragEnd={() => {
                           setIsDragging(false);
                         }}>
-                        <Favourite track={track} index={index} removeTrack={removeTrack} isDragging={isDragging} activeTrack={activeTrack} setActiveTrack={setActiveTrack} actionListIndex={actionListIndex} setActionListIndex={setActionListIndex} toggleSong={toggleSong} />
+                        <Favourite track={track} index={index} removeTrack={removeTrack} isDragging={isDragging} activeTrack={activeTrack} setActiveTrack={setActiveTrack} actionListIndex={actionListIndex} setActionListIndex={setActionListIndex} handleTrackPlayButtonClick={handleTrackPlayButtonClick} />
                       </Reorder.Item>
                     ))}
                   </Reorder.Group>

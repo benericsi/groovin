@@ -1,6 +1,7 @@
 import '../../assets/css/main-page.css';
 
 import React from 'react';
+import {useState} from 'react';
 import {useMediaQuery} from 'react-responsive';
 import {Outlet} from 'react-router-dom';
 
@@ -10,9 +11,12 @@ import DesktopNavbar from '../navigation/DesktopNavbar';
 import MobileNavbar from '../navigation/MobileNavbar';
 import MainHeader from './MainHeader';
 import AudioPlayer from '../player/AudioPlayer';
+import Queue from '../queue/Queue';
 
 const Main = () => {
-  const {playing} = usePlayer();
+  const [isQueueOpen, setIsQueueOpen] = useState(false);
+
+  const player = usePlayer();
 
   const isMobile = useMediaQuery({query: '(max-width: 1200px)'});
 
@@ -20,9 +24,13 @@ const Main = () => {
     return isMobile ? <MobileNavbar /> : <DesktopNavbar />;
   }
 
+  const toggleQueueOpen = () => {
+    setIsQueueOpen(!isQueueOpen);
+  };
+
   return (
     <>
-      <div className={`main-wrapper ${playing ? 'playing' : ''}`}>
+      <div className={`main-wrapper ${player.currentSong ? 'playing' : ''}`}>
         {renderSideBar()}
         <main className="main-content">
           <MainHeader />
@@ -30,8 +38,9 @@ const Main = () => {
             <Outlet />
           </div>
         </main>
+        {isQueueOpen ? <Queue setIsQueueOpen={setIsQueueOpen} /> : null}
       </div>
-      {playing ? <AudioPlayer /> : null}
+      {player.currentSong ? <AudioPlayer isQueueOpen={isQueueOpen} toggleQueueOpen={toggleQueueOpen} /> : null}
     </>
   );
 };
