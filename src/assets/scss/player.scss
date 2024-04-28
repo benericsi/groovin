@@ -8,7 +8,7 @@
     background-color: $clr-white;
     border-top: 1px solid color(secondary, 100);
     width: 100%;
-    z-index: 999;
+    z-index: 99;
     padding: 0.75rem 2rem;
     display: flex;
     justify-content: space-between;
@@ -16,10 +16,11 @@
 
     .player_song-info {
         height: 100%;
+        width: 25%;
         position: relative;
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         gap: 1rem;
 
         img {
@@ -76,11 +77,20 @@
         }
     }
 
-    .player_controls {}
-
-    .player_queue {
+    .player_controls {
+        height: 100%;
+        width: 50%;
         display: flex;
         align-items: center;
+        justify-content: center;
+    }
+
+    .player_queue {
+        height: 100%;
+        width: 25%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
         gap: 1rem;
         cursor: pointer;
 

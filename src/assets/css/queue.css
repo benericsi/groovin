@@ -63,12 +63,16 @@
   background-color: #fff;
   transition: background-color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
+.queue_wrapper .queue_body .queue_item.active {
+  background-color: #F0F1F3;
+}
+.queue_wrapper .queue_body .queue_item.active span {
+  display: flex;
+}
 .queue_wrapper .queue_body .queue_item:hover {
   background-color: #F0F1F3;
 }
 .queue_wrapper .queue_body .queue_item:hover span {
-  position: relative;
-  cursor: pointer;
   display: flex;
 }
 .queue_wrapper .queue_body .queue_item:hover span svg {
@@ -79,7 +83,12 @@
 .queue_wrapper .queue_body .queue_item:hover span:hover svg {
   color: #000;
 }
-.queue_wrapper .queue_body .queue_item:hover span .track-actions-list {
+.queue_wrapper .queue_body .queue_item span {
+  position: relative;
+  cursor: pointer;
+  display: none;
+}
+.queue_wrapper .queue_body .queue_item span .track-actions-list {
   position: absolute;
   top: 100%;
   right: 100%;
@@ -94,19 +103,19 @@
   border-radius: 0.25rem;
   z-index: 99999;
 }
-.queue_wrapper .queue_body .queue_item:hover span .track-actions-list .track-actions-item {
+.queue_wrapper .queue_body .queue_item span .track-actions-list .track-actions-item {
   width: 100%;
   cursor: pointer;
   height: 2.5rem;
   transition: background-color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-.queue_wrapper .queue_body .queue_item:hover span .track-actions-list .track-actions-item:hover {
+.queue_wrapper .queue_body .queue_item span .track-actions-list .track-actions-item:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
-.queue_wrapper .queue_body .queue_item:hover span .track-actions-list .track-actions-item:hover .btn-track-action {
+.queue_wrapper .queue_body .queue_item span .track-actions-list .track-actions-item:hover .btn-track-action {
   color: #0c6fe9;
 }
-.queue_wrapper .queue_body .queue_item:hover span .track-actions-list .track-actions-item .btn-track-action {
+.queue_wrapper .queue_body .queue_item span .track-actions-list .track-actions-item .btn-track-action {
   all: unset;
   height: 2.5rem;
   width: calc(100% - 1.5rem);
@@ -162,9 +171,6 @@
 .queue_wrapper .queue_body .queue_item .queue_item-info div a:hover {
   color: #0c6fe9;
   text-decoration: underline;
-}
-.queue_wrapper .queue_body .queue_item span {
-  display: none;
 }
 
 @media only screen and (max-width: 1200px) {

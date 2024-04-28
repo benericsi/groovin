@@ -74,12 +74,18 @@
             background-color: $clr-white;
             transition: background-color .2s $animation-cubic;
 
+            &.active {
+                background-color: color(secondary, 50);
+
+                span {
+                    display: flex;
+                }
+            }
+
             &:hover {
                 background-color: color(secondary, 50);
 
                 span {
-                    position: relative;
-                    cursor: pointer;
                     display: flex;
 
                     svg {
@@ -93,51 +99,57 @@
                             color: $clr-black
                         }
                     }
+                }
+            }
 
-                    .track-actions-list {
-                        position: absolute;
-                        top: 100%;
-                        right: 100%;
-                        width: clamp(11rem, 100%, 16rem);
-                        padding: .25rem;
-                        background-color: $clr-white;
-                        box-shadow: $panel-box-shadow;
-                        display: flex;
-                        flex-direction: column;
-                        list-style: none;
-                        gap: .25rem;
-                        border-radius: .25rem;
-                        z-index: 99999;
+            span {
+                position: relative;
+                cursor: pointer;
+                display: none;
 
-                        .track-actions-item {
-                            width: 100%;
-                            cursor: pointer;
-                            height: 2.5rem;
-                            transition: background-color .2s $animation-cubic;
+                .track-actions-list {
+                    position: absolute;
+                    top: 100%;
+                    right: 100%;
+                    width: clamp(11rem, 100%, 16rem);
+                    padding: .25rem;
+                    background-color: $clr-white;
+                    box-shadow: $panel-box-shadow;
+                    display: flex;
+                    flex-direction: column;
+                    list-style: none;
+                    gap: .25rem;
+                    border-radius: .25rem;
+                    z-index: 99999;
 
-                            &:hover {
-                                background-color: rgba($color: $clr-black, $alpha: .1);
+                    .track-actions-item {
+                        width: 100%;
+                        cursor: pointer;
+                        height: 2.5rem;
+                        transition: background-color .2s $animation-cubic;
 
-                                .btn-track-action {
-                                    color: color(primary, 500);
-                                }
-                            }
+                        &:hover {
+                            background-color: rgba($color: $clr-black, $alpha: .1);
 
                             .btn-track-action {
-                                all: unset;
-                                height: 2.5rem;
-                                width: calc(100% - 1.5rem);
-                                padding: 0 .75rem;
-                                background: transparent;
-                                color: color(secondary, 900);
-                                font-size: auto;
-                                border-radius: 1rem;
-                                display: flex;
-                                align-items: center;
-                                justify-content: flex-start;
-                                transition: color .2s $animation-cubic;
-                                gap: .5rem;
+                                color: color(primary, 500);
                             }
+                        }
+
+                        .btn-track-action {
+                            all: unset;
+                            height: 2.5rem;
+                            width: calc(100% - 1.5rem);
+                            padding: 0 .75rem;
+                            background: transparent;
+                            color: color(secondary, 900);
+                            font-size: auto;
+                            border-radius: 1rem;
+                            display: flex;
+                            align-items: center;
+                            justify-content: flex-start;
+                            transition: color .2s $animation-cubic;
+                            gap: .5rem;
                         }
                     }
                 }
@@ -191,10 +203,6 @@
                         }
                     }
                 }
-            }
-
-            span {
-                display: none;
             }
         }
     }

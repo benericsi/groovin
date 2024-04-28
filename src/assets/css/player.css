@@ -6,7 +6,7 @@
   background-color: #fff;
   border-top: 1px solid #CFD3D9;
   width: 100%;
-  z-index: 999;
+  z-index: 99;
   padding: 0.75rem 2rem;
   display: flex;
   justify-content: space-between;
@@ -14,10 +14,11 @@
 }
 .player .player_song-info {
   height: 100%;
+  width: 25%;
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 1rem;
 }
 .player .player_song-info img {
@@ -62,9 +63,19 @@
 .player .player_song-info .fav-btn:hover svg {
   color: #9b111c;
 }
-.player .player_queue {
+.player .player_controls {
+  height: 100%;
+  width: 50%;
   display: flex;
   align-items: center;
+  justify-content: center;
+}
+.player .player_queue {
+  height: 100%;
+  width: 25%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   gap: 1rem;
   cursor: pointer;
 }

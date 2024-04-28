@@ -50,7 +50,7 @@ const AudioPlayer = ({isQueueOpen, toggleQueueOpen}) => {
     db.collection('favourites').doc(currentUser.uid).set({tracks: newFavs});
   };
 
-  console.log(player.playing, player.queue, player.currentSong);
+  console.log(player.playing, player.queue, player.currentSong, player.playlist);
 
   return (
     <div className="player">

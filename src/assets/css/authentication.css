@@ -82,8 +82,7 @@
 .auth_page .hero .image_column .image img {
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .auth_page .hero::after {
   content: "";

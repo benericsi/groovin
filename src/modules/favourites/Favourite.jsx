@@ -154,7 +154,7 @@ const AddToPlaylistForm = ({toggleForm, track}) => {
   );
 };
 
-const Favourite = ({track, index, removeTrack, activeTrack, setActiveTrack, actionListIndex, setActionListIndex, handleTrackPlayButtonClick}) => {
+const Favourite = ({track, index, removeTrack, activeTrack, setActiveTrack, actionListIndex, setActionListIndex, handleTrackPlayButtonClick, handleAddToQueue}) => {
   const [addToPlaylist, setAddToPlaylist] = useState(false);
   const actionListRef = useRef(null);
 
@@ -234,7 +234,7 @@ const Favourite = ({track, index, removeTrack, activeTrack, setActiveTrack, acti
             <FaEllipsisVertical />
           </span>
 
-          {actionListIndex === track.id && (
+          {actionListIndex === track.id ? (
             <ul className="track-actions-list" ref={actionListRef}>
               <li className="track-actions-item" onClick={() => handleTrackPlayButtonClick(track)}>
                 <button className="btn-track-action">
@@ -242,7 +242,7 @@ const Favourite = ({track, index, removeTrack, activeTrack, setActiveTrack, acti
                   <span>{track === player.currentSong && player.playing ? 'Pause Song' : 'Play Song'}</span>
                 </button>
               </li>
-              <li className="track-actions-item">
+              <li className="track-actions-item" onClick={() => handleAddToQueue(track)}>
                 <button className="btn-track-action">
                   <MdOutlineQueue />
                   <span>Add To Queue</span>
@@ -255,7 +255,7 @@ const Favourite = ({track, index, removeTrack, activeTrack, setActiveTrack, acti
                 </button>
               </li>
             </ul>
-          )}
+          ) : null}
         </div>
       </div>
     </>

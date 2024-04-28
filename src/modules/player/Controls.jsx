@@ -1,5 +1,5 @@
 const Controls = () => {
-  return <div>Controls</div>;
+  return <div className="player_controls">Controls</div>;
 };
 
 export default Controls;

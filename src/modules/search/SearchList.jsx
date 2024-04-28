@@ -10,7 +10,7 @@ import Button from '../form/Button';
 
 import {MdAddCircle, MdAddCircleOutline} from 'react-icons/md';
 import {MdAccountCircle} from 'react-icons/md';
-import {FaRegPlayCircle} from 'react-icons/fa';
+import {FaRegPlayCircle, FaRegPauseCircle} from 'react-icons/fa';
 import {AiOutlinePlusCircle} from 'react-icons/ai';
 import {HiOutlineHeart} from 'react-icons/hi';
 import {IoHeartDislikeOutline} from 'react-icons/io5';
@@ -21,6 +21,7 @@ import {TbCircleOff} from 'react-icons/tb';
 import {IoMusicalNotesOutline} from 'react-icons/io5';
 import {PiPlaylistLight} from 'react-icons/pi';
 import {RiAccountCircleLine} from 'react-icons/ri';
+import {usePlayer} from '../../hooks/usePlayer';
 
 const AddToPlaylistForm = ({toggleForm, track}) => {
   const {currentUser} = useAuth();
@@ -170,6 +171,8 @@ const SearchList = ({data, q}) => {
 
   const trackActionsRef = useRef(null);
 
+  const player = usePlayer();
+
   const handleTogglePlaylist = (index) => {
     setOpenPlaylistIndex(index === openPlaylistIndex ? null : index);
     setSelectedTrack(data.tracks[index]);
@@ -299,6 +302,60 @@ const SearchList = ({data, q}) => {
     }
   };
 
+  const handleAddToQueue = (track) => {
+    const trackInfo = {
+      id: track.id,
+      album: track.album.name,
+      albumId: track.album.id,
+      artist: track.artists[0].name,
+      artistId: track.artists[0].id,
+      name: track.name,
+      image: track.album.images[0].url,
+      duration: track.duration_ms,
+      uri: track.uri,
+      preview_url: track.preview_url,
+    };
+
+    player.addToQueue(trackInfo);
+  };
+
+  const handleTrackPlayButtonClick = (track) => {
+    if (player.currentSong?.id === track.id && player.playing) {
+      player.setPlaying(false);
+    } else {
+      const trackInfo = {
+        id: track.id,
+        album: track.album.name,
+        albumId: track.album.id,
+        artist: track.artists[0].name,
+        artistId: track.artists[0].id,
+        name: track.name,
+        image: track.album.images[0].url,
+        duration: track.duration_ms,
+        uri: track.uri,
+        preview_url: track.preview_url,
+      };
+
+      const newQueue = data.tracks
+        .filter((t) => t.id !== track.id)
+        .map((t) => ({
+          id: t.id,
+          album: t.album.name,
+          albumId: t.album.id,
+          artist: t.artists[0].name,
+          artistId: t.artists[0].id,
+          name: t.name,
+          image: t.album.images[0].url,
+          duration: t.duration_ms,
+          uri: t.uri,
+          preview_url: t.preview_url,
+        }));
+
+      player.playTrack(trackInfo, newQueue);
+      player.setPlaylist('search');
+    }
+  };
+
   return (
     <>
       <Modal isOpen={isAddToPlaylistOpen} close={toggleAddToPlaylist} className="md">
@@ -328,13 +385,13 @@ const SearchList = ({data, q}) => {
                 <div className="search-card" key={track.id} onClick={() => handleTogglePlaylist(index)}>
                   {openPlaylistIndex === index && (
                     <ul className="track-actions-list" ref={trackActionsRef}>
-                      <li className="track-actions-item">
+                      <li className="track-actions-item" onClick={() => handleTrackPlayButtonClick(track)}>
                         <button className="btn-track-action">
-                          <FaRegPlayCircle />
-                          <span>Play Song</span>
+                          {track.id === player.currentSong?.id && player.playing ? <FaRegPauseCircle /> : <FaRegPlayCircle />}
+                          <span>{track.id === player.currentSong?.id && player.playing ? 'Pause Song' : 'Play Song'}</span>
                         </button>
                       </li>
-                      <li className="track-actions-item">
+                      <li className="track-actions-item" onClick={() => handleAddToQueue(track)}>
                         <button className="btn-track-action">
                           <MdOutlineQueue />
                           <span>Add To Queue</span>

@@ -144,14 +144,19 @@ const Favourites = () => {
       return;
     }
 
-    if (player.playing) {
+    if (player.playing && player.playlist === 'favourites') {
       player.setPlaying(false);
+    } else if (player.playing && player.playlist !== 'favourites') {
+      player.playTrack(tracks[0], tracks);
+      player.setPlaylist('favourites');
     } else {
       if (player.currentSong) {
         player.setPlaying(true);
       } else {
         player.playTrack(tracks[0], tracks);
       }
+
+      player.setPlaylist('favourites');
     }
   };
 
@@ -161,6 +166,12 @@ const Favourites = () => {
     } else {
       player.playTrack(track, tracks.slice(tracks.indexOf(track)));
     }
+
+    player.setPlaylist('favourites');
+  };
+
+  const handleAddToQueue = (track) => {
+    player.addToQueue(track);
   };
 
   return (
@@ -191,7 +202,7 @@ const Favourites = () => {
               <nav className="favourites-subnav">
                 <ul className="favourites-subnav-list">
                   <li className="favourites-subnav-item" onClick={handlePlayButtonClick}>
-                    {player.playing ? <FaCirclePause /> : <FaCirclePlay />}
+                    {player.playing && player.playlist == 'favourites' ? <FaCirclePause /> : <FaCirclePlay />}
                   </li>
                   <li className="favourites-subnav-item" onClick={() => togglePlaylistActions()}>
                     <FaEllipsisVertical />
@@ -246,7 +257,7 @@ const Favourites = () => {
                         onDragEnd={() => {
                           setIsDragging(false);
                         }}>
-                        <Favourite track={track} index={index} removeTrack={removeTrack} isDragging={isDragging} activeTrack={activeTrack} setActiveTrack={setActiveTrack} actionListIndex={actionListIndex} setActionListIndex={setActionListIndex} handleTrackPlayButtonClick={handleTrackPlayButtonClick} />
+                        <Favourite track={track} index={index} removeTrack={removeTrack} activeTrack={activeTrack} setActiveTrack={setActiveTrack} actionListIndex={actionListIndex} setActionListIndex={setActionListIndex} handleTrackPlayButtonClick={handleTrackPlayButtonClick} handleAddToQueue={handleAddToQueue} />
                       </Reorder.Item>
                     ))}
                   </Reorder.Group>
