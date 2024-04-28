@@ -67,6 +67,7 @@
   background-color: #F0F1F3;
 }
 .queue_wrapper .queue_body .queue_item:hover span {
+  position: relative;
   cursor: pointer;
   display: flex;
 }
@@ -77,6 +78,48 @@
 }
 .queue_wrapper .queue_body .queue_item:hover span:hover svg {
   color: #000;
+}
+.queue_wrapper .queue_body .queue_item:hover span .track-actions-list {
+  position: absolute;
+  top: 100%;
+  right: 100%;
+  width: clamp(11rem, 100%, 16rem);
+  padding: 0.25rem;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  gap: 0.25rem;
+  border-radius: 0.25rem;
+  z-index: 99999;
+}
+.queue_wrapper .queue_body .queue_item:hover span .track-actions-list .track-actions-item {
+  width: 100%;
+  cursor: pointer;
+  height: 2.5rem;
+  transition: background-color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.queue_wrapper .queue_body .queue_item:hover span .track-actions-list .track-actions-item:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.queue_wrapper .queue_body .queue_item:hover span .track-actions-list .track-actions-item:hover .btn-track-action {
+  color: #0c6fe9;
+}
+.queue_wrapper .queue_body .queue_item:hover span .track-actions-list .track-actions-item .btn-track-action {
+  all: unset;
+  height: 2.5rem;
+  width: calc(100% - 1.5rem);
+  padding: 0 0.75rem;
+  background: transparent;
+  color: #2A2F37;
+  font-size: auto;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  transition: color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  gap: 0.5rem;
 }
 .queue_wrapper .queue_body .queue_item .queue_item-info {
   height: 100%;

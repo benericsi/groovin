@@ -18,7 +18,6 @@ import Button from '../form/Button';
 import {BiSearchAlt} from 'react-icons/bi';
 import {FaCirclePlay, FaCirclePause, FaEllipsisVertical} from 'react-icons/fa6';
 import {IoMdRefresh} from 'react-icons/io';
-import {IoShuffleOutline} from 'react-icons/io5';
 import {IoIosTimer} from 'react-icons/io';
 
 const Favourites = () => {
