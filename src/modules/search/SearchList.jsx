@@ -349,6 +349,7 @@ const SearchList = ({data, q}) => {
           duration: t.duration_ms,
           uri: t.uri,
           preview_url: t.preview_url,
+          explicit: t.explicit,
         }));
 
       player.playTrack(trackInfo, newQueue);

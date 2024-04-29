@@ -202,7 +202,7 @@ const Favourites = () => {
               <nav className="favourites-subnav">
                 <ul className="favourites-subnav-list">
                   <li className="favourites-subnav-item" onClick={handlePlayButtonClick}>
-                    {player.playing && player.playlist == 'favourites' ? <FaCirclePause /> : <FaCirclePlay />}
+                    {player.playing && player.playlist === 'favourites' ? <FaCirclePause /> : <FaCirclePlay />}
                   </li>
                   <li className="favourites-subnav-item" onClick={() => togglePlaylistActions()}>
                     <FaEllipsisVertical />

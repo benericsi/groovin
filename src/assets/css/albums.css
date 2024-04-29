@@ -211,7 +211,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3rem;
+  font-size: 4rem;
   color: #0c6fe9;
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   cursor: pointer;
@@ -360,7 +360,7 @@
 .album-section .album-container .album-list .track:hover .track-field:first-child span {
   display: none;
 }
-.album-section .album-container .album-list .track:hover .track-field:first-child svg {
+.album-section .album-container .album-list .track:hover .track-field:first-child .ic {
   display: block;
 }
 .album-section .album-container .album-list .track.active {
@@ -369,8 +369,12 @@
 .album-section .album-container .album-list .track.active .track-field:first-child span {
   display: none;
 }
-.album-section .album-container .album-list .track.active .track-field:first-child svg {
+.album-section .album-container .album-list .track.active .track-field:first-child .ic {
   display: block;
+}
+.album-section .album-container .album-list .track.current .track-field:first-child,
+.album-section .album-container .album-list .track.current .track-field:nth-child(2) {
+  color: #0c6fe9;
 }
 .album-section .album-container .album-list .track:hover .track-field:last-child, .album-section .album-container .album-list .track.active .track-field:last-child {
   visibility: visible;
@@ -400,7 +404,7 @@
 .album-section .album-container .album-list .track .track-field:first-child span {
   display: block;
 }
-.album-section .album-container .album-list .track .track-field:first-child svg {
+.album-section .album-container .album-list .track .track-field:first-child .ic {
   display: none;
 }
 .album-section .album-container .album-list .track .track-field:nth-child(2) {

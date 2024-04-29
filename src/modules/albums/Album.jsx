@@ -20,6 +20,7 @@ import {IoShuffleOutline, IoShareSocialOutline, IoPersonOutline} from 'react-ico
 import {IoIosSend} from 'react-icons/io';
 import {AiOutlinePlusCircle} from 'react-icons/ai';
 import {TbCircleOff} from 'react-icons/tb';
+import {usePlayer} from '../../hooks/usePlayer';
 
 const ShareAlbumForm = ({toggleShare, album}) => {
   const {currentUser} = useAuth();
@@ -174,8 +175,6 @@ const ShareAlbumForm = ({toggleShare, album}) => {
 
 const Album = () => {
   const [album, setAlbum] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isShuffle, setIsShuffle] = useState(false);
 
   const [isAlbumActionsOpen, setIsAlbumActionsOpen] = useState(false);
   const [isShareActive, setIsShareActive] = useState(false);
@@ -185,6 +184,8 @@ const Album = () => {
   const token = useSpotifyAuth();
   const {addToast} = useToast();
   const {showLoader, hideLoader} = useLoader();
+
+  const player = usePlayer();
 
   useEffect(() => {
     const fetchAlbum = async () => {
@@ -211,10 +212,6 @@ const Album = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [albumId, token]);
-
-  const toggleMusic = () => {
-    setIsPlaying(!isPlaying);
-  };
 
   const toggleAlbumActions = () => {
     setIsAlbumActionsOpen(!isAlbumActionsOpen);
@@ -268,6 +265,42 @@ const Album = () => {
     }
   };
 
+  const handlePlayButtonClick = () => {
+    if (album.tracks.items.length === 0) {
+      addToast('info', 'Album is empty.');
+      return;
+    }
+
+    const newTracks = album.tracks.items.map((track) => ({
+      id: track.id,
+      album: album.name,
+      albumId: album.id,
+      artist: track.artists[0].name,
+      artistId: track.artists[0].id,
+      name: track.name,
+      image: album.images[0].url,
+      duration: track.duration_ms,
+      uri: track.uri,
+      preview_url: track.preview_url,
+      explicit: track.explicit,
+    }));
+
+    if (player.playing && player.playlist === album.name) {
+      player.setPlaying(false);
+    } else if (player.playing && player.playlist !== album.name) {
+      player.playTrack(newTracks[0], newTracks);
+      player.setPlaylist(album.name);
+    } else {
+      if (player.currentSong) {
+        player.setPlaying(true);
+      } else {
+        player.playTrack(newTracks[0], newTracks);
+      }
+
+      player.setPlaylist(album.name);
+    }
+  };
+
   return (
     <>
       <Modal isOpen={isShareActive} close={toggleShare}>
@@ -291,13 +324,10 @@ const Album = () => {
             </header>
             <nav className="album-subnav">
               <ul className="album-subnav-list">
-                <li className="album-subnav-item" onClick={toggleMusic}>
-                  {isPlaying ? <FaCirclePause /> : <FaCirclePlay />}
+                <li className="album-subnav-item" onClick={handlePlayButtonClick}>
+                  {player.playing && player.playlist === album.name ? <FaCirclePause /> : <FaCirclePlay />}
                 </li>
-                <li className={`album-subnav-item blue ${isShuffle ? 'active' : ''}`} onClick={() => setIsShuffle(!isShuffle)}>
-                  <IoShuffleOutline />
-                </li>
-                <li className="album-subnav-item" onClick={toggleAlbumActions}>
+                <li className="album-subnav-item" onClick={() => toggleAlbumActions()}>
                   <FaEllipsisVertical />
                   {isAlbumActionsOpen ? (
                     <ul className="album-action-list">
