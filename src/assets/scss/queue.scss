@@ -7,7 +7,7 @@
     background-color: $clr-white;
     border-left: 2px solid color(secondary, 100);
     z-index: 100;
-    padding: 1rem 2rem;
+    padding: 1rem 0;
     overflow: hidden;
     z-index: 999;
 
@@ -17,6 +17,7 @@
         align-items: center;
         margin-bottom: 3rem;
         height: 31px; // HARDCODED
+        padding: 0 2rem;
 
         h2 {
             font-size: 1.25rem;
@@ -51,6 +52,7 @@
         display: flex;
         flex-direction: column;
         overflow-y: auto;
+        padding: 0 2rem;
 
         h2 {
             font-size: 1.25rem;
@@ -177,6 +179,7 @@
                     a {
                         color: $clr-font;
                         transition: color .2s $animation-cubic;
+                        max-width: 14rem;
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;

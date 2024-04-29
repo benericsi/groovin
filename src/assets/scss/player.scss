@@ -33,10 +33,14 @@
         div {
             display: flex;
             flex-direction: column;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
 
             a {
                 color: $clr-font;
                 transition: color .2s $animation-cubic;
+
 
                 &:first-child {
                     font-size: 1.1rem;

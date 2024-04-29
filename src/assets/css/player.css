@@ -30,6 +30,9 @@
 .player .player_song-info div {
   display: flex;
   flex-direction: column;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .player .player_song-info div a {
   color: #242424;

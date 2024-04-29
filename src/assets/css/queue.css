@@ -5,7 +5,7 @@
   background-color: #fff;
   border-left: 2px solid #CFD3D9;
   z-index: 100;
-  padding: 1rem 2rem;
+  padding: 1rem 0;
   overflow: hidden;
   z-index: 999;
 }
@@ -15,6 +15,7 @@
   align-items: center;
   margin-bottom: 3rem;
   height: 31px;
+  padding: 0 2rem;
 }
 .queue_wrapper .queue_header h2 {
   font-size: 1.25rem;
@@ -42,6 +43,7 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  padding: 0 2rem;
 }
 .queue_wrapper .queue_body h2 {
   font-size: 1.25rem;
@@ -151,6 +153,7 @@
 .queue_wrapper .queue_body .queue_item .queue_item-info div a {
   color: #242424;
   transition: color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  max-width: 14rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
