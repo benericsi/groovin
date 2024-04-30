@@ -52,6 +52,7 @@
         display: flex;
         flex-direction: column;
         overflow-y: auto;
+        overflow-x: hidden;
         padding: 0 2rem;
 
         h2 {
@@ -63,10 +64,11 @@
 
         .queue_list {
             margin-top: 2rem;
+            padding-bottom: 1rem;
         }
 
         .queue_item {
-            width: 100%;
+            position: relative;
             height: 4rem;
             display: flex;
             justify-content: space-between;
@@ -81,6 +83,8 @@
 
                 span {
                     display: flex;
+                    justify-content: center;
+                    align-items: center;
                 }
             }
 
@@ -89,6 +93,8 @@
 
                 span {
                     display: flex;
+                    justify-content: center;
+                    align-items: center;
 
                     svg {
                         font-size: 1rem;
@@ -162,8 +168,9 @@
                 position: relative;
                 display: flex;
                 align-items: center;
-                justify-content: center;
+                justify-content: flex-start;
                 gap: .5rem;
+                flex: 1;
 
                 img {
                     width: auto;
@@ -172,17 +179,14 @@
                     border-radius: $border-radius;
                 }
 
-                div {
+                .item-text-wrapper {
                     display: flex;
                     flex-direction: column;
+                    flex: 1;
 
                     a {
                         color: $clr-font;
                         transition: color .2s $animation-cubic;
-                        max-width: 14rem;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
 
                         &:first-child {
                             font-size: 1rem;

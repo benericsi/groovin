@@ -345,8 +345,8 @@
                 top: 0;
                 width: 100%;
                 height: 4rem;
-                display: flex;
-                flex-direction: row;
+                display: grid;
+                grid-template-columns: 2rem 1fr 2rem 4rem 2rem;
                 align-items: center;
                 padding: 0 1rem;
                 gap: 0.5rem;
@@ -369,22 +369,7 @@
                         text-overflow: ellipsis;
                     }
 
-                    &:first-child {
-                        width: 2rem;
-                    }
-
-                    &:nth-child(2) {
-                        flex: 1;
-                        min-width: 8rem;
-                    }
-
-
-                    &:nth-child(3) {
-                        width: 2rem;
-                    }
-
                     &:nth-child(4) {
-                        width: 4rem;
 
                         span {
                             display: flex;
@@ -396,17 +381,13 @@
                             }
                         }
                     }
-
-                    &:last-child {
-                        width: 2rem;
-                    }
                 }
             }
 
             .track {
                 width: 100%;
-                display: flex;
-                flex-direction: row;
+                display: grid;
+                grid-template-columns: 2rem 1fr 2rem 4rem 2rem;
                 align-items: center;
                 gap: .5rem;
                 padding: .5rem 1rem;
@@ -479,8 +460,6 @@
                     }
 
                     &:first-child {
-                        width: 2rem;
-
                         span {
                             display: block;
                         }
@@ -491,20 +470,19 @@
                     }
 
                     &:nth-child(2) {
-                        flex: 1;
-                        min-width: 8rem;
                         display: flex;
                         gap: .75rem;
 
                         div {
-                            width: 100%;
+                            flex: 1;
+                            max-width: 80%;
 
                             h3,
                             a {
                                 white-space: nowrap;
                                 overflow: hidden;
                                 text-overflow: ellipsis;
-                                max-width: 90%
+                                max-width: 90% !important;
                             }
 
                             a {
@@ -523,7 +501,6 @@
 
 
                     &:nth-child(3) {
-                        width: 2rem;
                         display: flex;
                         align-items: center;
                         justify-content: center;
@@ -543,7 +520,6 @@
                     }
 
                     &:nth-child(4) {
-                        width: 4rem;
                         display: flex;
                         align-items: center;
                         justify-content: center;

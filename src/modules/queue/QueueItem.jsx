@@ -170,7 +170,7 @@ const QueueItem = ({track, activeTrack, setActiveTrack, actionListIndex, setActi
       <div className={`queue_item ${track === activeTrack ? 'active' : ''}`} onClick={() => setActiveTrack(track)}>
         <div className="queue_item-info">
           <img src={track.image} alt={track.name} />
-          <div>
+          <div className="item-text-wrapper">
             <Link to={`/album/${track.albumId}`}>{track.name}</Link>
             <Link to={`/artist/${track.artistId}`}>
               {track.explicit ? <MdExplicit /> : ''}

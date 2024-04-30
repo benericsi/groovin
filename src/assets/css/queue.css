@@ -43,6 +43,7 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 0 2rem;
 }
 .queue_wrapper .queue_body h2 {
@@ -53,9 +54,10 @@
 }
 .queue_wrapper .queue_body .queue_list {
   margin-top: 2rem;
+  padding-bottom: 1rem;
 }
 .queue_wrapper .queue_body .queue_item {
-  width: 100%;
+  position: relative;
   height: 4rem;
   display: flex;
   justify-content: space-between;
@@ -70,12 +72,16 @@
 }
 .queue_wrapper .queue_body .queue_item.active span {
   display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .queue_wrapper .queue_body .queue_item:hover {
   background-color: #F0F1F3;
 }
 .queue_wrapper .queue_body .queue_item:hover span {
   display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .queue_wrapper .queue_body .queue_item:hover span svg {
   font-size: 1rem;
@@ -137,8 +143,9 @@
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.5rem;
+  flex: 1;
 }
 .queue_wrapper .queue_body .queue_item .queue_item-info img {
   width: auto;
@@ -146,32 +153,29 @@
   aspect-ratio: 1/1;
   border-radius: 0.5rem;
 }
-.queue_wrapper .queue_body .queue_item .queue_item-info div {
+.queue_wrapper .queue_body .queue_item .queue_item-info .item-text-wrapper {
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
-.queue_wrapper .queue_body .queue_item .queue_item-info div a {
+.queue_wrapper .queue_body .queue_item .queue_item-info .item-text-wrapper a {
   color: #242424;
   transition: color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  max-width: 14rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
-.queue_wrapper .queue_body .queue_item .queue_item-info div a:first-child {
+.queue_wrapper .queue_body .queue_item .queue_item-info .item-text-wrapper a:first-child {
   font-size: 1rem;
   font-weight: 600;
 }
-.queue_wrapper .queue_body .queue_item .queue_item-info div a:last-child {
+.queue_wrapper .queue_body .queue_item .queue_item-info .item-text-wrapper a:last-child {
   font-size: 0.9rem;
   font-weight: 500;
   color: #5C6678;
 }
-.queue_wrapper .queue_body .queue_item .queue_item-info div a:last-child svg {
+.queue_wrapper .queue_body .queue_item .queue_item-info .item-text-wrapper a:last-child svg {
   color: #000;
   margin-right: 0.25rem;
 }
-.queue_wrapper .queue_body .queue_item .queue_item-info div a:hover {
+.queue_wrapper .queue_body .queue_item .queue_item-info .item-text-wrapper a:hover {
   color: #0c6fe9;
   text-decoration: underline;
 }
