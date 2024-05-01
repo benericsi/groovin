@@ -235,7 +235,7 @@
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-size: 3rem;
+                    font-size: 4rem;
                     color: color(primary, 500);
                     transition: all .2s $animation-cubic;
                     cursor: pointer;
@@ -396,7 +396,7 @@
                             display: none;
                         }
 
-                        svg {
+                        .ic {
                             display: block;
                         }
                     }
@@ -410,9 +410,17 @@
                             display: none;
                         }
 
-                        svg {
+                        .ic {
                             display: block;
                         }
+                    }
+                }
+
+                &.current {
+
+                    .track-field:first-child,
+                    .track-field:nth-child(2) {
+                        color: color(primary, 500);
                     }
                 }
 
@@ -449,7 +457,7 @@
                             display: block;
                         }
 
-                        svg {
+                        .ic {
                             display: none;
                         }
                     }

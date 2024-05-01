@@ -85,6 +85,8 @@ const AddToPlaylistForm = ({toggleForm, track}) => {
 
         // Check if track already exists in the playlist
         if (!playlistData.tracks.some((t) => t.id === track.id)) {
+          track.createdAt = new Date();
+
           const updatedTracks = [...playlistData.tracks, track];
           batch.update(playlistRef, {tracks: updatedTracks});
         }

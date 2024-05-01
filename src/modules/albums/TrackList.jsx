@@ -66,7 +66,6 @@ const TrackList = ({album}) => {
     } else {
       const trackInfo = {
         id: track.id,
-        createdAt: new Date(),
         album: album.name,
         albumId: album.id,
         artist: album.artists[0].name,
@@ -81,7 +80,6 @@ const TrackList = ({album}) => {
 
       const newQueue = album.tracks.items.slice(album.tracks.items.indexOf(track)).map((t) => ({
         id: t.id,
-        createdAt: new Date(),
         album: album.name,
         albumId: album.id,
         artist: album.artists[0].name,
@@ -97,13 +95,12 @@ const TrackList = ({album}) => {
       player.playTrack(trackInfo, newQueue);
     }
 
-    player.setPlaylist(album.name);
+    player.setPlaylist(album.id);
   };
 
   const handleAddToQueue = (track) => {
     const trackInfo = {
       id: track.id,
-      createdAt: new Date(),
       album: album.name,
       albumId: album.id,
       artist: album.artists[0].name,

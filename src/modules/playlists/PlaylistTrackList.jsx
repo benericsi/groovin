@@ -6,6 +6,7 @@ import {useAuth} from '../../hooks/useAuth';
 import PlaylistTrack from './PlaylistTrack';
 
 import {IoIosTimer} from 'react-icons/io';
+import {usePlayer} from '../../hooks/usePlayer';
 
 const PlaylistTrackList = ({playlist, setPlaylist}) => {
   const [isDragging, setIsDragging] = useState(false);
@@ -14,6 +15,7 @@ const PlaylistTrackList = ({playlist, setPlaylist}) => {
   const [actionListIndex, setActionListIndex] = useState(null);
 
   const {currentUser} = useAuth();
+  const player = usePlayer();
 
   useEffect(() => {
     // Update the track order in the database
@@ -49,6 +51,7 @@ const PlaylistTrackList = ({playlist, setPlaylist}) => {
   const updateUserFavourites = (newFavs, track) => {
     // Only create trackInfo if a new track is being added
     if (track && !userFavs.some((favTrack) => favTrack.id === track.id)) {
+      track.createdAt = new Date();
       newFavs = [...newFavs, track];
     }
     // Update userFavs state
@@ -65,6 +68,20 @@ const PlaylistTrackList = ({playlist, setPlaylist}) => {
       .update({
         tracks: playlist.tracks.filter((track) => track.id !== trackId),
       });
+  };
+
+  const handleTrackPlayButtonClick = (track) => {
+    if (player.playing && player.currentSong.id === track.id) {
+      player.setPlaying(false);
+    } else {
+      player.playTrack(track, playlist.tracks.slice(playlist.tracks.indexOf(track)));
+    }
+
+    player.setPlaylist(playlist.id);
+  };
+
+  const handleAddToQueue = (track) => {
+    player.addToQueue(track);
   };
 
   return (
@@ -97,7 +114,7 @@ const PlaylistTrackList = ({playlist, setPlaylist}) => {
         }}>
         {playlist.tracks.map((track, index) => (
           <Reorder.Item key={track.id} value={track} onDragStart={() => setIsDragging(true)} onDragEnd={() => setIsDragging(false)}>
-            <PlaylistTrack key={track.id} playlist={playlist} track={track} index={index} userFavs={userFavs} updateUserFavourites={updateUserFavourites} activeTrack={activeTrack} setActiveTrack={setActiveTrack} actionListIndex={actionListIndex} setActionListIndex={setActionListIndex} removeTrack={removeTrack} />
+            <PlaylistTrack key={track.id} playlist={playlist} track={track} index={index} userFavs={userFavs} updateUserFavourites={updateUserFavourites} activeTrack={activeTrack} setActiveTrack={setActiveTrack} actionListIndex={actionListIndex} setActionListIndex={setActionListIndex} removeTrack={removeTrack} handleTrackPlayButtonClick={handleTrackPlayButtonClick} handleAddToQueue={handleAddToQueue} />
           </Reorder.Item>
         ))}
       </Reorder.Group>

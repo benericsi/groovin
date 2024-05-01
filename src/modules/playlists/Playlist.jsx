@@ -28,6 +28,7 @@ import {IoIosSend} from 'react-icons/io';
 import {AiFillEdit} from 'react-icons/ai';
 import {TbCircleOff} from 'react-icons/tb';
 import {BiSearchAlt} from 'react-icons/bi';
+import {usePlayer} from '../../hooks/usePlayer';
 
 const ModifyPlaylistForm = ({toggleModify, playlist}) => {
   const [name, setName] = useState(playlist.title);
@@ -431,9 +432,7 @@ const Playlist = () => {
 
   const {showLoader, hideLoader} = useLoader();
   const {addToast} = useToast();
-
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isShuffle, setIsShuffle] = useState(false);
+  const player = usePlayer();
 
   const [isPlaylistActionsActive, setIsPlaylistActionsActive] = useState(false);
   const [isModifyActive, setIsModifyActive] = useState(false);
@@ -494,15 +493,6 @@ const Playlist = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const toggleMusic = () => {
-    if (playlist.tracks.length === 0) {
-      addToast('info', 'This playlist is empty.');
-      return;
-    }
-
-    setIsPlaying(!isPlaying);
-  };
-
   const togglePlaylistActions = () => {
     setIsPlaylistActionsActive(!isPlaylistActionsActive);
   };
@@ -525,6 +515,28 @@ const Playlist = () => {
 
   const navigateToSearch = () => {
     navigate('/search');
+  };
+
+  const handlePlayButtonClick = () => {
+    if (playlist.tracks.length === 0) {
+      addToast('info', playlist.name + ' is empty.');
+      return;
+    }
+
+    if (player.playing && player.playlist === playlist.id) {
+      player.setPlaying(false);
+    } else if (player.playing && player.playlist !== playlist.id) {
+      player.playTrack(playlist.tracks[0], playlist.tracks);
+      player.setPlaylist(playlist.id);
+    } else {
+      if (player.currentSong) {
+        player.setPlaying(true);
+      } else {
+        player.playTrack(playlist.tracks[0], playlist.tracks);
+      }
+
+      player.setPlaylist(playlist.id);
+    }
   };
 
   return (
@@ -562,11 +574,8 @@ const Playlist = () => {
             </header>
             <nav className="playlist-subnav">
               <ul className="playlist-subnav-list">
-                <li className="playlist-subnav-item" onClick={() => toggleMusic()}>
-                  {isPlaying ? <FaCirclePause /> : <FaCirclePlay />}
-                </li>
-                <li className={`playlist-subnav-item blue ${isShuffle ? 'active' : ''}`} onClick={() => setIsShuffle(!isShuffle)}>
-                  <IoShuffleOutline />
+                <li className="playlist-subnav-item" onClick={handlePlayButtonClick}>
+                  {player.playing && player.playlist === playlist.id ? <FaCirclePause /> : <FaCirclePlay />}
                 </li>
                 <li className="playlist-subnav-item" onClick={() => togglePlaylistActions()}>
                   <FaEllipsisVertical />

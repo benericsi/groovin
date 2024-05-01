@@ -25,7 +25,8 @@ const Queue = ({setIsQueueOpen}) => {
     if (player.playing && player.currentSong.id === track.id) {
       player.setPlaying(false);
     } else {
-      player.playTrack(track, player.queue.slice(player.queue.indexOf(track)));
+      const trackIndex = player.queue.findIndex((queueTrack) => queueTrack.id === track.id);
+      player.playTrack(track, player.queue.slice(trackIndex));
     }
   };
 

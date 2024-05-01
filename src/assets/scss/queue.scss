@@ -170,7 +170,7 @@
                 align-items: center;
                 justify-content: flex-start;
                 gap: .5rem;
-                flex: 1;
+                width: 100%;
 
                 img {
                     width: auto;
@@ -183,10 +183,15 @@
                     display: flex;
                     flex-direction: column;
                     flex: 1;
+                    max-width: 80%;
 
                     a {
                         color: $clr-font;
                         transition: color .2s $animation-cubic;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        max-width: 90% !important;
 
                         &:first-child {
                             font-size: 1rem;

@@ -32,11 +32,11 @@
   font-size: 1rem;
 }
 .modal_wrapper .modal .modal_title {
-  height: 2.175rem;
   display: flex;
   align-items: center;
   font-size: 1.25rem;
   padding: 0 1.5rem;
+  width: 90%;
 }
 .modal_wrapper .modal .modal_title svg {
   margin-right: 0.75rem;

@@ -4,17 +4,19 @@ import {db} from '../../setup/Firebase';
 import {useAuth} from '../../hooks/useAuth';
 import {useLoader} from '../../hooks/useLoader';
 import {useToast} from '../../hooks/useToast';
+import {usePlayer} from '../../hooks/usePlayer';
 
 import Modal from '../../component/Modal';
 import Button from '../form/Button';
 
 import {HiHeart} from 'react-icons/hi';
 import {HiOutlineHeart} from 'react-icons/hi';
-import {FaEllipsisVertical, FaPlay} from 'react-icons/fa6';
-import {FaRegPlayCircle} from 'react-icons/fa';
+import {FaEllipsisVertical, FaPlay, FaPause} from 'react-icons/fa6';
+import {FaRegPlayCircle, FaRegPauseCircle} from 'react-icons/fa';
 import {AiOutlinePlusCircle} from 'react-icons/ai';
 import {MdAddCircle, MdAddCircleOutline, MdDeleteOutline, MdExplicit, MdOutlineQueue} from 'react-icons/md';
 import {TbCircleOff} from 'react-icons/tb';
+import {IoMusicalNotesSharp} from 'react-icons/io5';
 
 const AddToPlaylistForm = ({toggleForm, currentPlaylist, track}) => {
   const {currentUser} = useAuth();
@@ -152,11 +154,12 @@ const AddToPlaylistForm = ({toggleForm, currentPlaylist, track}) => {
   );
 };
 
-const PlaylistTrack = ({index, playlist, track, userFavs, updateUserFavourites, activeTrack, setActiveTrack, actionListIndex, setActionListIndex, removeTrack}) => {
+const PlaylistTrack = ({index, playlist, track, userFavs, updateUserFavourites, activeTrack, setActiveTrack, actionListIndex, setActionListIndex, removeTrack, handleTrackPlayButtonClick, handleAddToQueue}) => {
   const isFavourite = userFavs.some((favTrack) => favTrack.id === track.id);
   const [addToPlaylist, setAddToPlaylist] = useState(false);
 
   const actionListRef = useRef(null);
+  const player = usePlayer();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -185,7 +188,11 @@ const PlaylistTrack = ({index, playlist, track, userFavs, updateUserFavourites, 
   }, [track.duration]);
 
   const readableTimeStamp = useMemo(() => {
-    return new Date(track.createdAt.seconds * 1000).toISOString().split('T')[0];
+    if (track.createdAt?.seconds) {
+      return new Date(track.createdAt.seconds * 1000).toISOString().split('T')[0];
+    } else {
+      return new Date(track.createdAt).toISOString().split('T')[0];
+    }
   }, [track.createdAt]);
 
   const handleUserFavourites = () => {
@@ -205,10 +212,10 @@ const PlaylistTrack = ({index, playlist, track, userFavs, updateUserFavourites, 
         <AddToPlaylistForm toggleForm={toggleAddToPlaylist} currentPlaylist={playlist} track={track} />
       </Modal>
 
-      <div className={`track ${track === activeTrack ? 'active' : ''}`} onClick={() => setActiveTrack(track)}>
-        <div className="track-field">
-          <span>{index + 1}</span>
-          <FaPlay />
+      <div className={`track ${track === activeTrack ? 'active' : ''}  ${track.id === player.currentSong?.id ? 'current' : ''}`} onClick={() => setActiveTrack(track)}>
+        <div className="track-field" onClick={() => handleTrackPlayButtonClick(track)}>
+          <span>{track.id === player.currentSong?.id && player.playing ? <IoMusicalNotesSharp /> : index + 1}</span>
+          {track.id === player.currentSong?.id && player.playing ? <FaPause className="ic" /> : <FaPlay className="ic" />}
         </div>
         <div className="track-field">
           <img src={track.image} alt={track.name} />
@@ -245,13 +252,13 @@ const PlaylistTrack = ({index, playlist, track, userFavs, updateUserFavourites, 
 
           {actionListIndex === track.id && (
             <ul className="track-actions-list" ref={actionListRef}>
-              <li className="track-actions-item">
+              <li className="track-actions-item" onClick={() => handleTrackPlayButtonClick(track)}>
                 <button className="btn-track-action">
-                  <FaRegPlayCircle />
-                  <span>Play Song</span>
+                  {track.id === player.currentSong?.id && player.playing ? <FaRegPauseCircle /> : <FaRegPlayCircle />}
+                  <span>{track.id === player.currentSong?.id && player.playing ? 'Pause Song' : 'Play Song'}</span>
                 </button>
               </li>
-              <li className="track-actions-item">
+              <li className="track-actions-item" onClick={() => handleAddToQueue(track)}>
                 <button className="btn-track-action">
                   <MdOutlineQueue />
                   <span>Add To Queue</span>

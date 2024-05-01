@@ -4,18 +4,20 @@ import {db} from '../../setup/Firebase';
 import {useAuth} from '../../hooks/useAuth';
 import {useLoader} from '../../hooks/useLoader';
 import {useToast} from '../../hooks/useToast';
+import {usePlayer} from '../../hooks/usePlayer';
 
 import Button from '../form/Button';
 import Modal from '../../component/Modal';
 
 import {HiHeart} from 'react-icons/hi';
 import {HiOutlineHeart} from 'react-icons/hi';
-import {FaEllipsisVertical, FaPlay} from 'react-icons/fa6';
-import {FaRegPlayCircle} from 'react-icons/fa';
+import {FaEllipsisVertical, FaPlay, FaPause} from 'react-icons/fa6';
+import {FaRegPlayCircle, FaRegPauseCircle} from 'react-icons/fa';
 import {AiOutlinePlusCircle} from 'react-icons/ai';
 import {MdExplicit, MdOutlineQueue} from 'react-icons/md';
 import {MdAddCircle, MdAddCircleOutline} from 'react-icons/md';
 import {TbCircleOff} from 'react-icons/tb';
+import {IoMusicalNotesSharp} from 'react-icons/io5';
 
 const AddToPlaylistForm = ({toggleForm, track}) => {
   const {currentUser} = useAuth();
@@ -76,7 +78,6 @@ const AddToPlaylistForm = ({toggleForm, track}) => {
     showLoader();
     try {
       const batch = db.batch();
-      console.log(track);
 
       for (let playlistId of selectedPlaylists) {
         const playlistRef = db.collection('playlists').doc(playlistId);
@@ -108,7 +109,6 @@ const AddToPlaylistForm = ({toggleForm, track}) => {
 
       addToast('success', 'Track added to selected playlists!');
     } catch (error) {
-      console.log(error);
       addToast('error', error.message);
     } finally {
       hideLoader();
@@ -153,12 +153,13 @@ const AddToPlaylistForm = ({toggleForm, track}) => {
   );
 };
 
-const CategoryTrack = ({track, index, userFavs, updateUserFavourites, activeTrack, setActiveTrack, actionListIndex, setActionListIndex}) => {
+const CategoryTrack = ({track, index, userFavs, updateUserFavourites, activeTrack, setActiveTrack, actionListIndex, setActionListIndex, handleTrackPlayButtonClick, handleAddToQueue}) => {
   const isFavourite = userFavs.some((favTrack) => favTrack.id === track.track.id);
 
   const [addToPlaylist, setAddToPlaylist] = useState(false);
 
   const actionListRef = useRef(null);
+  const player = usePlayer();
 
   const readableDuration = useMemo(() => {
     // Convert milliseconds to minutes and seconds
@@ -193,10 +194,10 @@ const CategoryTrack = ({track, index, userFavs, updateUserFavourites, activeTrac
         <AddToPlaylistForm toggleForm={toggleAddToPlaylist} track={track.track} />
       </Modal>
 
-      <div className={`track ${track === activeTrack ? 'active' : ''}`} onClick={() => setActiveTrack(track)}>
-        <div className="track-field">
-          <span>{index + 1}</span>
-          <FaPlay />
+      <div className={`track ${track === activeTrack ? 'active' : ''} ${track.track.id === player.currentSong?.id ? 'current' : ''}`} onClick={() => setActiveTrack(track)}>
+        <div className="track-field" onClick={() => handleTrackPlayButtonClick(track)}>
+          <span>{track.track.id === player.currentSong?.id && player.playing ? <IoMusicalNotesSharp /> : index + 1}</span>
+          {track.track.id === player.currentSong?.id && player.playing ? <FaPause className="ic" /> : <FaPlay className="ic" />}
         </div>
         <div className="track-field">
           <img src={track.track.album.images[0].url} alt={track.track.name} />
@@ -233,13 +234,13 @@ const CategoryTrack = ({track, index, userFavs, updateUserFavourites, activeTrac
 
           {actionListIndex === track.track.id && (
             <ul className="track-actions-list" ref={actionListRef}>
-              <li className="track-actions-item">
+              <li className="track-actions-item" onClick={() => handleTrackPlayButtonClick(track)}>
                 <button className="btn-track-action">
-                  <FaRegPlayCircle />
-                  <span>Play Song</span>
+                  {track.track.id === player.currentSong?.id && player.playing ? <FaRegPauseCircle /> : <FaRegPlayCircle />}
+                  <span>{track.track.id === player.currentSong?.id && player.playing ? 'Pause Song' : 'Play Song'}</span>
                 </button>
               </li>
-              <li className="track-actions-item">
+              <li className="track-actions-item" onClick={() => handleAddToQueue(track.track)}>
                 <button className="btn-track-action">
                   <MdOutlineQueue />
                   <span>Add To Queue</span>

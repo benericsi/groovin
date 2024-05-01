@@ -6,13 +6,15 @@ import {db} from '../../setup/Firebase';
 import CategoryTrack from './CategoryTrack';
 
 import {IoIosTimer} from 'react-icons/io';
+import {usePlayer} from '../../hooks/usePlayer';
 
-const CategoryTrackList = ({tracks}) => {
+const CategoryTrackList = ({tracks, playlist}) => {
   const [userFavs, setUserFavs] = useState([]);
   const [activeTrack, setActiveTrack] = useState(null);
   const [actionListIndex, setActionListIndex] = useState(null);
 
   const {currentUser} = useAuth();
+  const player = usePlayer();
 
   useEffect(() => {
     // get user favourites realtime
@@ -56,6 +58,64 @@ const CategoryTrackList = ({tracks}) => {
     db.collection('favourites').doc(currentUser.uid).set({tracks: newFavs});
   };
 
+  const handleTrackPlayButtonClick = (track) => {
+    if (player.playing && player.currentSong.id === track.track.id) {
+      player.setPlaying(false);
+    } else {
+      const trackInfo = {
+        id: track.track.id,
+        name: track.track.name,
+        album: track.track.album.name,
+        albumId: track.track.album.id,
+        artist: track.track.artists[0].name,
+        artistsId: track.track.artists[0].id,
+        duration: track.track.duration_ms,
+        image: track.track.album.images[0].url,
+        uri: track.track.uri,
+        preview_url: track.track.preview_url,
+        explicit: track.track.explicit,
+      };
+
+      const trackIndex = tracks.findIndex((t) => t.track.id === track.track.id);
+      console.log(trackIndex);
+      const newQueue = tracks.slice(trackIndex).map((t) => ({
+        id: t.track.id,
+        name: t.track.name,
+        album: t.track.album.name,
+        albumId: t.track.album.id,
+        artist: t.track.artists[0].name,
+        artistsId: t.track.artists[0].id,
+        duration: t.track.duration_ms,
+        image: t.track.album.images[0].url,
+        uri: t.track.uri,
+        preview_url: t.track.preview_url,
+        explicit: t.track.explicit,
+      }));
+
+      player.playTrack(trackInfo, newQueue);
+    }
+
+    player.setPlaylist(playlist.id);
+  };
+
+  const handleAddToQueue = (track) => {
+    const trackInfo = {
+      id: track.id,
+      album: track.album.name,
+      albumId: track.album.id,
+      artist: track.artists[0].name,
+      artistId: track.artists[0].id,
+      name: track.name,
+      image: track.album.images[0].url, // 64x64
+      duration: track.duration_ms,
+      uri: track.uri,
+      preview_url: track.preview_url,
+      explicit: track.explicit,
+    };
+
+    player.addToQueue(trackInfo);
+  };
+
   return (
     <div className="playlist-list">
       <div className="table-header">
@@ -81,7 +141,7 @@ const CategoryTrackList = ({tracks}) => {
       </div>
 
       {tracks.map((track, index) => (
-        <CategoryTrack key={index} track={track} index={index} userFavs={userFavs} updateUserFavourites={updateUserFavourites} activeTrack={activeTrack} setActiveTrack={setActiveTrack} actionListIndex={actionListIndex} setActionListIndex={setActionListIndex} />
+        <CategoryTrack key={index} track={track} index={index} userFavs={userFavs} updateUserFavourites={updateUserFavourites} activeTrack={activeTrack} setActiveTrack={setActiveTrack} actionListIndex={actionListIndex} setActionListIndex={setActionListIndex} handleTrackPlayButtonClick={handleTrackPlayButtonClick} handleAddToQueue={handleAddToQueue} />
       ))}
     </div>
   );

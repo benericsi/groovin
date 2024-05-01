@@ -285,11 +285,11 @@ const Album = () => {
       explicit: track.explicit,
     }));
 
-    if (player.playing && player.playlist === album.name) {
+    if (player.playing && player.playlist === album.id) {
       player.setPlaying(false);
-    } else if (player.playing && player.playlist !== album.name) {
+    } else if (player.playing && player.playlist !== album.id) {
       player.playTrack(newTracks[0], newTracks);
-      player.setPlaylist(album.name);
+      player.setPlaylist(album.id);
     } else {
       if (player.currentSong) {
         player.setPlaying(true);
@@ -297,7 +297,7 @@ const Album = () => {
         player.playTrack(newTracks[0], newTracks);
       }
 
-      player.setPlaylist(album.name);
+      player.setPlaylist(album.id);
     }
   };
 
@@ -325,7 +325,7 @@ const Album = () => {
             <nav className="album-subnav">
               <ul className="album-subnav-list">
                 <li className="album-subnav-item" onClick={handlePlayButtonClick}>
-                  {player.playing && player.playlist === album.name ? <FaCirclePause /> : <FaCirclePlay />}
+                  {player.playing && player.playlist === album.id ? <FaCirclePause /> : <FaCirclePlay />}
                 </li>
                 <li className="album-subnav-item" onClick={() => toggleAlbumActions()}>
                   <FaEllipsisVertical />

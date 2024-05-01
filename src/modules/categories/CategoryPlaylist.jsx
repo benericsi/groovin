@@ -6,20 +6,18 @@ import {useToast} from '../../hooks/useToast';
 import {useLoader} from '../../hooks/useLoader';
 
 import {FaCirclePlay, FaCirclePause} from 'react-icons/fa6';
-import {IoShuffleOutline} from 'react-icons/io5';
 
 import CategoryTrackList from './CategoryTrackList';
+import {usePlayer} from '../../hooks/usePlayer';
 
 const CategoryPlaylist = () => {
   const [playlist, setPlaylist] = useState(null);
-
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isShuffle, setIsShuffle] = useState(false);
 
   const {playlistId} = useParams();
   const token = useSpotifyAuth();
   const {addToast} = useToast();
   const {showLoader, hideLoader} = useLoader();
+  const player = usePlayer();
 
   useEffect(() => {
     if (!token) return;
@@ -47,8 +45,35 @@ const CategoryPlaylist = () => {
     // eslint-disable-next-line
   }, [token, playlistId]);
 
-  const toggleMusic = () => {
-    setIsPlaying(!isPlaying);
+  const handlePlayButtonClick = () => {
+    const newTracks = playlist.tracks.items.map((track) => ({
+      id: track.track.id,
+      album: track.track.album.name,
+      albumId: track.track.album.id,
+      artist: track.track.artists[0].name,
+      artistId: track.track.artists[0].id,
+      name: track.track.name,
+      image: track.track.album.images[0].url,
+      duration: track.track.duration_ms,
+      uri: track.track.uri,
+      preview_url: track.track.preview_url,
+      explicit: track.track.explicit,
+    }));
+
+    if (player.playing && player.playlist === playlist.id) {
+      player.setPlaying(false);
+    } else if (player.playing && player.playlist !== playlist.id) {
+      player.playTrack(newTracks[0], newTracks);
+      player.setPlaylist(playlist.id);
+    } else {
+      if (player.currentSong) {
+        player.setPlaying(true);
+      } else {
+        player.playTrack(newTracks[0], newTracks);
+      }
+
+      player.setPlaylist(playlist.id);
+    }
   };
 
   return (
@@ -72,16 +97,13 @@ const CategoryPlaylist = () => {
             </header>
             <nav className="album-subnav">
               <ul className="album-subnav-list">
-                <li className="album-subnav-item" onClick={toggleMusic}>
-                  {isPlaying ? <FaCirclePause /> : <FaCirclePlay />}
-                </li>
-                <li className={`album-subnav-item blue ${isShuffle ? 'active' : ''}`} onClick={() => setIsShuffle(!isShuffle)}>
-                  <IoShuffleOutline />
+                <li className="album-subnav-item" onClick={handlePlayButtonClick}>
+                  {player.playing && player.playlist === playlist.id ? <FaCirclePause /> : <FaCirclePlay />}
                 </li>
                 <li className="album-subnav-item"></li>
               </ul>
             </nav>
-            <CategoryTrackList tracks={playlist.tracks.items} />
+            <CategoryTrackList tracks={playlist.tracks.items} playlist={playlist} />
           </div>
         </section>
       )}
