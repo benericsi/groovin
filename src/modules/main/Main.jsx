@@ -34,7 +34,7 @@ const Main = () => {
         {renderSideBar()}
         <main className="main-content">
           <MainHeader />
-          <div className="main-body">
+          <div className={`main-body ${isQueueOpen ? 'queue-open' : ''}`}>
             <Outlet />
           </div>
         </main>

@@ -88,7 +88,7 @@ const AddToPlaylistForm = ({toggleForm, track}) => {
           name: track.name,
           album: track.album.name,
           albumId: track.album.id,
-          artists: track.artists[0].name,
+          artist: track.artists[0].name,
           artistsId: track.artists[0].id,
           duration: track.duration_ms,
           createdAt: new Date(),

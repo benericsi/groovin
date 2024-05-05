@@ -523,19 +523,12 @@ const Playlist = () => {
       return;
     }
 
-    if (player.playing && player.playlist === playlist.id) {
-      player.setPlaying(false);
-    } else if (player.playing && player.playlist !== playlist.id) {
+    if (player.playlist === playlist.id) {
+      player.setPlaying(!player.playing);
+    } else {
       player.playTrack(playlist.tracks[0], playlist.tracks);
       player.setPlaylist(playlist.id);
-    } else {
-      if (player.currentSong) {
-        player.setPlaying(true);
-      } else {
-        player.playTrack(playlist.tracks[0], playlist.tracks);
-      }
-
-      player.setPlaylist(playlist.id);
+      player.setPlaying(true);
     }
   };
 

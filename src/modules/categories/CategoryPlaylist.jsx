@@ -60,19 +60,12 @@ const CategoryPlaylist = () => {
       explicit: track.track.explicit,
     }));
 
-    if (player.playing && player.playlist === playlist.id) {
-      player.setPlaying(false);
-    } else if (player.playing && player.playlist !== playlist.id) {
+    if (player.playlist === playlist.id) {
+      player.setPlaying(!player.playing);
+    } else {
       player.playTrack(newTracks[0], newTracks);
       player.setPlaylist(playlist.id);
-    } else {
-      if (player.currentSong) {
-        player.setPlaying(true);
-      } else {
-        player.playTrack(newTracks[0], newTracks);
-      }
-
-      player.setPlaylist(playlist.id);
+      player.setPlaying(true);
     }
   };
 

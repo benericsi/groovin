@@ -52,8 +52,10 @@
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center center;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center;
 }
 .favourites-body .favourites-section .favourites-container .favourites-header .favourites-header-info {
   flex: 1;
@@ -177,8 +179,6 @@
   display: flex;
   flex-direction: column;
   background-color: #fff;
-  container-type: inline-size;
-  min-width: 0;
 }
 .favourites-body .favourites-section .favourites-container .favourites-list .table-header {
   position: sticky;
@@ -391,8 +391,10 @@
   height: 3rem;
   aspect-ratio: 1/1;
   border-radius: 0.5rem;
-  object-fit: cover;
-  object-position: center center;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center;
 }
 
 .modal_wrapper .modal .playlists-container {
@@ -443,8 +445,10 @@
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center center;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center;
 }
 .modal_wrapper .modal .playlists-container .playlist-card .playlist-card-name {
   font-size: 1.25rem;
@@ -461,33 +465,4 @@
   font-size: 2.5rem;
   font-weight: 600;
   color: #989FAD;
-}
-
-@container (max-width: 762px) {
-  .table-header {
-    grid-template-columns: 2rem 2fr 2fr 2rem 4rem 2rem !important;
-  }
-  .table-header .table-header-item:nth-child(4) {
-    display: none;
-  }
-  .favourite {
-    grid-template-columns: 2rem 2fr 2fr 2rem 4rem 2rem !important;
-  }
-  .favourite .favourite-field:nth-child(4) {
-    display: none !important;
-  }
-}
-@container (max-width: 576px) {
-  .table-header {
-    grid-template-columns: 2rem 2fr 2rem 4rem 2rem !important;
-  }
-  .table-header .table-header-item:nth-child(3) {
-    display: none;
-  }
-  .favourite {
-    grid-template-columns: 2rem 2fr 2rem 4rem 2rem !important;
-  }
-  .favourite .favourite-field:nth-child(3) {
-    display: none !important;
-  }
 }/*# sourceMappingURL=favourites.css.map */

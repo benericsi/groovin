@@ -39,7 +39,7 @@ const CategoryTrackList = ({tracks, playlist}) => {
         name: track.name,
         album: track.album.name,
         albumId: track.album.id,
-        artists: track.artists[0].name,
+        artist: track.artists[0].name,
         artistsId: track.artists[0].id,
         duration: track.duration_ms,
         createdAt: new Date(),
@@ -77,7 +77,6 @@ const CategoryTrackList = ({tracks, playlist}) => {
       };
 
       const trackIndex = tracks.findIndex((t) => t.track.id === track.track.id);
-      console.log(trackIndex);
       const newQueue = tracks.slice(trackIndex).map((t) => ({
         id: t.track.id,
         name: t.track.name,

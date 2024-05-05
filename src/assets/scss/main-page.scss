@@ -81,6 +81,137 @@
             display: flex;
             flex-direction: column;
             //padding: 1rem;
+
+            &.queue-open {
+                @media only screen and (max-width: calc(1100px + #{$queue-width})) {
+                    .table-header {
+                        grid-template-columns: 2rem 2fr 2fr 2rem 4rem 2rem !important;
+
+                        .table-header-item {
+                            &:nth-child(4) {
+                                display: none !important;
+                            }
+                        }
+                    }
+
+                    .favourite {
+                        grid-template-columns: 2rem 2fr 2fr 2rem 4rem 2rem !important;
+
+                        .favourite-field {
+                            &:nth-child(4) {
+                                display: none !important;
+                            }
+                        }
+                    }
+
+                    .track {
+                        grid-template-columns: 2rem 2fr 2fr 2rem 4rem 2rem !important;
+
+                        .track-field {
+                            &:nth-child(4) {
+                                display: none !important;
+                            }
+                        }
+                    }
+                }
+
+                @media only screen and (max-width: calc(900px + #{$queue-width})) {
+                    .table-header {
+                        grid-template-columns: 2rem 2fr 2rem 4rem 2rem !important;
+
+                        .table-header-item {
+                            &:nth-child(3) {
+                                display: none !important;
+                            }
+                        }
+                    }
+
+                    .favourite {
+                        grid-template-columns: 2rem 2fr 2rem 4rem 2rem !important;
+
+                        .favourite-field {
+                            &:nth-child(3) {
+                                display: none !important;
+                            }
+                        }
+                    }
+
+                    .track {
+                        grid-template-columns: 2rem 2fr 2rem 4rem 2rem !important;
+
+                        .track-field {
+                            &:nth-child(3) {
+                                display: none !important;
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            @media only screen and (max-width: 1100px) {
+                .table-header {
+                    grid-template-columns: 2rem 2fr 2fr 2rem 4rem 2rem !important;
+
+                    .table-header-item {
+                        &:nth-child(4) {
+                            display: none !important;
+                        }
+                    }
+                }
+
+                .favourite {
+                    grid-template-columns: 2rem 2fr 2fr 2rem 4rem 2rem !important;
+
+                    .favourite-field {
+                        &:nth-child(4) {
+                            display: none !important;
+                        }
+                    }
+                }
+
+                .track {
+                    grid-template-columns: 2rem 2fr 2fr 2rem 4rem 2rem !important;
+
+                    .track-field {
+                        &:nth-child(4) {
+                            display: none !important;
+                        }
+                    }
+                }
+            }
+
+            @media only screen and (max-width: 900px) {
+                .table-header {
+                    grid-template-columns: 2rem 2fr 2rem 4rem 2rem !important;
+
+                    .table-header-item {
+                        &:nth-child(3) {
+                            display: none !important;
+                        }
+                    }
+                }
+
+                .favourite {
+                    grid-template-columns: 2rem 2fr 2rem 4rem 2rem !important;
+
+                    .favourite-field {
+                        &:nth-child(3) {
+                            display: none !important;
+                        }
+                    }
+                }
+
+                .track {
+                    grid-template-columns: 2rem 2fr 2rem 4rem 2rem !important;
+
+                    .track-field {
+                        &:nth-child(3) {
+                            display: none !important;
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -181,6 +181,7 @@ const QueueItem = ({track, activeTrack, setActiveTrack, actionListIndex, setActi
           </div>
         </div>
         <span
+          className="queue_item-actions"
           onClick={(e) => {
             e.stopPropagation();
             setActiveTrack(track);

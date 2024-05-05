@@ -42,7 +42,7 @@ const AudioPlayer = ({isQueueOpen, toggleQueueOpen}) => {
     }
   };
 
-  const updateUserFavourites = (newFavs, track) => {
+  const updateUserFavourites = (newFavs) => {
     if (player.currentSong && !userFavs.some((favTrack) => favTrack.id === player.currentSong.id)) {
       player.currentSong.createdAt = new Date();
       newFavs = [...newFavs, player.currentSong];

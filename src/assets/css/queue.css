@@ -70,33 +70,33 @@
 .queue_wrapper .queue_body .queue_item.active {
   background-color: #F0F1F3;
 }
-.queue_wrapper .queue_body .queue_item.active span {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.queue_wrapper .queue_body .queue_item.active .queue_item-actions {
+  visibility: visible;
 }
 .queue_wrapper .queue_body .queue_item:hover {
   background-color: #F0F1F3;
 }
-.queue_wrapper .queue_body .queue_item:hover span {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.queue_wrapper .queue_body .queue_item:hover .queue_item-actions {
+  visibility: visible;
 }
-.queue_wrapper .queue_body .queue_item:hover span svg {
+.queue_wrapper .queue_body .queue_item:hover .queue_item-actions svg {
   font-size: 1rem;
   color: #5C6678;
   transition: color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-.queue_wrapper .queue_body .queue_item:hover span:hover svg {
+.queue_wrapper .queue_body .queue_item:hover .queue_item-actions:hover svg {
   color: #000;
 }
-.queue_wrapper .queue_body .queue_item span {
+.queue_wrapper .queue_body .queue_item .queue_item-actions {
   position: relative;
+  width: 1rem;
   cursor: pointer;
-  display: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden;
 }
-.queue_wrapper .queue_body .queue_item span .track-actions-list {
+.queue_wrapper .queue_body .queue_item .queue_item-actions .track-actions-list {
   position: absolute;
   top: 100%;
   right: 100%;
@@ -111,19 +111,19 @@
   border-radius: 0.25rem;
   z-index: 99999;
 }
-.queue_wrapper .queue_body .queue_item span .track-actions-list .track-actions-item {
+.queue_wrapper .queue_body .queue_item .queue_item-actions .track-actions-list .track-actions-item {
   width: 100%;
   cursor: pointer;
   height: 2.5rem;
   transition: background-color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-.queue_wrapper .queue_body .queue_item span .track-actions-list .track-actions-item:hover {
+.queue_wrapper .queue_body .queue_item .queue_item-actions .track-actions-list .track-actions-item:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
-.queue_wrapper .queue_body .queue_item span .track-actions-list .track-actions-item:hover .btn-track-action {
+.queue_wrapper .queue_body .queue_item .queue_item-actions .track-actions-list .track-actions-item:hover .btn-track-action {
   color: #0c6fe9;
 }
-.queue_wrapper .queue_body .queue_item span .track-actions-list .track-actions-item .btn-track-action {
+.queue_wrapper .queue_body .queue_item .queue_item-actions .track-actions-list .track-actions-item .btn-track-action {
   all: unset;
   height: 2.5rem;
   width: calc(100% - 1.5rem);
@@ -145,7 +145,8 @@
   align-items: center;
   justify-content: flex-start;
   gap: 0.5rem;
-  width: 100%;
+  flex: 1;
+  max-width: 80%;
 }
 .queue_wrapper .queue_body .queue_item .queue_item-info img {
   width: auto;
@@ -157,7 +158,7 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  max-width: 80%;
+  max-width: 100%;
 }
 .queue_wrapper .queue_body .queue_item .queue_item-info .item-text-wrapper a {
   color: #242424;

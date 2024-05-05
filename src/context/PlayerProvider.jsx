@@ -1,5 +1,6 @@
-import {createContext, useReducer} from 'react';
+import {createContext, useEffect, useReducer, useState} from 'react';
 import {useToast} from '../hooks/useToast';
+import {useSpotifyAuth} from '../hooks/useSpotifyAuth';
 
 export const PlayerContext = createContext();
 
@@ -75,6 +76,42 @@ const PlayerProvider = ({children}) => {
     dispatch({type: 'SET_PLAYLIST', payload: playlist});
   };
 
+  const nextSong = () => {
+    const currentIndex = state.queue.findIndex((track) => track.id === state.currentSong.id);
+    const nextIndex = (currentIndex + 1) % state.queue.length;
+
+    if (nextIndex === 0) {
+      dispatch({type: 'SET_PLAYING', payload: false});
+      dispatch({type: 'SET_CURRENT_SONG', payload: null});
+      dispatch({type: 'SET_QUEUE', payload: []});
+      dispatch({type: 'SET_PLAYLIST', payload: null});
+    } else {
+      const nextTrack = state.queue[nextIndex];
+      dispatch({type: 'SET_CURRENT_SONG', payload: nextTrack});
+    }
+  };
+
+  const prevSong = () => {
+    const currentIndex = state.queue.findIndex((track) => track.id === state.currentSong.id);
+    const prevIndex = (currentIndex - 1 + state.queue.length) % state.queue.length;
+
+    if (prevIndex === state.queue.length - 1) {
+      dispatch({type: 'SET_PLAYING', payload: false});
+      dispatch({type: 'SET_CURRENT_SONG', payload: null});
+      dispatch({type: 'SET_QUEUE', payload: []});
+      dispatch({type: 'SET_PLAYLIST', payload: null});
+    } else {
+      const prevTrack = state.queue[prevIndex];
+      dispatch({type: 'SET_CURRENT_SONG', payload: prevTrack});
+    }
+  };
+
+  const handleEnd = () => {
+    const currentIndex = state.queue.findIndex((track) => track.id === state.currentSong.id);
+    nextSong();
+    dispatch({type: 'REMOVE_FROM_QUEUE', payload: state.queue[currentIndex]});
+  };
+
   return (
     <PlayerContext.Provider
       value={{
@@ -90,6 +127,9 @@ const PlayerProvider = ({children}) => {
         playTrack,
         updateQueue,
         setPlaylist,
+        nextSong,
+        prevSong,
+        handleEnd,
       }}>
       {children}
     </PlayerContext.Provider>

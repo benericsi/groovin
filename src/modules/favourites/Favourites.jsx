@@ -144,19 +144,12 @@ const Favourites = () => {
       return;
     }
 
-    if (player.playing && player.playlist === 'favourites') {
-      player.setPlaying(false);
-    } else if (player.playing && player.playlist !== 'favourites') {
+    if (player.playlist === 'favourites') {
+      player.setPlaying(!player.playing);
+    } else {
       player.playTrack(tracks[0], tracks);
       player.setPlaylist('favourites');
-    } else {
-      if (player.currentSong) {
-        player.setPlaying(true);
-      } else {
-        player.playTrack(tracks[0], tracks);
-      }
-
-      player.setPlaylist('favourites');
+      player.setPlaying(true);
     }
   };
 

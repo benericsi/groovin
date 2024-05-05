@@ -16,7 +16,7 @@
 
     .player_song-info {
         height: 100%;
-        width: 25%;
+        width: 30%;
         position: relative;
         display: flex;
         align-items: center;
@@ -61,13 +61,15 @@
         }
 
         .fav-btn {
+            min-width: 1rem;
+            min-height: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            margin-left: .5rem;
 
             svg {
-                margin-left: .5rem;
                 font-size: 1.25rem;
                 color: color(red, 500);
                 transition: color .2s $animation-cubic;
@@ -83,7 +85,7 @@
 
     .player_controls {
         height: 100%;
-        width: 50%;
+        width: 40%;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -91,7 +93,7 @@
 
     .player_queue {
         height: 100%;
-        width: 25%;
+        width: 30%;
         display: flex;
         align-items: center;
         justify-content: flex-end;

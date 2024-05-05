@@ -285,19 +285,12 @@ const Album = () => {
       explicit: track.explicit,
     }));
 
-    if (player.playing && player.playlist === album.id) {
-      player.setPlaying(false);
-    } else if (player.playing && player.playlist !== album.id) {
+    if (player.playlist === album.id) {
+      player.setPlaying(!player.playing);
+    } else {
       player.playTrack(newTracks[0], newTracks);
       player.setPlaylist(album.id);
-    } else {
-      if (player.currentSong) {
-        player.setPlaying(true);
-      } else {
-        player.playTrack(newTracks[0], newTracks);
-      }
-
-      player.setPlaylist(album.id);
+      player.setPlaying(true);
     }
   };
 

@@ -204,8 +204,6 @@
                 display: flex;
                 flex-direction: column;
                 background-color: $clr-white;
-                container-type: inline-size; // causes absolutely positioned children to be contained within the parent
-                min-width: 0;
 
                 .table-header {
                     position: sticky;
@@ -562,54 +560,6 @@
                 font-size: 2.5rem;
                 font-weight: 600;
                 color: color(secondary, 300);
-            }
-        }
-    }
-}
-
-@container (max-width: 762px) {
-
-    // $media-query-md
-    .table-header {
-        grid-template-columns: 2rem 2fr 2fr 2rem 4rem 2rem !important;
-
-        .table-header-item {
-            &:nth-child(4) {
-                display: none;
-            }
-        }
-    }
-
-    .favourite {
-        grid-template-columns: 2rem 2fr 2fr 2rem 4rem 2rem !important;
-
-        .favourite-field {
-            &:nth-child(4) {
-                display: none !important;
-            }
-        }
-    }
-}
-
-@container (max-width: 576px) {
-
-    // $media-query-sm
-    .table-header {
-        grid-template-columns: 2rem 2fr 2rem 4rem 2rem !important;
-
-        .table-header-item {
-            &:nth-child(3) {
-                display: none;
-            }
-        }
-    }
-
-    .favourite {
-        grid-template-columns: 2rem 2fr 2rem 4rem 2rem !important;
-
-        .favourite-field {
-            &:nth-child(3) {
-                display: none !important;
             }
         }
     }

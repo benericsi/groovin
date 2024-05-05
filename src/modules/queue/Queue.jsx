@@ -16,6 +16,12 @@ const Queue = ({setIsQueueOpen}) => {
   const [actionListIndex, setActionListIndex] = useState(null);
 
   useEffect(() => {
+    if (!player.currentSong) {
+      setIsQueueOpen(false);
+    }
+  }, [player.currentSong, setIsQueueOpen]);
+
+  useEffect(() => {
     if (isDragging) {
       setActionListIndex(null);
     }
@@ -47,7 +53,7 @@ const Queue = ({setIsQueueOpen}) => {
       </div>
       <div className="queue_body">
         <h2>Now Playing</h2>
-        <QueueItem track={player.currentSong} activeTrack={activeTrack} setActiveTrack={setActiveTrack} actionListIndex={actionListIndex} setActionListIndex={setActionListIndex} handleTrackPlayButtonClick={handleTrackPlayButtonClick} />
+        {player.currentSong && <QueueItem track={player.currentSong} activeTrack={activeTrack} setActiveTrack={setActiveTrack} actionListIndex={actionListIndex} setActionListIndex={setActionListIndex} handleTrackPlayButtonClick={handleTrackPlayButtonClick} />}
         {player.queue.length > 1 ? (
           <div className="queue_list">
             <h2>Next Up</h2>
