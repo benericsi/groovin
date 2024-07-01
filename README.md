@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Disclaimer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is my university thesis project. For personal use only!
 
 ## Available Scripts
 
