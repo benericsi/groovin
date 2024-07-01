@@ -1,6 +1,7 @@
 # Disclaimer
 
-This project is my university thesis project. For personal use only!
+This project is my university thesis project. It is currently work in progress.
+For personal use only!
 
 ## Available Scripts
 
