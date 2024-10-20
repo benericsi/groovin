@@ -1,21 +1,23 @@
-import '../../assets/css/artist.css';
+import "../../assets/css/artist.css";
 
-import React, {useEffect, useState} from 'react';
-import {Outlet, useParams} from 'react-router-dom';
-import {useToast} from '../../hooks/useToast';
-import {useLoader} from '../../hooks/useLoader';
-import {useSpotifyAuth} from '../../hooks/useSpotifyAuth';
-import ColorThief from 'colorthief';
+import React, { useEffect, useState } from "react";
+import { Outlet, useParams } from "react-router-dom";
+import { useToast } from "../../hooks/useToast";
+import { useLoader } from "../../hooks/useLoader";
+import { useSpotifyAuth } from "../../hooks/useSpotifyAuth";
+import ColorThief from "colorthief";
 
-import ArtistSubNav from './ArtistSubNav';
-import {RiAccountCircleFill} from 'react-icons/ri';
+import ArtistSubNav from "./ArtistSubNav";
+import { RiAccountCircleFill } from "react-icons/ri";
+import { useTitle } from "../../hooks/useTitle";
 
 const Artist = () => {
-  const [dominantColor, setDominantColor] = useState('');
-  const {addToast} = useToast();
-  const {showLoader, hideLoader} = useLoader();
+  useTitle("Artist");
+  const [dominantColor, setDominantColor] = useState("");
+  const { addToast } = useToast();
+  const { showLoader, hideLoader } = useLoader();
 
-  const {artistId} = useParams();
+  const { artistId } = useParams();
   const token = useSpotifyAuth();
 
   const [artist, setArtist] = useState(null);
@@ -27,19 +29,22 @@ const Artist = () => {
     const fetchArtist = async () => {
       showLoader();
       try {
-        const response = await fetch(`https://api.spotify.com/v1/artists/${artistId}`, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `https://api.spotify.com/v1/artists/${artistId}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const data = await response.json();
         // console.log(data);
 
         if (data.images.length > 0) {
           const colorThief = new ColorThief();
           const img = new Image();
-          img.crossOrigin = 'Anonymous';
+          img.crossOrigin = "Anonymous";
           img.src = data.images[2].url;
           img.onload = () => {
             const color = colorThief.getColor(img);
@@ -48,9 +53,11 @@ const Artist = () => {
         }
 
         setArtist(data);
-        setReadableFollowers(data.followers.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+        setReadableFollowers(
+          data.followers.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        );
       } catch (error) {
-        addToast('error', error.message);
+        addToast("error", error.message);
       } finally {
         hideLoader();
       }
@@ -67,15 +74,23 @@ const Artist = () => {
     <>
       {artist && (
         <>
-          <div className="artist-header">
-            <div className="header-pre">
-              <div className="artist-background" style={{backgroundColor: dominantColor}}></div>
+          <div className='artist-header'>
+            <div className='header-pre'>
+              <div
+                className='artist-background'
+                style={{ backgroundColor: dominantColor }}></div>
             </div>
-            <div className="artist-profile-details">
-              <div className="artist-profile-image">{artist.images.length > 0 ? <img src={artist.images[2].url} alt={artist.name} /> : <RiAccountCircleFill className="default-photo" />}</div>
-              <div className="artist-profile-actions">
-                <span className="artist-profile-name">{artist.name}</span>
-                <div className="artist-info">
+            <div className='artist-profile-details'>
+              <div className='artist-profile-image'>
+                {artist.images.length > 0 ? (
+                  <img src={artist.images[2].url} alt={artist.name} />
+                ) : (
+                  <RiAccountCircleFill className='default-photo' />
+                )}
+              </div>
+              <div className='artist-profile-actions'>
+                <span className='artist-profile-name'>{artist.name}</span>
+                <div className='artist-info'>
                   <span>Followers: {readableFollowers}</span>
                 </div>
               </div>
@@ -84,8 +99,8 @@ const Artist = () => {
             <ArtistSubNav artist={artist} />
           </div>
 
-          <div className="artist-body">
-            <Outlet context={{artist}} />
+          <div className='artist-body'>
+            <Outlet context={{ artist }} />
           </div>
         </>
       )}
