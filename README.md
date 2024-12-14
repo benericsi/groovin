@@ -45,13 +45,21 @@ Groovin is a web application built using **React**, **Firebase**, and the **Spot
 3. Set up your environment variables:
    - Create a `.env` file in the root directory.
    - Add your Firebase and Spotify API credentials:
-     ```env
+     ```
+     # Firebase Configuration
      REACT_APP_FIREBASE_API_KEY=your-firebase-api-key
      REACT_APP_FIREBASE_AUTH_DOMAIN=your-firebase-auth-domain
      REACT_APP_FIREBASE_PROJECT_ID=your-firebase-project-id
+     REACT_APP_FIREBASE_STORAGE_BUCKET=your-firebase-storage-bucket
+     REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your-firebase-messaging-sender-id
+     REACT_APP_FIREBASE_APP_ID=your-firebase-app-id
+     REACT_APP_FIREBASE_MEASUREMENT_ID=your-firebase-measurement-id
+
+     # Spotify API Configuration
      REACT_APP_SPOTIFY_CLIENT_ID=your-spotify-client-id
      REACT_APP_SPOTIFY_CLIENT_SECRET=your-spotify-client-secret
      ```
+
 4. Start the development server:
 
    ```bash
