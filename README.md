@@ -1,71 +1,60 @@
-# Disclaimer
+# Groovin - Music Streaming Web Application
 
-This project is my university thesis project. It is currently work in progress.
-For personal use only!
+Groovin is a web application built using **React**, **Firebase**, and the **Spotify Web API**. It provides users with a seamless music streaming experience, allowing them to explore songs, manage playlists, and interact with friends in a user-friendly interface.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- **User Authentication**: Secure login and registration using email/password or Google account (Firebase Authentication).
+- **Explore Music**: Search for songs, albums, and artists using the Spotify Web API.
+- **Playlist Management**: Create, edit, and manage playlists.
+- **Social Features**: Add friends, send/receive friend requests, and chat in real time.
+- **Music Player**: Play songs with a queue system, next/previous song controls, and playlist navigation.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Tech Stack
 
-### `npm test`
+- **Frontend**: React, SCSS
+- **Backend**: Firebase (Authentication, Firestore Database, Realtime Sync)
+- **API Integration**: Spotify Web API
+- **State Management**: React Context API, useReducer
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## Getting Started
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Prerequisites
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Node.js and npm installed
+- Spotify Developer Account (to access API credentials)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Installation
 
-### `npm run eject`
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/groovin.git
+   cd groovin
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+2. Install dependencies:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+   ```bash
+   npm install
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+3. Set up your environment variables:
+   - Create a `.env` file in the root directory.
+   - Add your Firebase and Spotify API credentials:
+     ```env
+     REACT_APP_FIREBASE_API_KEY=your-firebase-api-key
+     REACT_APP_FIREBASE_AUTH_DOMAIN=your-firebase-auth-domain
+     REACT_APP_FIREBASE_PROJECT_ID=your-firebase-project-id
+     REACT_APP_SPOTIFY_CLIENT_ID=your-spotify-client-id
+     REACT_APP_SPOTIFY_CLIENT_SECRET=your-spotify-client-secret
+     ```
+4. Start the development server:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+   ```bash
+   npm start
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+5. Open your browser and navigate to `http://localhost:3000`.
